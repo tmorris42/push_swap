@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/08 16:31:09 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/08 19:07:32 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/05/08 19:33:43 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,34 @@ void	stack_rotate(t_stack **stack)
 	last->next->next = NULL;
 }
 
+void	stack_reverse_rotate(t_stack **stack)
+{
+	t_stack	*next;
+
+	if (!stack || !(*stack))
+		return ;
+	next = ((*stack)->next);
+	while (*stack && next)
+	{
+		if (next->next && next->next->next)
+			next = next->next;
+		else if (next->next)
+		{
+			next->next->next = (*stack);
+			(*stack) = next->next;
+			next->next = NULL;
+			break;
+		}
+		else
+		{
+			next->next = (*stack);
+			(*stack)->next = NULL;
+			(*stack) = next;
+			break;
+		}
+	}
+}
+
 int		main(int argc, char **argv)
 {
 	t_stack	*a;
@@ -104,7 +132,7 @@ int		main(int argc, char **argv)
 	stack_print(a, b);	
 	verify_stack(a);
 	ft_putstr("\n\n");
-
+	stack_rotate(&a);
 	stack_print(a, b);	
 	verify_stack(a);
 	stack_clear(&a);
