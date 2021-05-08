@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/08 16:31:09 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/08 19:33:43 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/05/08 19:35:20 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_stack	*read_args(int argc, char **argv)
 		{
 			ft_putstr("All items must be integers\n");
 			stack_clear(&a);
-			break;
+			break ;
 		}
 		value = ft_atoi(argv[i]);
 		stack_new_add_back(&a, value);
@@ -109,14 +109,14 @@ void	stack_reverse_rotate(t_stack **stack)
 			next->next->next = (*stack);
 			(*stack) = next->next;
 			next->next = NULL;
-			break;
+			break ;
 		}
 		else
 		{
 			next->next = (*stack);
 			(*stack)->next = NULL;
 			(*stack) = next;
-			break;
+			break ;
 		}
 	}
 }
@@ -129,11 +129,11 @@ int		main(int argc, char **argv)
 	b = NULL;
 	a = NULL;
 	a = read_args(argc, argv);
-	stack_print(a, b);	
+	stack_print(a, b);
 	verify_stack(a);
 	ft_putstr("\n\n");
 	stack_rotate(&a);
-	stack_print(a, b);	
+	stack_print(a, b);
 	verify_stack(a);
 	stack_clear(&a);
 	return (0);
