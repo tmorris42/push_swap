@@ -6,13 +6,13 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/08 17:57:54 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/08 18:50:01 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/05/10 17:51:34 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "stack.h"
 
-t_stack	*stack_new(int	value)
+t_stack	*stack_new(int value)
 {
 	t_stack	*new;
 
@@ -107,7 +107,81 @@ int		stack_new_add_back(t_stack **start_addr, int value)
 
 	new = stack_new(value);
 	if (!new)
+	{
+		stack_clear(start_addr);
 		return (-1);
+	}
 	stack_add_back(start_addr, new);
 	return (0);
+}
+
+void	stack_verify(t_stack *a)
+{
+	if (stack_is_sorted(a))
+		ft_putstr("OK\n");
+	else
+		ft_putstr("KO\n");
+}
+
+void	stack_swap(t_stack **stack)
+{
+	t_stack	*temp;
+
+	if (!stack || !(*stack) || !((*stack)->next))
+		return ;
+	temp = *stack;
+	(*stack) = (*stack)->next;
+	temp->next = (*stack)->next;
+	(*stack)->next = temp;
+}
+
+void	stack_push(t_stack **src, t_stack **dest)
+{
+	t_stack	*temp;
+
+	if (!src || !(*src) || !dest)
+		return ;
+	temp = (*src)->next;
+	stack_add_front(dest, (*src));
+	(*src) = temp;
+}
+
+void	stack_rotate(t_stack **stack)
+{
+	t_stack	*last;
+
+	if (!stack || !(*stack) || !((*stack)->next))
+		return ;
+	last = stack_last(*stack);
+	last->next = (*stack);
+	*stack = (*stack)->next;
+	last->next->next = NULL;
+}
+
+void	stack_reverse_rotate(t_stack **stack)
+{
+	t_stack	*next;
+
+	if (!stack || !(*stack))
+		return ;
+	next = ((*stack)->next);
+	while (*stack && next)
+	{
+		if (next->next && next->next->next)
+			next = next->next;
+		else if (next->next)
+		{
+			next->next->next = (*stack);
+			(*stack) = next->next;
+			next->next = NULL;
+			break ;
+		}
+		else
+		{
+			next->next = (*stack);
+			(*stack)->next = NULL;
+			(*stack) = next;
+			break ;
+		}
+	}
 }
