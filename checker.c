@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/08 16:31:09 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/10 19:25:49 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/05/10 19:29:57 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,8 +131,7 @@ int		parse_command(char *str)
 		return (REV_ROTATE_B);
 	if (!ft_strncmp(str, "rrr", 3))
 		return (REV_ROTATE_BOTH);
-	else
-		return (INVALID_COMMAND);
+	return (INVALID_COMMAND);
 }
 
 void	run_command(int cmd, t_stack **a, t_stack **b)
@@ -169,15 +168,11 @@ void	get_commands(t_stack **a, t_stack **b)
 		if (status > 0)
 		{
 			cmd = parse_command(buf);
-			run_command(cmd, a, b);
-			ft_putstr("\nCommand: ");
-			ft_putnbr(cmd);
-			ft_putstr("\nStatus: ");
-			ft_putnbr(status);
-			ft_putstr("\nHere is the line: ");
-			ft_putstr(buf);
-			ft_putstr("\n");
-			stack_print(*a, *b);
+			if (cmd)
+				run_command(cmd, a, b);
+			else
+				status = -1;
+			stack_print(*a, *b); // DEBUG only
 		}
 		free(buf);
 		buf = NULL;
