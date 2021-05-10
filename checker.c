@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/08 16:31:09 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/08 19:35:20 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/05/10 18:07:10 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,28 @@ int		ft_isdigits_minus(char *str)
 	return (1);
 }
 
-t_stack	*read_args(int argc, char **argv)
+int		ft_isdigits_minus_space(char *str)
+{
+	int		i;
+
+	i = 0;
+	while (str && str[i])
+	{
+		if (!(ft_isdigit(str[i])) && str[i] != '-' && str[i] != ' ')
+			return (0);
+		++i;
+	}
+	return (1);
+}
+
+t_stack	*read_args_array(int argc, char **argv)
 {
 	int		i;
 	t_stack	*a;
 	int		value;
 
 	a = NULL;
-	i = 1;
+	i = 0;
 	while (i < argc)
 	{
 		if (!(ft_isdigits_minus(argv[i])))
@@ -50,75 +64,47 @@ t_stack	*read_args(int argc, char **argv)
 	return (a);
 }
 
-void	verify_stack(t_stack *a)
+int		get_array_len(char **strs)
 {
-	if (stack_is_sorted(a))
-		ft_putstr("OK\n");
-	else
-		ft_putstr("KO\n");
+	int		i;
+
+	i = 0;
+	while (strs && strs[i])
+		++i;
+	return (i);
 }
 
-void	stack_swap(t_stack **stack)
+char	**free_array(char **strs)
 {
-	t_stack	*temp;
+	int		i;
 
-	if (!stack || !(*stack) || !((*stack)->next))
-		return ;
-	temp = *stack;
-	(*stack) = (*stack)->next;
-	temp->next = (*stack)->next;
-	(*stack)->next = temp;
-}
-
-void	stack_push(t_stack **src, t_stack **dest)
-{
-	t_stack	*temp;
-
-	if (!src || !(*src) || !dest)
-		return ;
-	temp = (*src)->next;
-	stack_add_front(dest, (*src));
-	(*src) = temp;
-}
-
-void	stack_rotate(t_stack **stack)
-{
-	t_stack	*last;
-
-	if (!stack || !(*stack) || !((*stack)->next))
-		return ;
-	last = stack_last(*stack);
-	last->next = (*stack);
-	*stack = (*stack)->next;
-	last->next->next = NULL;
-}
-
-void	stack_reverse_rotate(t_stack **stack)
-{
-	t_stack	*next;
-
-	if (!stack || !(*stack))
-		return ;
-	next = ((*stack)->next);
-	while (*stack && next)
+	i = 0;
+	while (strs && strs[i])
 	{
-		if (next->next && next->next->next)
-			next = next->next;
-		else if (next->next)
-		{
-			next->next->next = (*stack);
-			(*stack) = next->next;
-			next->next = NULL;
-			break ;
-		}
-		else
-		{
-			next->next = (*stack);
-			(*stack)->next = NULL;
-			(*stack) = next;
-			break ;
-		}
+		free(strs[i]);
+		++i;
 	}
+	free(strs);
+	return (NULL);
+}
+
+t_stack	*read_args(int argc, char **argv)
+{
+	char	**strs;
+	int		len;
+	t_stack	*stack;
+
+	if (argc == 2 && ft_isdigits_minus_space(argv[1]))
+	{
+		strs = ft_split(argv[1], ' ');
+		if (!strs)
+			return (NULL);
+		len = get_array_len(strs);
+		stack = read_args_array(len, strs);
+		strs = free_array(strs);
+		return (stack);
+	}
+	return (read_args_array(argc - 1, &argv[1]));
 }
 
 int		main(int argc, char **argv)
@@ -129,12 +115,14 @@ int		main(int argc, char **argv)
 	b = NULL;
 	a = NULL;
 	a = read_args(argc, argv);
+	if (!a)
+		return (0);
 	stack_print(a, b);
-	verify_stack(a);
+	stack_verify(a);
 	ft_putstr("\n\n");
 	stack_rotate(&a);
 	stack_print(a, b);
-	verify_stack(a);
+	stack_verify(a);
 	stack_clear(&a);
 	return (0);
 }
