@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/08 17:57:54 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/10 17:51:34 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/05/10 18:49:44 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ void	stack_push(t_stack **src, t_stack **dest)
 {
 	t_stack	*temp;
 
-	if (!src || !(*src) || !dest)
+	if (!src || !(*src))
 		return ;
 	temp = (*src)->next;
 	stack_add_front(dest, (*src));

@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/08 16:52:08 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/10 17:44:47 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/05/10 19:10:36 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,8 @@ int				stack_new_add_back(t_stack **start_addr, int value);
 void			stack_add_front(t_stack **stack, t_stack *node);
 void			stack_verify(t_stack *stack);
 void			stack_rotate(t_stack **stack);
+void			stack_push(t_stack **src, t_stack **dest);
+void			stack_swap(t_stack **stack);
+void			stack_reverse_rotate(t_stack **stack);
 
 #endif
