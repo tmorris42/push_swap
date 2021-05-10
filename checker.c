@@ -6,16 +6,12 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/08 16:31:09 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/10 19:15:49 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/05/10 19:25:49 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/libft.h"
 #include "checker.h"
-
-enum e_cmd{INVALID_COMMAND = -1, QUIT = 0, SWAP_A, SWAP_B, SWAP_BOTH, \
-	PUSH_A, PUSH_B, ROTATE_A, ROTATE_B, ROTATE_BOTH, REV_ROTATE_A, \
-		REV_ROTATE_B, REV_ROTATE_BOTH};
 
 int		ft_isdigits_minus(char *str)
 {
@@ -137,42 +133,26 @@ int		parse_command(char *str)
 		return (REV_ROTATE_BOTH);
 	else
 		return (INVALID_COMMAND);
-	
 }
 
 void	run_command(int cmd, t_stack **a, t_stack **b)
 {
-	if (cmd == SWAP_A)
+	if (cmd == SWAP_A || cmd == SWAP_BOTH)
 		stack_swap(a);
-	else if (cmd == SWAP_B)
+	if (cmd == SWAP_B || cmd == SWAP_BOTH)
 		stack_swap(b);
-	else if (cmd == SWAP_BOTH)
-	{
-		stack_swap(a);
-		stack_swap(b);
-	}
-	else if (cmd == PUSH_A)
+	if (cmd == PUSH_A)
 		stack_push(b, a);
-	else if (cmd == PUSH_B)
+	if (cmd == PUSH_B)
 		stack_push(a, b);
-	else if (cmd == ROTATE_A)
+	if (cmd == ROTATE_A || cmd == ROTATE_BOTH)
 		stack_rotate(a);
-	else if (cmd == ROTATE_B)
+	if (cmd == ROTATE_B || cmd == ROTATE_BOTH)
 		stack_rotate(b);
-	else if (cmd == ROTATE_BOTH)
-	{
-		stack_rotate(a);
-		stack_rotate(b);
-	}
-	else if (cmd == REV_ROTATE_A)
+	if (cmd == REV_ROTATE_A || cmd == REV_ROTATE_BOTH)
 		stack_reverse_rotate(a);
-	else if (cmd == REV_ROTATE_B)
+	if (cmd == REV_ROTATE_B || cmd == REV_ROTATE_BOTH)
 		stack_reverse_rotate(b);
-	else if (cmd == REV_ROTATE_BOTH)
-	{
-		stack_reverse_rotate(a);
-		stack_reverse_rotate(b);
-	}
 }
 
 void	get_commands(t_stack **a, t_stack **b)
@@ -215,9 +195,7 @@ int		main(int argc, char **argv)
 	if (!a)
 		return (0);
 	stack_print(a, b);
-	
 	get_commands(&a, &b);
-	
 	stack_verify(a);
 	stack_clear(&a);
 	return (0);
