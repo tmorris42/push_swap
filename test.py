@@ -7,12 +7,15 @@ def check_nums(nums):
     number_of_lines = int(out_bytes.decode("utf-8"))
     out_bytes = subprocess.check_output(f"./push_swap {nums} | ./checker {nums}", shell=True)
     out_str = out_bytes.decode("utf-8")
-    print(f"Testing {nums}\t\tOperations Needed: {number_of_lines}")
-    if "Error" in out_str:
+    print(f"Testing {nums}\t\tOperations Needed: {number_of_lines}", end=": ")
+    if "Error\n" in out_str:
+        print("ERROR")
         return -1
-    if "KO" in out_str:
+    if "KO\n" in out_str:
+        print("KO")
         return 0
-    if "OK" in out_str:
+    if "OK\n" in out_str:
+        print("OK")
         return 1
     return -2
 
@@ -37,7 +40,7 @@ if __name__ == '__main__':
     success = 0
 
     test_cases = ["4 2 3", "3 2 1 0", "-5 10 8 -7 94 -800 33"]
-    error_cases = ["1 one 3", "1, 1, 3", "2 % 4"]
+    error_cases = ["1 one 3", "1 3 1 2", "2 % 4"]
     ko_cases = []
     for case in test_cases:
         total += 1
