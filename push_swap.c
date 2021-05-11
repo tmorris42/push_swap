@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 13:56:43 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/11 15:18:50 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/05/11 16:33:40 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ void	rough_sort(t_stack **a, t_stack **b)
 	int		len_a;
 	int		sorted;
 
-	sorted = 0;
 	len_a = stack_len(*a);
 	if (len_a < 2)
 		return ;
+	sorted = ((stack_is_sorted(*a)) && ((*b) == NULL));
 	while (!sorted)
 	{
 		if ((*a) && !stack_is_sorted(*a))
