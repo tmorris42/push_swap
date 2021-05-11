@@ -4,7 +4,7 @@ PUSH_SWAP = push_swap
 FLAGS = -Wall -Wextra -Werror
 LIBFT = ./libft/libft.a
 
-STACK_SRCS = stack.c
+STACK_SRCS = stack.c read_args.c commands.c
 STACK_OBJS = ${STACK_SRCS:.c=.o}
 CHECKER_SRCS = checker.c 
 CHECKER_OBJS = ${CHECKER_SRCS:.c=.o}
@@ -28,8 +28,8 @@ $(CHECKER): $(LIBFT) $(STACK_OBJS) $(CHECKER_OBJS)
 $(PUSH_SWAP_OBJS): %.o : %.c
 	gcc $(FLAGS) -c $< -o $@
 
-$(PUSH_SWAP): $(LIBFT) $(PUSH_SWAP_OBJS)
-	gcc $(FLAGS) $(PUSH_SWAP_OBJS) $(LIBFT) -o $(PUSH_SWAP)
+$(PUSH_SWAP): $(LIBFT) $(STACK_OBJS) $(PUSH_SWAP_OBJS)
+	gcc $(FLAGS) $(PUSH_SWAP_OBJS) $(STACK_OBJS) $(LIBFT) -o $(PUSH_SWAP)
 
 clean:
 	rm -f $(CHECKER_OBJS) $(PUSH_SWAP_OBJS) $(STACK_OBJS)

@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/08 16:52:08 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/10 19:10:36 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/05/11 14:27:52 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,23 @@ typedef struct	s_stack
 	struct s_stack	*next;
 }				t_stack;
 
+enum	e_cmd
+{
+	INVALID_COMMAND = -1,
+	QUIT = 0,
+	SWAP_A,
+	SWAP_B,
+	SWAP_BOTH,
+	PUSH_A,
+	PUSH_B,
+	ROTATE_A,
+	ROTATE_B,
+	ROTATE_BOTH,
+	REV_ROTATE_A,
+	REV_ROTATE_B,
+	REV_ROTATE_BOTH
+};
+
 void			stack_clear(t_stack **stack);
 t_stack			*stack_last(t_stack *stack);
 void			stack_add_back(t_stack **stack, t_stack *new);
@@ -34,5 +51,8 @@ void			stack_rotate(t_stack **stack);
 void			stack_push(t_stack **src, t_stack **dest);
 void			stack_swap(t_stack **stack);
 void			stack_reverse_rotate(t_stack **stack);
+t_stack			*read_args(int argc, char **argv);
+int				parse_command(char *str);
+void			run_command(int cmd, t_stack **a, t_stack **b);
 
 #endif
