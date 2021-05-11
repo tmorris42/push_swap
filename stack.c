@@ -6,11 +6,24 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/08 17:57:54 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/10 18:49:44 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/05/11 15:06:04 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "stack.h"
+
+int		stack_len(t_stack *stack)
+{
+	int		len;
+
+	len = 0;
+	while (stack)
+	{
+		++len;
+		stack = stack->next;
+	}
+	return (len);
+}
 
 t_stack	*stack_new(int value)
 {
@@ -115,9 +128,11 @@ int		stack_new_add_back(t_stack **start_addr, int value)
 	return (0);
 }
 
-void	stack_verify(t_stack *a)
+void	stack_verify(t_stack *a, t_stack *b)
 {
-	if (stack_is_sorted(a))
+	if (b)
+		ft_putstr("KO\n");
+	else if (stack_is_sorted(a))
 		ft_putstr("OK\n");
 	else
 		ft_putstr("KO\n");

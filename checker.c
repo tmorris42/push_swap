@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/08 16:31:09 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/11 14:32:10 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/05/11 15:06:41 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int		main(int argc, char **argv)
 		return (0);
 	stack_print(a, b); //DEBUG only
 	get_commands(&a, &b);
-	stack_verify(a);
+	stack_verify(a, b);
 	stack_clear(&a);
 	return (0);
 }
