@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 14:00:41 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/11 17:35:59 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/05/11 17:47:48 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_stack	*read_args_array(int argc, char **argv)
 	int		i;
 	t_stack	*a;
 	int		value;
-	int		j;
+	t_stack	*index;
 
 	a = NULL;
 	i = 0;
@@ -57,18 +57,18 @@ t_stack	*read_args_array(int argc, char **argv)
 			stack_clear(&a);
 			break ;
 		}
-		j = i + 1;
-		while (j < argc)
+		value = ft_atoi(argv[i]);
+		index = a;
+		while (index)
 		{
-			if (ft_strncmp(argv[i], argv[j], ft_strlen(argv[i]) + 1) == 0)
+			if (index->value == value)
 			{
 				ft_putstr("Error\nDuplicate value\n"); //Only print Error, and print to stderr
 				stack_clear(&a);
 				return (NULL);
 			}
-			++j;
+			index = index->next;
 		}
-		value = ft_atoi(argv[i]);
 		stack_new_add_back(&a, value); //should check for malloc error here
 		++i;
 	}
