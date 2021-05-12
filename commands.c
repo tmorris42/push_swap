@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 14:23:11 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/11 14:29:50 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/05/11 19:58:23 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,17 @@ void		run_command(enum e_cmd cmd, t_stack **a, t_stack **b)
 		stack_reverse_rotate(b);
 	if (cmd == INVALID_COMMAND)
 		cmd = QUIT; //Raise an error here instead
+}
+
+void		send_command(char *cmd_str, t_stack **a, t_stack **b)
+{
+	enum e_cmd	cmd;
+
+	cmd = parse_command(cmd_str);
+	if (cmd != INVALID_COMMAND)
+	{
+		ft_putstr(cmd_str);
+		ft_putchar('\n');
+		run_command(cmd, a, b);
+	}
 }
