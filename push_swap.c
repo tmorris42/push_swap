@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 13:56:43 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/12 11:48:09 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/05/12 14:24:35 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,19 +234,37 @@ int		sort_5(t_stack **a, t_stack **b)
 	return (0);
 }
 
+int		how_far_from_top(t_stack **a, int value)
+{
+	int		len;
+	int		i;
+
+	len = stack_len(*a);
+	i = find_index(a, value);
+	if (2 * i > len)
+		i = ft_abs(i - len);
+	return (i);
+}
+
 int		sort_x(t_stack **a, t_stack **b)
 {
 	int		len;
+	int		high;
+	int		low;
 
+	get_low_high(*a, &low, &high);
 	len = stack_len(*a);
 	while (len > 3)
 	{
-		send_command("pb", a, b);
+//		if ((*a)->value < (high + low) / 2)
+			send_command("pb", a, b);
 		--len;
 	}
 	sort_3(a, b);
 	while (*b)
 	{
+		if ((*b) && (*b)->next && how_far_from_top(a, (*b)->value) > how_far_from_top(a, (*b)->next->value))
+			send_command("sb", a, b);
 		insert_in_place(a, b);
 	}
 	return (0);
