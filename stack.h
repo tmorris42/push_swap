@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/08 16:52:08 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/11 15:06:28 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/05/11 19:45:10 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,6 @@ void			stack_reverse_rotate(t_stack **stack);
 t_stack			*read_args(int argc, char **argv);
 int				parse_command(char *str);
 void			run_command(int cmd, t_stack **a, t_stack **b);
+void			send_command(char *cmd_str, t_stack **a, t_stack **b);
 
 #endif
