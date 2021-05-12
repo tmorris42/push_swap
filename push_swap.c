@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 13:56:43 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/12 11:23:15 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/05/12 11:48:09 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,9 +124,10 @@ int		find_index(t_stack **stack, int value)
 	t_stack	*index;
 	int		i;
 	int		high;
+	int		low;
 	t_stack	*last;
 
-	get_low_high(*stack, &i, &high);
+	get_low_high(*stack, &low, &high);
 	i = 0;
 	index = *stack;
 	last = stack_last(*stack);
@@ -134,7 +135,7 @@ int		find_index(t_stack **stack, int value)
 		return (0);
 	while(index)
 	{
-		if (value > high && index->value == high)
+		if ((value < low || value > high) && index->value == high)
 		{
 			++i;
 			index = NULL;
@@ -198,7 +199,7 @@ int		sort_3(t_stack **a, t_stack **b)
 	int		second;
 	int		third;
 
-	if (stack_is_sorted(*a))
+	if (stack_is_ordered(*a))
 		return (0);
 	first = (*a)->value;
 	second = (*a)->next->value;
@@ -220,7 +221,6 @@ int		sort_4(t_stack **a, t_stack **b)
 	send_command("pb", a, b);
 	sort_3(a, b);
 	insert_in_place(a, b);
-	rotate_high_to_bottom(a);
 	return (0);
 }
 
@@ -231,7 +231,6 @@ int		sort_5(t_stack **a, t_stack **b)
 	sort_3(a, b);
 	insert_in_place(a, b);
 	insert_in_place(a, b);
-	rotate_high_to_bottom(a);
 	return (0);
 }
 
@@ -250,7 +249,6 @@ int		sort_x(t_stack **a, t_stack **b)
 	{
 		insert_in_place(a, b);
 	}
-	rotate_high_to_bottom(a);
 	return (0);
 }
 
@@ -268,12 +266,15 @@ int		sort_min_max(t_stack **a, t_stack **b)
 	if (sorted)
 		return (0);
 	if (len_a == 3)
-		return (sort_3(a, b));
+		sort_3(a, b);
 	if (len_a == 4)
-		return (sort_4(a, b));
+		sort_4(a, b);
 	if (len_a == 5)
-		return (sort_5(a, b));
-	return (sort_x(a, b)); //temp jump to avoid segfault
+		sort_5(a, b);
+	if (len_a > 5)
+		sort_x(a, b); //temp jump to avoid segfault
+	rotate_high_to_bottom(a);
+	return (0);
 	get_low_high(*a, &low, &high);
 	stack_split_by(a, b, (high + low) / 2);
 	while (!sorted)

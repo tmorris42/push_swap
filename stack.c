@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/08 17:57:54 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/11 15:06:04 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/05/12 11:32:20 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,33 @@ void	stack_print(t_stack *a, t_stack *b)
 		ft_putchar('\n');
 	}
 	ft_putstr("_ _\na b\n");
+}
+
+int		stack_is_ordered(t_stack *stack)
+{
+	int		first_value;
+	int		trip_count;
+
+	if (!stack)
+		return (1);
+	first_value = stack->value;
+	trip_count = 0;
+	while (stack && stack->next)
+	{
+		if (stack->value > stack->next->value)
+		{
+			if (trip_count > 0)
+				return (0);
+			++trip_count;
+		}
+		stack = stack->next;
+	}
+	if (trip_count == 1)
+	{
+		if (stack->value > first_value)
+			return (0);
+	}
+	return (1);
 }
 
 int		stack_is_sorted(t_stack *stack)

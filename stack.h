@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/08 16:52:08 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/11 19:45:10 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/05/12 11:32:48 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ t_stack			*stack_last(t_stack *stack);
 void			stack_add_back(t_stack **stack, t_stack *new);
 t_stack			*stack_new(int c);
 int				stack_is_sorted(t_stack *stack);
+int				stack_is_ordered(t_stack *stack);
 void			stack_print(t_stack *a, t_stack *b);
 int				stack_new_add_back(t_stack **start_addr, int value);
 void			stack_add_front(t_stack **stack, t_stack *node);
