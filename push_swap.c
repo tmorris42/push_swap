@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 13:56:43 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/13 16:05:17 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/05/13 16:13:14 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -750,6 +750,20 @@ int		finish_hold_sort_mod(t_stack **a, t_stack **b)
 	return (0);
 }
 
+int		has_average_values(t_stack **a, int high_qtr, int low_qtr)
+{
+	t_stack *index;
+
+	index = (*a);
+	while (index)
+	{
+		if (index->value <= high_qtr && index->value >= low_qtr)
+			return (1);
+		index = index->next;
+	}
+	return (0);
+}
+
 int		four_hold_sort_mod(t_stack **a, t_stack **b)
 {
 	int		len_a;
@@ -772,7 +786,7 @@ int		four_hold_sort_mod(t_stack **a, t_stack **b)
 		return (0);
 	}
 	high = stack_last(*a)->value;
-	while ((*a)->value != high)
+	while (has_average_values(a, high_qtr, low_qtr) && (*a)->value != high)
 	{
 		if ((*a)->value > high_qtr || (*a)->value < low_qtr)
 		{
