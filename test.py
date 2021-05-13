@@ -53,7 +53,24 @@ if __name__ == '__main__':
             ]
     error_cases = ["1 one 3", "1 3 1 2", "2 % 4", "1 0 -5 7 -0 8",
             "2147483648", "-2147483649"]
-    program_names = ["./push_swap", "./hold_sort_mod",]# "./best_so_far", ]#"./sort_5", "./rough_sort"]
+    test_cases = [
+            " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
+            " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
+            " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
+            " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
+            " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
+            " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
+            " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
+            " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
+            " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
+            " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
+        ]
+    error_cases = []
+    program_names = [
+            "./push_swap",
+            "./four_hold_sort_mod", 
+            ]
+            #"./hold_sort_mod",]# "./best_so_far", ]#"./sort_5", "./rough_sort"]
 
     for program_name in program_names:
         total = 0
