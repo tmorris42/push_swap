@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 13:56:43 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/13 13:25:33 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/05/13 14:35:32 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -656,7 +656,7 @@ int		hold_sort_mod(t_stack **a, t_stack **b)
 		rotate_high_to_bottom(a);
 		return (0);
 	}
-	high = (*a)->value;
+	high = stack_last(*a)->value;
 	while (!stack_is_ordered(*a))
 	{
 		if ((*a)->value > high)
@@ -666,12 +666,16 @@ int		hold_sort_mod(t_stack **a, t_stack **b)
 		}
 		else if ((*a)->value > (*a)->next->value)
 		{
+//			insert_b_in_place(a, b);
 			send_command("pb", a, b);
 //			send_command("ra", a, b);
 		}
 		else
 		{
-			send_command("sa", a, b);
+//			insert_b_in_place(a, b);
+			send_command("pb", a, b);
+//			send_command("rb", a, b);
+//			send_command("sa", a, b);
 		}
 	}
 	while (*b)
