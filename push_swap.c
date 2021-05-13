@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 13:56:43 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/13 15:19:33 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/05/13 16:05:17 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -656,7 +656,7 @@ int		hold_sort_mod(t_stack **a, t_stack **b)
 	{
 		sort_3(a, b);
 		rotate_high_to_bottom(a);
-		return (0);
+//		return (0);
 	}
 	high = stack_last(*a)->value;
 	while (!stack_is_ordered(*a))
@@ -703,6 +703,93 @@ int		hold_sort_mod(t_stack **a, t_stack **b)
 	return (0);
 }
 
+int		finish_hold_sort_mod(t_stack **a, t_stack **b)
+{
+	int		len_a;
+	int		high;
+	int		i;
+	int		avg;
+
+	if (!a || !b)
+		return (-1);
+	get_low_high(*a, &len_a, &high);
+	avg = (high + len_a) / 2;
+	len_a = stack_len(*a);
+	if (len_a < 4)
+	{
+		sort_3(a, b);
+	}
+	high = stack_last(*a)->value;
+	while (!stack_is_ordered(*a))
+	{
+		if ((*a)->value > high)
+		{
+			high = (*a)->value;
+			if ((*b) && (*b)->value < avg)
+				send_command("rr", a, b);
+			else
+				send_command("ra", a, b);
+		}
+		else if ((*b) && (*b)->next && (*b)->value < avg && (*b)->next->value >= avg)
+		{
+			send_command("rb", a, b);
+		}
+		else
+		{
+			send_command("pb", a, b);
+		}
+	}
+	while ((*b))
+	{
+		i = get_closest_to_top(*a, *b);
+		rotate_b_to_index(b, i);
+		insert_in_place(a, b);
+	}
+	rotate_high_to_bottom(a);
+
+	return (0);
+}
+
+int		four_hold_sort_mod(t_stack **a, t_stack **b)
+{
+	int		len_a;
+	int		high;
+	int		avg;
+	int		high_qtr;
+	int		low_qtr;
+
+	if (!a || !b)
+		return (-1);
+	get_low_high(*a, &len_a, &high);
+	avg = (high + len_a) / 2;
+	high_qtr = (high + avg) / 2;
+	low_qtr = (len_a + avg) / 2;
+	len_a = stack_len(*a);
+	if (len_a < 4)
+	{
+		sort_3(a, b);
+		rotate_high_to_bottom(a);
+		return (0);
+	}
+	high = stack_last(*a)->value;
+	while ((*a)->value != high)
+	{
+		if ((*a)->value > high_qtr || (*a)->value < low_qtr)
+		{
+			if ((*b) && (*b)->value < avg)
+				send_command("rr", a, b);
+			else
+				send_command("ra", a, b);
+		}
+		else if ((*b) && (*b)->next && (*b)->value < avg && (*b)->next->value >= avg)
+			send_command("rb", a, b);
+		else
+			send_command("pb", a, b);
+	}
+
+	return (0);
+}
+
 int		main(int argc, char **argv)
 {
 	t_stack	*a;
@@ -715,7 +802,9 @@ int		main(int argc, char **argv)
 	//rough_sort(&a, &b);
 	//sort_min_max(&a, &b);
 	//bubble_sort(&a, &b);
+	four_hold_sort_mod(&a, &b);
 	hold_sort_mod(&a, &b);
+//	finish_hold_sort_mod(&a, &b);
 	stack_clear(&a);
 	stack_clear(&b);
 	return (0);
