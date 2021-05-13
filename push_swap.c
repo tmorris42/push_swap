@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 13:56:43 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/13 15:10:35 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/05/13 15:19:33 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -669,7 +669,7 @@ int		hold_sort_mod(t_stack **a, t_stack **b)
 			else
 				send_command("ra", a, b);
 		}
-		else if ((*b) && (*b)->value < avg)
+		else if ((*b) && (*b)->next && (*b)->value < avg && (*b)->next->value >= avg)
 		{
 			send_command("rb", a, b);
 		}
