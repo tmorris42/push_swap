@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 13:56:43 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/13 16:13:14 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/05/13 18:01:22 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -808,17 +808,27 @@ int		main(int argc, char **argv)
 {
 	t_stack	*a;
 	t_stack *b;
+	int		len;
 
 	b = NULL;
 	a = read_args(argc, argv);
 	if (!a)
 		return (-1);
+	len = stack_len(a);
+	if (len < 4)
+		sort_3(&a, &b);
+	else if (len < 6)
+		sort_5(&a, &b);
+	else
+	{
 	//rough_sort(&a, &b);
 	//sort_min_max(&a, &b);
 	//bubble_sort(&a, &b);
 	four_hold_sort_mod(&a, &b);
 	hold_sort_mod(&a, &b);
 //	finish_hold_sort_mod(&a, &b);
+	}
+	rotate_high_to_bottom(&a);
 	stack_clear(&a);
 	stack_clear(&b);
 	return (0);
