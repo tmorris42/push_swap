@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 13:56:43 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/13 14:35:32 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/05/13 15:10:35 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -645,10 +645,12 @@ int		hold_sort_mod(t_stack **a, t_stack **b)
 	int		len_a;
 	int		high;
 	int		i;
+	int		avg;
 
 	if (!a || !b)
 		return (-1);
 	get_low_high(*a, &len_a, &high);
+	avg = (high + len_a) / 2;
 	len_a = stack_len(*a);
 	if (len_a < 4)
 	{
@@ -662,9 +664,21 @@ int		hold_sort_mod(t_stack **a, t_stack **b)
 		if ((*a)->value > high)
 		{
 			high = (*a)->value;
-			send_command("ra", a, b);
+			if ((*b) && (*b)->value < avg)
+				send_command("rr", a, b);
+			else
+				send_command("ra", a, b);
 		}
-		else if ((*a)->value > (*a)->next->value)
+		else if ((*b) && (*b)->value < avg)
+		{
+			send_command("rb", a, b);
+		}
+//		else if ((*b) && (*a)->value > stack_last(*b)->value)
+	//	{
+	//		send_command("pb", a, b);
+	//		send_command("rr", a, b);
+	//	}
+		if ((*a)->value > (*a)->next->value)
 		{
 //			insert_b_in_place(a, b);
 			send_command("pb", a, b);
