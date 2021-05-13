@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 13:56:43 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/12 20:07:31 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/05/13 13:25:33 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -407,6 +407,107 @@ int		which_is_closest(t_stack *a, int top, int bot)
 	return (top);
 }
 
+int		sort_50(t_stack **a, t_stack **b)
+{
+	int		len;
+	int		high;
+	int		low;
+	int		i;
+	int		target;
+	int		top_hold;
+
+	get_low_high(*a, &low, &high);
+	target = high - (4 * (high - low) / 5);
+	len = stack_len(*a);
+	while (len > 3)
+	{
+		top_hold = stack_has_below(a, target);
+		if (top_hold == -1)
+		{
+			if (target < high - (2 * (high - low) / 5))
+				target = high - (1 * (high - low) / 5);
+			else if (target < high - (3 * (high - low) / 5))
+				target = high - (2 * (high - low) / 5);
+			else if (target < high - (4 * (high - low) / 5))
+				target = high - (3 * (high - low) / 5);
+			else
+				target = high + 1;
+			continue ;
+		}
+		if ((*a)->value >= target)
+		{
+			send_command("ra", a, b);
+		}
+		insert_b_in_place(a, b);
+		--len;
+	}
+	sort_3(a, b);
+	while (*b)
+	{
+		i = get_closest_to_top(*a, *b);
+		rotate_b_to_index(b, i);
+		insert_in_place(a, b);
+	}
+	return (0);
+}
+
+int		sort_100(t_stack **a, t_stack **b)
+{
+	int		len_a;
+	int		len_b;
+	int		high;
+	int		low;
+	int		i;
+	int		target;
+	int		top_hold;
+//	int		bot_hold;
+
+	get_low_high(*a, &low, &high);
+	target = high - (4 * (high - low) / 5);
+	len_a = stack_len(*a);
+	len_b = stack_len(*b);
+	if (len_b)
+		len_b = len_b;
+	while (len_a > 3)
+	{
+		top_hold = stack_has_below(a, target);
+		if (top_hold == -1)
+		{
+			if (target < high - (2 * (high - low) / 5))
+				target = high - (1 * (high - low) / 5);
+			else if (target < high - (3 * (high - low) / 5))
+				target = high - (2 * (high - low) / 5);
+			else if (target < high - (4 * (high - low) / 5))
+				target = high - (3 * (high - low) / 5);
+			else
+				target = high + 1;
+			continue ;
+		}
+//		bot_hold = stack_has_above(a, target);
+//		if ((*a)->value < (high + low) / 2)
+	//		send_command("pb", a, b);
+		if ((*a)->value >= target)
+		{
+			send_command("ra", a, b);
+//			i = get_closest_to_top_under(*b, *a, target);
+//			i = which_is_closest(*a, top_hold, bot_hold);
+//			rotate_to_index(a, i);
+		}
+		insert_b_in_place(a, b);
+		--len_a;
+	}
+	sort_3(a, b);
+	while (*b)
+	{
+	//	if ((*b) && (*b)->next && how_far_from_top(a, (*b)->value) > how_far_from_top(a, (*b)->next->value))
+	//		send_command("sb", a, b);
+		i = get_closest_to_top(*a, *b);
+		rotate_b_to_index(b, i);
+		insert_in_place(a, b);
+	}
+	return (0);
+}
+
 int		sort_x(t_stack **a, t_stack **b)
 {
 	int		len;
@@ -473,13 +574,17 @@ int		sort_min_max(t_stack **a, t_stack **b)
 	sorted = ((stack_is_sorted(*a)) && ((*b) == NULL));
 	if (sorted)
 		return (0);
-	if (len_a == 3)
+	else if (len_a == 3)
 		sort_3(a, b);
-	if (len_a == 4)
+	else if (len_a == 4)
 		sort_4(a, b);
-	if (len_a == 5)
+	else if (len_a == 5)
 		sort_5(a, b);
-	if (len_a > 5)
+	else if (len_a <= 50)
+		sort_50(a, b);
+	else if (len_a <= 100)
+		sort_100(a, b);
+	else if (len_a > 100)
 		sort_x(a, b); //temp jump to avoid segfault
 	rotate_high_to_bottom(a);
 	return (0);
@@ -498,6 +603,88 @@ int		sort_min_max(t_stack **a, t_stack **b)
 	return (0);
 }
 
+int		bubble_sort(t_stack **a, t_stack **b)
+{
+	int		len_a;
+	int		high;
+
+	if (!a || !b)
+		return (-1);
+	get_low_high(*a, &len_a, &high);
+	len_a = stack_len(*a);
+	if (len_a < 4)
+	{
+		sort_3(a, b);
+		rotate_high_to_bottom(a);
+		return (0);
+	}
+	
+	while (!stack_is_ordered(*a))
+	{
+		if ((*a)->value == high)
+		{
+			send_command("rra", a, b);
+		}
+		else if ((*a)->value > (*a)->next->value)
+		{
+			send_command("sa", a, b);
+			send_command("ra", a, b);
+		}
+		else
+		{
+			send_command("rra", a, b);
+		}
+	}
+	rotate_high_to_bottom(a);
+
+	return (0);
+}
+
+int		hold_sort_mod(t_stack **a, t_stack **b)
+{
+	int		len_a;
+	int		high;
+	int		i;
+
+	if (!a || !b)
+		return (-1);
+	get_low_high(*a, &len_a, &high);
+	len_a = stack_len(*a);
+	if (len_a < 4)
+	{
+		sort_3(a, b);
+		rotate_high_to_bottom(a);
+		return (0);
+	}
+	high = (*a)->value;
+	while (!stack_is_ordered(*a))
+	{
+		if ((*a)->value > high)
+		{
+			high = (*a)->value;
+			send_command("ra", a, b);
+		}
+		else if ((*a)->value > (*a)->next->value)
+		{
+			send_command("pb", a, b);
+//			send_command("ra", a, b);
+		}
+		else
+		{
+			send_command("sa", a, b);
+		}
+	}
+	while (*b)
+	{
+		i = get_closest_to_top(*a, *b);
+		rotate_b_to_index(b, i);
+		insert_in_place(a, b);
+	}
+	rotate_high_to_bottom(a);
+
+	return (0);
+}
+
 int		main(int argc, char **argv)
 {
 	t_stack	*a;
@@ -508,6 +695,10 @@ int		main(int argc, char **argv)
 	if (!a)
 		return (-1);
 	//rough_sort(&a, &b);
-	sort_min_max(&a, &b);
+	//sort_min_max(&a, &b);
+	//bubble_sort(&a, &b);
+	hold_sort_mod(&a, &b);
+	stack_clear(&a);
+	stack_clear(&b);
 	return (0);
 }

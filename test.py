@@ -12,7 +12,7 @@ def check_nums(program_name, nums):
     number_of_lines = int(out_bytes.decode("utf-8"))
     out_bytes = subprocess.check_output(f"{program_name} {nums} | ./checker {nums}", shell=True)
     out_str = out_bytes.decode("utf-8")
-    print(f"({number_of_lines})\tTest [{len(nums)}]", end="\t")
+    print(f"({number_of_lines})", end="")
     if "Error\n" in out_str:
         #print("ERROR MESSAGES: ==========\n", out_str, "\n==========\n")
         return -1
@@ -29,7 +29,7 @@ def check_OK(program_name, nums, expected=1):
         print("\033[0;32m", end="")
     else:
         print("\033[0;31m", end="")
-    print(f"{msg[res + 1]}\033[0;0m")
+    print(f"{msg[res + 1]}\033[0;0m", end="\n")
     return res == expected
 
 if __name__ == '__main__':
@@ -44,6 +44,7 @@ if __name__ == '__main__':
             "3 2 1 0",
             "5 2 3 1 4",
             "4 2 5 3 1",
+            "4 7 3 8 2 5 1",
             "-5 10 8 -7 94 -800 33",
             "1 5 9 7 3 4 8 6 2",
             "1 76 4 6 38 9 18 -4 -36 100 -72 0 -41 3 17",
@@ -52,7 +53,7 @@ if __name__ == '__main__':
             ]
     error_cases = ["1 one 3", "1 3 1 2", "2 % 4", "1 0 -5 7 -0 8",
             "2147483648", "-2147483649"]
-    program_names = ["./push_swap", "./best_so_far", ]#"./sort_5", "./rough_sort"]
+    program_names = ["./push_swap", "./hold_sort_mod", "./best_so_far", ]#"./sort_5", "./rough_sort"]
 
     for program_name in program_names:
         total = 0
