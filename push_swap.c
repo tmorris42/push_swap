@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 13:56:43 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/13 18:01:22 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/05/14 18:00:59 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -384,14 +384,17 @@ int		stack_has_above(t_stack **a, int value)
 int		stack_has_below(t_stack **a, int value)
 {
 	t_stack	*stack;
+	int		i;
 
+	i = 0;
 	if (!a || !(*a))
 		return (0);
 	stack = (*a);
 	while (stack)
 	{
 		if (stack->value < value)
-			return (1);
+			return (i);
+		++i;
 		stack = stack->next;
 	}
 	return (0);
@@ -753,13 +756,84 @@ int		finish_hold_sort_mod(t_stack **a, t_stack **b)
 int		has_average_values(t_stack **a, int high_qtr, int low_qtr)
 {
 	t_stack *index;
+	int		i;
+	int		first;
+	int		last;
+	int		len;
 
+	len = stack_len(*a);
 	index = (*a);
+	i = 0;
+	first = 0;
+	last = 0;
 	while (index)
 	{
 		if (index->value <= high_qtr && index->value >= low_qtr)
-			return (1);
+		{
+			if (i == 0)
+				return (1);
+			else if (!first)
+				first = i;
+			else
+				last = i;
+		}
 		index = index->next;
+	}
+	if (!first && !last)
+		return (0);
+	first = which_is_closest(*a, first, last);
+	if (2 * first > len)
+		return (-1);
+	return (1);
+}
+
+int		low_high_trigger(t_stack **a, t_stack **b, int low, int high)
+{
+	int		stop;
+	int		avg;
+	int		direction;
+
+	get_low_high(*a, &stop, &avg);
+	avg = (avg + stop) / 2;
+	while (!stack_is_ordered(*a))
+	{
+		direction = has_average_values(a, high, low);
+		if (direction == 0)
+			break;
+		if (direction > 0)
+		{
+			if ((*a)->value > high || (*a)->value < low)
+			{
+				if ((*b) && (*b)->value < avg)
+					send_command("rr", a, b);
+				else
+					send_command("ra", a, b);
+			}
+			else if ((*b) && (*b)->next && (*b)->value < avg && (*b)->next->value >= avg)
+				send_command("rb", a, b);
+			else
+			{
+				send_command("pb", a, b);
+//			insert_b_in_place(a, b);
+			}
+		}
+		else if (direction < 0)
+		{
+			if ((*a)->value > high || (*a)->value < low)
+			{
+				if ((*b) && (*b)->value < avg)
+					send_command("rrr", a, b);
+				else
+					send_command("rra", a, b);
+			}
+			else if ((*b) && (*b)->next && (*b)->value < avg && (*b)->next->value >= avg)
+				send_command("rrb", a, b);
+			else
+			{
+				send_command("pb", a, b);
+//			insert_b_in_place(a, b);
+			}
+		}
 	}
 	return (0);
 }
@@ -779,28 +853,21 @@ int		four_hold_sort_mod(t_stack **a, t_stack **b)
 	high_qtr = (high + avg) / 2;
 	low_qtr = (len_a + avg) / 2;
 	len_a = stack_len(*a);
-	if (len_a < 4)
-	{
-		sort_3(a, b);
-		rotate_high_to_bottom(a);
-		return (0);
-	}
 	high = stack_last(*a)->value;
-	while (has_average_values(a, high_qtr, low_qtr) && (*a)->value != high)
-	{
-		if ((*a)->value > high_qtr || (*a)->value < low_qtr)
-		{
-			if ((*b) && (*b)->value < avg)
-				send_command("rr", a, b);
-			else
-				send_command("ra", a, b);
-		}
-		else if ((*b) && (*b)->next && (*b)->value < avg && (*b)->next->value >= avg)
-			send_command("rb", a, b);
-		else
-			send_command("pb", a, b);
-	}
+	return (low_high_trigger(a, b, low_qtr, high_qtr));
+}
 
+int		five_hold_sort_mod(t_stack **a, t_stack **b)
+{
+	int		low;
+	int		high;
+
+	if (!a || !b)
+		return (-1);
+	get_low_high(*a, &low, &high);
+	low_high_trigger(a, b, ((3 * high) + low) / 7, ((4 * high) + low) / 7);
+	low_high_trigger(a, b, ((2 * high) + low) / 7, ((5 * high) + low) / 7);
+	low_high_trigger(a, b, ((1 * high) + low) / 7, ((6 * high) + low) / 7);
 	return (0);
 }
 
@@ -825,6 +892,7 @@ int		main(int argc, char **argv)
 	//sort_min_max(&a, &b);
 	//bubble_sort(&a, &b);
 	four_hold_sort_mod(&a, &b);
+//	five_hold_sort_mod(&a, &b);
 	hold_sort_mod(&a, &b);
 //	finish_hold_sort_mod(&a, &b);
 	}
