@@ -6,13 +6,13 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/08 17:57:54 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/12 11:32:20 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/06/12 16:29:06 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "stack.h"
 
-int		stack_len(t_stack *stack)
+int	stack_len(t_stack *stack)
 {
 	int		len;
 
@@ -29,7 +29,7 @@ t_stack	*stack_new(int value)
 {
 	t_stack	*new;
 
-	new = (t_stack*)malloc(sizeof(*new));
+	new = (t_stack *)malloc(sizeof(*new));
 	if (!new)
 		return (NULL);
 	new->value = value;
@@ -103,7 +103,7 @@ void	stack_print(t_stack *a, t_stack *b)
 	ft_putstr("_ _\na b\n");
 }
 
-int		stack_is_ordered(t_stack *stack)
+int	stack_is_ordered(t_stack *stack)
 {
 	int		first_value;
 	int		trip_count;
@@ -130,7 +130,7 @@ int		stack_is_ordered(t_stack *stack)
 	return (1);
 }
 
-int		stack_is_sorted(t_stack *stack)
+int	stack_is_sorted(t_stack *stack)
 {
 	while (stack && stack->next)
 	{
@@ -141,7 +141,7 @@ int		stack_is_sorted(t_stack *stack)
 	return (1);
 }
 
-int		stack_new_add_back(t_stack **start_addr, int value)
+int	stack_new_add_back(t_stack **start_addr, int value)
 {
 	t_stack	*new;
 
