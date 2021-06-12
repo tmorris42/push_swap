@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/08 16:31:09 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/12 17:46:09 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/06/12 16:26:15 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,24 +31,22 @@ void	get_commands(t_stack **a, t_stack **b)
 				run_command(cmd, a, b);
 			else
 				status = -1;
-//			stack_print(*a, *b); // DEBUG only
 		}
 		free(buf);
 		buf = NULL;
 	}
 }
 
-int		main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_stack	*a;
-	t_stack *b;
+	t_stack	*b;
 
 	b = NULL;
 	a = NULL;
 	a = read_args(argc, argv);
 	if (!a)
 		return (0);
-//	stack_print(a, b); //DEBUG only
 	get_commands(&a, &b);
 	stack_verify(a, b);
 	stack_clear(&a);
