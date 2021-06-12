@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 14:23:11 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/11 19:58:23 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/06/12 16:50:35 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ enum e_cmd	parse_command(char *str)
 	return (INVALID_COMMAND);
 }
 
-void		run_command(enum e_cmd cmd, t_stack **a, t_stack **b)
+void	run_command(enum e_cmd cmd, t_stack **a, t_stack **b)
 {
 	if (cmd == SWAP_A || cmd == SWAP_BOTH)
 		stack_swap(a);
@@ -61,7 +61,7 @@ void		run_command(enum e_cmd cmd, t_stack **a, t_stack **b)
 		cmd = QUIT; //Raise an error here instead
 }
 
-void		send_command(char *cmd_str, t_stack **a, t_stack **b)
+void	send_command(char *cmd_str, t_stack **a, t_stack **b)
 {
 	enum e_cmd	cmd;
 
