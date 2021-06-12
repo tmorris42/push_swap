@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 13:56:43 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/14 18:00:59 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/06/12 17:31:27 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ void	stack_split_by(t_stack **a, t_stack **b, int median)
 	int		len;
 
 	len = stack_len(*a);
-
 	ft_putstr("median: ");
 	ft_putnbr(median);
 	ft_putchar('\n');
@@ -104,10 +103,10 @@ void	find_spot(t_stack **stack, int value)
 	i = 0;
 	index = *stack;
 	high = stack_last(index)->value;
-	while(index)
+	while (index)
 	{
 		if (value < index->value || value > high)
-			break;
+			break ;
 		index = index->next;
 		++i;
 	}
@@ -119,7 +118,7 @@ void	find_spot(t_stack **stack, int value)
 	}
 }
 
-int		find_index(t_stack **stack, int value)
+int	find_index(t_stack **stack, int value)
 {
 	t_stack	*index;
 	int		i;
@@ -133,7 +132,7 @@ int		find_index(t_stack **stack, int value)
 	last = stack_last(*stack);
 	if (value > high && last->value == high)
 		return (0);
-	while(index)
+	while (index)
 	{
 		if ((value < low || value > high) && index->value == high)
 		{
@@ -164,7 +163,7 @@ int		find_index_low(t_stack **stack, int value)
 	last = stack_last(*stack);
 	if (value > high && last->value == high)
 		return (0);
-	while(index)
+	while (index)
 	{
 		if ((value < low || value > high) && index->value == low)
 		{
@@ -280,7 +279,7 @@ int		sort_3(t_stack **a, t_stack **b)
 	return (0);
 }
 
-int		sort_4(t_stack **a, t_stack **b)
+int	sort_4(t_stack **a, t_stack **b)
 {
 	send_command("pb", a, b);
 	sort_3(a, b);
@@ -288,7 +287,7 @@ int		sort_4(t_stack **a, t_stack **b)
 	return (0);
 }
 
-int		sort_5(t_stack **a, t_stack **b)
+int	sort_5(t_stack **a, t_stack **b)
 {
 	send_command("pb", a, b);
 	send_command("pb", a, b);
@@ -298,7 +297,7 @@ int		sort_5(t_stack **a, t_stack **b)
 	return (0);
 }
 
-int		how_far_from_top(t_stack *a, int value)
+int	how_far_from_top(t_stack *a, int value)
 {
 	int		len;
 	int		i;
@@ -310,7 +309,7 @@ int		how_far_from_top(t_stack *a, int value)
 	return (i);
 }
 
-int		get_closest_to_top(t_stack *a, t_stack *b)
+int	get_closest_to_top(t_stack *a, t_stack *b)
 {
 	int		i;
 	int		dist;
@@ -334,7 +333,7 @@ int		get_closest_to_top(t_stack *a, t_stack *b)
 	return (best_i);
 }
 
-int		get_closest_to_top_under(t_stack *a, t_stack *b, int target)
+int	get_closest_to_top_under(t_stack *a, t_stack *b, int target)
 {
 	int		i;
 	int		dist;
@@ -360,7 +359,7 @@ int		get_closest_to_top_under(t_stack *a, t_stack *b, int target)
 	return (best_i);
 }
 
-int		stack_has_above(t_stack **a, int value)
+int	stack_has_above(t_stack **a, int value)
 {
 	t_stack	*stack;
 	int		i;
@@ -381,7 +380,7 @@ int		stack_has_above(t_stack **a, int value)
 	return (bot_i);
 }
 
-int		stack_has_below(t_stack **a, int value)
+int	stack_has_below(t_stack **a, int value)
 {
 	t_stack	*stack;
 	int		i;
@@ -400,7 +399,7 @@ int		stack_has_below(t_stack **a, int value)
 	return (0);
 }
 
-int		which_is_closest(t_stack *a, int top, int bot)
+int	which_is_closest(t_stack *a, int top, int bot)
 {
 	int		len;
 
@@ -410,7 +409,7 @@ int		which_is_closest(t_stack *a, int top, int bot)
 	return (top);
 }
 
-int		sort_50(t_stack **a, t_stack **b)
+int	sort_50(t_stack **a, t_stack **b)
 {
 	int		len;
 	int		high;
@@ -454,7 +453,7 @@ int		sort_50(t_stack **a, t_stack **b)
 	return (0);
 }
 
-int		sort_100(t_stack **a, t_stack **b)
+int	sort_100(t_stack **a, t_stack **b)
 {
 	int		len_a;
 	int		len_b;
@@ -511,7 +510,7 @@ int		sort_100(t_stack **a, t_stack **b)
 	return (0);
 }
 
-int		sort_x(t_stack **a, t_stack **b)
+int	sort_x(t_stack **a, t_stack **b)
 {
 	int		len;
 	int		high;
@@ -564,7 +563,7 @@ int		sort_x(t_stack **a, t_stack **b)
 	return (0);
 }
 
-int		sort_min_max(t_stack **a, t_stack **b)
+int	sort_min_max(t_stack **a, t_stack **b)
 {
 	int		low;
 	int		high;
@@ -599,14 +598,13 @@ int		sort_min_max(t_stack **a, t_stack **b)
 			send_command("sa", a, b);
 		if ((*b) && (*b)->next && (*b)->value > (*b)->next->value)
 			send_command("sb", a, b);
-
 		sorted = ((stack_is_sorted(*a)) && ((*b) == NULL));
 		sorted = 1; // ending loop
 	}
 	return (0);
 }
 
-int		bubble_sort(t_stack **a, t_stack **b)
+int	bubble_sort(t_stack **a, t_stack **b)
 {
 	int		len_a;
 	int		high;
@@ -621,7 +619,6 @@ int		bubble_sort(t_stack **a, t_stack **b)
 		rotate_high_to_bottom(a);
 		return (0);
 	}
-	
 	while (!stack_is_ordered(*a))
 	{
 		if ((*a)->value == high)
@@ -639,11 +636,10 @@ int		bubble_sort(t_stack **a, t_stack **b)
 		}
 	}
 	rotate_high_to_bottom(a);
-
 	return (0);
 }
 
-int		hold_sort_mod(t_stack **a, t_stack **b)
+int	hold_sort_mod(t_stack **a, t_stack **b)
 {
 	int		len_a;
 	int		high;
@@ -702,11 +698,10 @@ int		hold_sort_mod(t_stack **a, t_stack **b)
 		insert_in_place(a, b);
 	}
 	rotate_high_to_bottom(a);
-
 	return (0);
 }
 
-int		finish_hold_sort_mod(t_stack **a, t_stack **b)
+int	finish_hold_sort_mod(t_stack **a, t_stack **b)
 {
 	int		len_a;
 	int		high;
@@ -749,13 +744,12 @@ int		finish_hold_sort_mod(t_stack **a, t_stack **b)
 		insert_in_place(a, b);
 	}
 	rotate_high_to_bottom(a);
-
 	return (0);
 }
 
-int		has_average_values(t_stack **a, int high_qtr, int low_qtr)
+int	has_average_values(t_stack **a, int high_qtr, int low_qtr)
 {
-	t_stack *index;
+	t_stack	*index;
 	int		i;
 	int		first;
 	int		last;
@@ -787,7 +781,7 @@ int		has_average_values(t_stack **a, int high_qtr, int low_qtr)
 	return (1);
 }
 
-int		low_high_trigger(t_stack **a, t_stack **b, int low, int high)
+int	low_high_trigger(t_stack **a, t_stack **b, int low, int high)
 {
 	int		stop;
 	int		avg;
@@ -799,7 +793,7 @@ int		low_high_trigger(t_stack **a, t_stack **b, int low, int high)
 	{
 		direction = has_average_values(a, high, low);
 		if (direction == 0)
-			break;
+			break ;
 		if (direction > 0)
 		{
 			if ((*a)->value > high || (*a)->value < low)
@@ -838,7 +832,7 @@ int		low_high_trigger(t_stack **a, t_stack **b, int low, int high)
 	return (0);
 }
 
-int		four_hold_sort_mod(t_stack **a, t_stack **b)
+int	four_hold_sort_mod(t_stack **a, t_stack **b)
 {
 	int		len_a;
 	int		high;
@@ -857,7 +851,7 @@ int		four_hold_sort_mod(t_stack **a, t_stack **b)
 	return (low_high_trigger(a, b, low_qtr, high_qtr));
 }
 
-int		five_hold_sort_mod(t_stack **a, t_stack **b)
+int	five_hold_sort_mod(t_stack **a, t_stack **b)
 {
 	int		low;
 	int		high;
@@ -871,10 +865,10 @@ int		five_hold_sort_mod(t_stack **a, t_stack **b)
 	return (0);
 }
 
-int		main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_stack	*a;
-	t_stack *b;
+	t_stack	*b;
 	int		len;
 
 	b = NULL;
@@ -892,9 +886,9 @@ int		main(int argc, char **argv)
 	//sort_min_max(&a, &b);
 	//bubble_sort(&a, &b);
 	four_hold_sort_mod(&a, &b);
-//	five_hold_sort_mod(&a, &b);
+	//	five_hold_sort_mod(&a, &b);
 	hold_sort_mod(&a, &b);
-//	finish_hold_sort_mod(&a, &b);
+	//	finish_hold_sort_mod(&a, &b);
 	}
 	rotate_high_to_bottom(&a);
 	stack_clear(&a);

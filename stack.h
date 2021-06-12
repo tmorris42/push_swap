@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/08 16:52:08 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/12 11:32:48 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/06/12 16:27:39 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "libft/libft.h"
 
-typedef struct	s_stack
+typedef struct s_stack
 {
 	int				value;
 	struct s_stack	*next;
