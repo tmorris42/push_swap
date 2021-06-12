@@ -6,13 +6,13 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 14:00:41 by tmorris           #+#    #+#             */
-/*   Updated: 2021/05/11 17:47:48 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/06/12 17:00:42 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "stack.h"
 
-int		ft_isdigits_minus(char *str)
+int	ft_isdigits_minus(char *str)
 {
 	int		i;
 
@@ -26,7 +26,7 @@ int		ft_isdigits_minus(char *str)
 	return (1);
 }
 
-int		ft_isdigits_minus_space(char *str)
+int	ft_isdigits_minus_space(char *str)
 {
 	int		i;
 
@@ -53,7 +53,7 @@ t_stack	*read_args_array(int argc, char **argv)
 	{
 		if (!(ft_isdigits_minus(argv[i])))
 		{
-			ft_putstr("Error\nAll items must be integers\n"); //Only print Erri, and print to stderr
+			ft_putstr("Error\n"); //Print to stderr?
 			stack_clear(&a);
 			break ;
 		}
@@ -63,7 +63,7 @@ t_stack	*read_args_array(int argc, char **argv)
 		{
 			if (index->value == value)
 			{
-				ft_putstr("Error\nDuplicate value\n"); //Only print Error, and print to stderr
+				ft_putstr("Error\n"); //Print to stderr?
 				stack_clear(&a);
 				return (NULL);
 			}
@@ -75,7 +75,7 @@ t_stack	*read_args_array(int argc, char **argv)
 	return (a);
 }
 
-int		get_array_len(char **strs)
+int	get_array_len(char **strs)
 {
 	int		i;
 
