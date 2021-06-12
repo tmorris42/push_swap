@@ -7,19 +7,39 @@ ERROR = -1
 KO = 0
 OK = 1
 
+def maximum_moves(number_of_numbers):
+    maximum = 0
+    reqs = (
+            (3, (3,)),
+            (5, (12,)),
+            (100, (700, 900, 1100, 1300, 1500)),
+            (500, (5500, 7000, 8500, 10000, 11500))
+            )
+    for cutoff in reqs:
+        if number_of_numbers <= cutoff[0]:
+            maximum = cutoff[1][0]
+            return maximum
+
 def check_nums(program_name, nums):
     out_bytes = subprocess.check_output(f"{program_name} {nums} | wc -l", shell=True)
     number_of_lines = int(out_bytes.decode("utf-8"))
     out_bytes = subprocess.check_output(f"{program_name} {nums} | ./checker {nums}", shell=True)
     out_str = out_bytes.decode("utf-8")
-    print(f"({number_of_lines})", end="")
+    num_of_nums = len(nums.split())
+    if len(nums) > 20:
+        nums = "/" + str(num_of_nums) + " numbers/"
+    if number_of_lines <= maximum_moves(num_of_nums):
+        print("\033[0;32m", end='')
+    else:
+        print("\033[0;31m", end='')
+    print(f"({number_of_lines})\033[0;0m] {nums} [", end="")
     if "Error\n" in out_str:
         #print("ERROR MESSAGES: ==========\n", out_str, "\n==========\n")
-        return -1
+        return ERROR
     if "KO\n" in out_str:
-        return 0
+        return KO
     if "OK\n" in out_str:
-        return 1
+        return OK
     return -2
 
 def check_OK(program_name, nums, expected=1):
@@ -29,7 +49,7 @@ def check_OK(program_name, nums, expected=1):
         print("\033[0;32m", end="")
     else:
         print("\033[0;31m", end="")
-    print(f"{msg[res + 1]}\033[0;0m", end="\n")
+    print(f"{msg[res + 1]}\033[0;0m]", end="\n")
     return res == expected
 
 if __name__ == '__main__':
@@ -65,7 +85,7 @@ if __name__ == '__main__':
             " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
             " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
         ]
-    error_cases = []
+#    error_cases = []
     program_names = [
             "./push_swap",
             "./four_hold_sort_mod", 
