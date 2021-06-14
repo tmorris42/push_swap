@@ -84,11 +84,16 @@ if __name__ == '__main__':
             " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
             " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
             " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
+            " ".join(random.sample([str(x) for x in range(-300, 300)], 500)),
+            " ".join(random.sample([str(x) for x in range(-300, 300)], 500)),
+            " ".join(random.sample([str(x) for x in range(-300, 300)], 500)),
+            " ".join(random.sample([str(x) for x in range(-300, 300)], 500)),
+            " ".join(random.sample([str(x) for x in range(-300, 300)], 500)),
         ]
 #    error_cases = []
     program_names = [
             "./push_swap",
-            "./four_hold_sort_mod", 
+           # "./four_hold_sort_mod", 
             ]
             #"./hold_sort_mod",]# "./best_so_far", ]#"./sort_5", "./rough_sort"]
 
