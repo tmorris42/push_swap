@@ -13,47 +13,6 @@
 #include "push_swap.h"
 #include <stdio.h> //debug only
 
-void	rough_sort(t_stack **a, t_stack **b)
-{
-	int		len_a;
-	int		sorted;
-
-	len_a = stack_len(*a);
-	if (len_a < 2)
-		return ;
-	sorted = ((stack_is_sorted(*a)) && ((*b) == NULL));
-	while (!sorted)
-	{
-		if ((*a) && !stack_is_sorted(*a))
-		{
-			if ((*a)->value < (*a)->next->value)
-			{
-				if (!(*b) || ((*b)->value < (*a)->value))
-				{
-					ft_putstr("pb\n");
-					stack_push(a, b);
-				}
-				else
-			{
-					ft_putstr("pa\n");
-					stack_push(b, a);
-				}
-			}
-			else
-			{
-				ft_putstr("sa\n");
-				stack_swap(a);
-			}
-		}
-		else
-		{
-			ft_putstr("pa\n");
-			stack_push(b, a);
-		}
-		sorted = ((stack_is_sorted(*a)) && ((*b) == NULL));
-	}
-}
-
 void	get_low_high(t_stack *a, int *low, int *high)
 {
 	int		l;
@@ -71,51 +30,6 @@ void	get_low_high(t_stack *a, int *low, int *high)
 	}
 	*low = l;
 	*high = h;
-}
-
-void	stack_split_by(t_stack **a, t_stack **b, int median)
-{
-	int		len;
-
-	len = stack_len(*a);
-	ft_putstr("median: ");
-	ft_putnbr(median);
-	ft_putchar('\n');
-	while (len > 0)
-	{
-		if ((*a)->value < median)
-		{
-			printf("%d is less than %d\n", (*a)->value, median);
-			send_command("pb", a, b);
-		}
-		else
-			send_command("ra", a, b);
-		--len;
-	}
-}
-
-void	find_spot(t_stack **stack, int value)
-{
-	t_stack	*index;
-	int		i;
-	int		high;
-
-	i = 0;
-	index = *stack;
-	high = stack_last(index)->value;
-	while (index)
-	{
-		if (value < index->value || value > high)
-			break ;
-		index = index->next;
-		++i;
-	}
-	while (i)
-	{
-//		if (i < stack_len(*stack))
-		send_command("ra", stack, NULL);
-		--i;
-	}
 }
 
 int	find_index(t_stack **stack, int value)
@@ -149,7 +63,7 @@ int	find_index(t_stack **stack, int value)
 	return (i);
 }
 
-int		find_index_low(t_stack **stack, int value)
+int	find_index_low(t_stack **stack, int value)
 {
 	t_stack	*index;
 	int		i;
@@ -256,7 +170,7 @@ void	rotate_high_to_bottom(t_stack **a)
 	rotate_to_index(a, low);
 }
 
-int		sort_3(t_stack **a, t_stack **b)
+int	sort_3(t_stack **a, t_stack **b)
 {
 	int		first;
 	int		second;
@@ -276,14 +190,6 @@ int		sort_3(t_stack **a, t_stack **b)
 		send_command("sa", a, b);
 		return (sort_3(a, b));
 	}
-	return (0);
-}
-
-int	sort_4(t_stack **a, t_stack **b)
-{
-	send_command("pb", a, b);
-	sort_3(a, b);
-	insert_in_place(a, b);
 	return (0);
 }
 
@@ -407,236 +313,6 @@ int	which_is_closest(t_stack *a, int top, int bot)
 	if (2 * top > len || (int)ft_abs(bot - len) < top)
 		return (bot);
 	return (top);
-}
-
-int	sort_50(t_stack **a, t_stack **b)
-{
-	int		len;
-	int		high;
-	int		low;
-	int		i;
-	int		target;
-	int		top_hold;
-
-	get_low_high(*a, &low, &high);
-	target = high - (4 * (high - low) / 5);
-	len = stack_len(*a);
-	while (len > 3)
-	{
-		top_hold = stack_has_below(a, target);
-		if (top_hold == -1)
-		{
-			if (target < high - (2 * (high - low) / 5))
-				target = high - (1 * (high - low) / 5);
-			else if (target < high - (3 * (high - low) / 5))
-				target = high - (2 * (high - low) / 5);
-			else if (target < high - (4 * (high - low) / 5))
-				target = high - (3 * (high - low) / 5);
-			else
-				target = high + 1;
-			continue ;
-		}
-		if ((*a)->value >= target)
-		{
-			send_command("ra", a, b);
-		}
-		insert_b_in_place(a, b);
-		--len;
-	}
-	sort_3(a, b);
-	while (*b)
-	{
-		i = get_closest_to_top(*a, *b);
-		rotate_b_to_index(b, i);
-		insert_in_place(a, b);
-	}
-	return (0);
-}
-
-int	sort_100(t_stack **a, t_stack **b)
-{
-	int		len_a;
-	int		len_b;
-	int		high;
-	int		low;
-	int		i;
-	int		target;
-	int		top_hold;
-//	int		bot_hold;
-
-	get_low_high(*a, &low, &high);
-	target = high - (4 * (high - low) / 5);
-	len_a = stack_len(*a);
-	len_b = stack_len(*b);
-	if (len_b)
-		len_b = len_b;
-	while (len_a > 3)
-	{
-		top_hold = stack_has_below(a, target);
-		if (top_hold == -1)
-		{
-			if (target < high - (2 * (high - low) / 5))
-				target = high - (1 * (high - low) / 5);
-			else if (target < high - (3 * (high - low) / 5))
-				target = high - (2 * (high - low) / 5);
-			else if (target < high - (4 * (high - low) / 5))
-				target = high - (3 * (high - low) / 5);
-			else
-				target = high + 1;
-			continue ;
-		}
-//		bot_hold = stack_has_above(a, target);
-//		if ((*a)->value < (high + low) / 2)
-	//		send_command("pb", a, b);
-		if ((*a)->value >= target)
-		{
-			send_command("ra", a, b);
-//			i = get_closest_to_top_under(*b, *a, target);
-//			i = which_is_closest(*a, top_hold, bot_hold);
-//			rotate_to_index(a, i);
-		}
-		insert_b_in_place(a, b);
-		--len_a;
-	}
-	sort_3(a, b);
-	while (*b)
-	{
-	//	if ((*b) && (*b)->next && how_far_from_top(a, (*b)->value) > how_far_from_top(a, (*b)->next->value))
-	//		send_command("sb", a, b);
-		i = get_closest_to_top(*a, *b);
-		rotate_b_to_index(b, i);
-		insert_in_place(a, b);
-	}
-	return (0);
-}
-
-int	sort_x(t_stack **a, t_stack **b)
-{
-	int		len;
-	int		high;
-	int		low;
-	int		i;
-	int		target;
-	int		top_hold;
-//	int		bot_hold;
-
-	get_low_high(*a, &low, &high);
-	target = high - (4 * (high - low) / 5);
-	len = stack_len(*a);
-	while (len > 3)
-	{
-		top_hold = stack_has_below(a, target);
-		if (top_hold == -1)
-		{
-			if (target < high - (2 * (high - low) / 5))
-				target = high - (1 * (high - low) / 5);
-			else if (target < high - (3 * (high - low) / 5))
-				target = high - (2 * (high - low) / 5);
-			else if (target < high - (4 * (high - low) / 5))
-				target = high - (3 * (high - low) / 5);
-			else
-				target = high + 1;
-			continue ;
-		}
-//		bot_hold = stack_has_above(a, target);
-//		if ((*a)->value < (high + low) / 2)
-	//		send_command("pb", a, b);
-		if ((*a)->value >= target)
-		{
-			send_command("ra", a, b);
-//			i = get_closest_to_top_under(*b, *a, target);
-//			i = which_is_closest(*a, top_hold, bot_hold);
-//			rotate_to_index(a, i);
-		}
-		insert_b_in_place(a, b);
-		--len;
-	}
-	sort_3(a, b);
-	while (*b)
-	{
-	//	if ((*b) && (*b)->next && how_far_from_top(a, (*b)->value) > how_far_from_top(a, (*b)->next->value))
-	//		send_command("sb", a, b);
-		i = get_closest_to_top(*a, *b);
-		rotate_b_to_index(b, i);
-		insert_in_place(a, b);
-	}
-	return (0);
-}
-
-int	sort_min_max(t_stack **a, t_stack **b)
-{
-	int		low;
-	int		high;
-	int		len_a;
-	int		sorted;
-
-	len_a = stack_len(*a);
-	if (len_a < 2)
-		return (0);
-	sorted = ((stack_is_sorted(*a)) && ((*b) == NULL));
-	if (sorted)
-		return (0);
-	else if (len_a == 3)
-		sort_3(a, b);
-	else if (len_a == 4)
-		sort_4(a, b);
-	else if (len_a == 5)
-		sort_5(a, b);
-	else if (len_a <= 50)
-		sort_50(a, b);
-	else if (len_a <= 100)
-		sort_100(a, b);
-	else if (len_a > 100)
-		sort_x(a, b); //temp jump to avoid segfault
-	rotate_high_to_bottom(a);
-	return (0);
-	get_low_high(*a, &low, &high);
-	stack_split_by(a, b, (high + low) / 2);
-	while (!sorted)
-	{
-		if ((*a) && (*a)->next && (*a)->value > (*a)->next->value)
-			send_command("sa", a, b);
-		if ((*b) && (*b)->next && (*b)->value > (*b)->next->value)
-			send_command("sb", a, b);
-		sorted = ((stack_is_sorted(*a)) && ((*b) == NULL));
-		sorted = 1; // ending loop
-	}
-	return (0);
-}
-
-int	bubble_sort(t_stack **a, t_stack **b)
-{
-	int		len_a;
-	int		high;
-
-	if (!a || !b)
-		return (-1);
-	get_low_high(*a, &len_a, &high);
-	len_a = stack_len(*a);
-	if (len_a < 4)
-	{
-		sort_3(a, b);
-		rotate_high_to_bottom(a);
-		return (0);
-	}
-	while (!stack_is_ordered(*a))
-	{
-		if ((*a)->value == high)
-		{
-			send_command("rra", a, b);
-		}
-		else if ((*a)->value > (*a)->next->value)
-		{
-			send_command("sa", a, b);
-			send_command("ra", a, b);
-		}
-		else
-		{
-			send_command("rra", a, b);
-		}
-	}
-	rotate_high_to_bottom(a);
-	return (0);
 }
 
 int	hold_sort_mod(t_stack **a, t_stack **b)
@@ -882,9 +558,6 @@ int	main(int argc, char **argv)
 		sort_5(&a, &b);
 	else
 	{
-	//rough_sort(&a, &b);
-	//sort_min_max(&a, &b);
-	//bubble_sort(&a, &b);
 	four_hold_sort_mod(&a, &b);
 	//	five_hold_sort_mod(&a, &b);
 	hold_sort_mod(&a, &b);
