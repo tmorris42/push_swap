@@ -58,7 +58,7 @@ void	run_command(enum e_cmd cmd, t_stack **a, t_stack **b)
 	if (cmd == REV_ROTATE_B || cmd == REV_ROTATE_BOTH)
 		stack_reverse_rotate(b);
 	if (cmd == INVALID_COMMAND)
-		cmd = QUIT; //Raise an error here instead
+		cmd = QUIT;
 }
 
 void	send_command(char *cmd_str, t_stack **a, t_stack **b)
