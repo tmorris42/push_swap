@@ -50,5 +50,6 @@ int	main(int argc, char **argv)
 	get_commands(&a, &b);
 	stack_verify(a, b);
 	stack_clear(&a);
+	stack_clear(&b);
 	return (0);
 }
