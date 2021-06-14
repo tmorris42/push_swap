@@ -23,7 +23,7 @@ def maximum_moves(number_of_numbers):
 def check_nums(program_name, nums):
     out_bytes = subprocess.check_output(f"{program_name} {nums} | wc -l", shell=True)
     number_of_lines = int(out_bytes.decode("utf-8"))
-    out_bytes = subprocess.check_output(f"{program_name} {nums} | ./checker {nums}", shell=True)
+    out_bytes = subprocess.check_output(f"{program_name} {nums} | ./checker {nums}", shell=True, stderr=subprocess.STDOUT)
     out_str = out_bytes.decode("utf-8")
     num_of_nums = len(nums.split())
     if len(nums) > 20:
@@ -84,10 +84,6 @@ if __name__ == '__main__':
             " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
             " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
             " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
-            " ".join(random.sample([str(x) for x in range(-300, 300)], 500)),
-            " ".join(random.sample([str(x) for x in range(-300, 300)], 500)),
-            " ".join(random.sample([str(x) for x in range(-300, 300)], 500)),
-            " ".join(random.sample([str(x) for x in range(-300, 300)], 500)),
             " ".join(random.sample([str(x) for x in range(-300, 300)], 500)),
         ]
 #    error_cases = []
