@@ -53,7 +53,7 @@ t_stack	*read_args_array(int argc, char **argv)
 	{
 		if (!(ft_isdigits_minus(argv[i])))
 		{
-			ft_putstr("Error\n"); //Print to stderr?
+			ft_putstr_fd("Error\n", 2);
 			stack_clear(&a);
 			break ;
 		}
@@ -63,7 +63,7 @@ t_stack	*read_args_array(int argc, char **argv)
 		{
 			if (index->value == value)
 			{
-				ft_putstr("Error\n"); //Print to stderr?
+				ft_putstr_fd("Error\n", 2);
 				stack_clear(&a);
 				return (NULL);
 			}
