@@ -144,20 +144,20 @@ void	rotate_b_to_index(t_stack **stack, int i)
 
 void	insert_in_place(t_stack **a, t_stack **b)
 {
-	int		i;
+	int	i;
 
 	i = find_index(a, (*b)->value);
 	rotate_to_index(a, i);
-	send_command("pa", a, b);	
+	send_command("pa", a, b);
 }
 
 void	insert_b_in_place(t_stack **a, t_stack **b)
 {
-	int		i;
+	int	i;
 
 	i = find_index_low(b, (*a)->value);
 	rotate_b_to_index(b, i);
-	send_command("pb", a, b);	
+	send_command("pb", a, b);
 }
 
 void	rotate_high_to_bottom(t_stack **a)
@@ -331,7 +331,6 @@ int	hold_sort_mod(t_stack **a, t_stack **b)
 	{
 		sort_3(a, b);
 		rotate_high_to_bottom(a);
-//		return (0);
 	}
 	high = stack_last(*a)->value;
 	while (!stack_is_ordered(*a))
@@ -345,75 +344,10 @@ int	hold_sort_mod(t_stack **a, t_stack **b)
 				send_command("ra", a, b);
 		}
 		else if ((*b) && (*b)->next && (*b)->value < avg && (*b)->next->value >= avg)
-		{
 			send_command("rb", a, b);
-		}
-//		else if ((*b) && (*a)->value > stack_last(*b)->value)
-	//	{
-	//		send_command("pb", a, b);
-	//		send_command("rr", a, b);
-	//	}
-		if ((*a)->value > (*a)->next->value)
-		{
-//			insert_b_in_place(a, b);
-			send_command("pb", a, b);
-//			send_command("ra", a, b);
-		}
-		else
-		{
-//			insert_b_in_place(a, b);
-			send_command("pb", a, b);
-//			send_command("rb", a, b);
-//			send_command("sa", a, b);
-		}
+		send_command("pb", a, b);
 	}
 	while (*b)
-	{
-		i = get_closest_to_top(*a, *b);
-		rotate_b_to_index(b, i);
-		insert_in_place(a, b);
-	}
-	rotate_high_to_bottom(a);
-	return (0);
-}
-
-int	finish_hold_sort_mod(t_stack **a, t_stack **b)
-{
-	int		len_a;
-	int		high;
-	int		i;
-	int		avg;
-
-	if (!a || !b)
-		return (-1);
-	get_low_high(*a, &len_a, &high);
-	avg = (high + len_a) / 2;
-	len_a = stack_len(*a);
-	if (len_a < 4)
-	{
-		sort_3(a, b);
-	}
-	high = stack_last(*a)->value;
-	while (!stack_is_ordered(*a))
-	{
-		if ((*a)->value > high)
-		{
-			high = (*a)->value;
-			if ((*b) && (*b)->value < avg)
-				send_command("rr", a, b);
-			else
-				send_command("ra", a, b);
-		}
-		else if ((*b) && (*b)->next && (*b)->value < avg && (*b)->next->value >= avg)
-		{
-			send_command("rb", a, b);
-		}
-		else
-		{
-			send_command("pb", a, b);
-		}
-	}
-	while ((*b))
 	{
 		i = get_closest_to_top(*a, *b);
 		rotate_b_to_index(b, i);
@@ -482,10 +416,7 @@ int	low_high_trigger(t_stack **a, t_stack **b, int low, int high)
 			else if ((*b) && (*b)->next && (*b)->value < avg && (*b)->next->value >= avg)
 				send_command("rb", a, b);
 			else
-			{
 				send_command("pb", a, b);
-//			insert_b_in_place(a, b);
-			}
 		}
 		else if (direction < 0)
 		{
@@ -499,10 +430,7 @@ int	low_high_trigger(t_stack **a, t_stack **b, int low, int high)
 			else if ((*b) && (*b)->next && (*b)->value < avg && (*b)->next->value >= avg)
 				send_command("rrb", a, b);
 			else
-			{
 				send_command("pb", a, b);
-//			insert_b_in_place(a, b);
-			}
 		}
 	}
 	return (0);
@@ -558,10 +486,8 @@ int	main(int argc, char **argv)
 		sort_5(&a, &b);
 	else
 	{
-	four_hold_sort_mod(&a, &b);
-	//	five_hold_sort_mod(&a, &b);
-	hold_sort_mod(&a, &b);
-	//	finish_hold_sort_mod(&a, &b);
+		four_hold_sort_mod(&a, &b);
+		hold_sort_mod(&a, &b);
 	}
 	rotate_high_to_bottom(&a);
 	stack_clear(&a);
