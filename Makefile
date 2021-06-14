@@ -14,7 +14,7 @@ PUSH_SWAP_OBJS = ${PUSH_SWAP_SRCS:.c=.o}
 all: $(CHECKER) $(PUSH_SWAP)
 
 $(LIBFT):
-	$(MAKE) bonus -C libft
+	$(MAKE) -C libft
 
 $(STACK_OBJS): %.o : %.c
 	gcc $(FLAGS) -c $< -o $@
