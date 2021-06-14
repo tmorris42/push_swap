@@ -13,7 +13,7 @@
 #include "libft/libft.h"
 #include "checker.h"
 
-void	get_commands(t_stack **a, t_stack **b)
+int	get_commands(t_stack **a, t_stack **b)
 {
 	char		*buf;
 	int			status;
@@ -27,14 +27,19 @@ void	get_commands(t_stack **a, t_stack **b)
 		if (status > 0)
 		{
 			cmd = parse_command(buf);
-			if (cmd)
+			if (cmd > 0)
 				run_command(cmd, a, b);
 			else
-				status = -1;
+			{
+				free(buf);
+				ft_putstr_fd("Error\n", 2);
+				return (-1);
+			}
 		}
 		free(buf);
 		buf = NULL;
 	}
+	return (0);
 }
 
 int	main(int argc, char **argv)
@@ -47,8 +52,8 @@ int	main(int argc, char **argv)
 	a = read_args(argc, argv);
 	if (!a)
 		return (0);
-	get_commands(&a, &b);
-	stack_verify(a, b);
+	if (!get_commands(&a, &b))
+		stack_verify(a, b);
 	stack_clear(&a);
 	stack_clear(&b);
 	return (0);
