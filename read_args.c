@@ -55,7 +55,7 @@ t_stack	*read_args_array(int argc, char **argv)
 		{
 			ft_putstr_fd("Error\n", 2);
 			stack_clear(&a);
-			break ;
+			return (NULL);
 		}
 		value = ft_atoi(argv[i]);
 		index = a;
@@ -69,7 +69,12 @@ t_stack	*read_args_array(int argc, char **argv)
 			}
 			index = index->next;
 		}
-		stack_new_add_back(&a, value); //should check for malloc error here
+		if (stack_new_add_back(&a, value) == -1)
+		{
+			ft_putstr_fd("Error\n", 2);
+			stack_clear(&a);
+			return (NULL);
+		}
 		++i;
 	}
 	return (a);
@@ -111,9 +116,9 @@ t_stack	*read_args(int argc, char **argv)
 		if (!strs)
 			return (NULL);
 		len = get_array_len(strs);
-		stack = read_args_array(len, strs); //should check for malloc error here(null stack)
+		stack = read_args_array(len, strs);
 		strs = free_array(strs);
 		return (stack);
 	}
-	return (read_args_array(argc - 1, &argv[1])); //should check for malloc error here (null stack)
+	return (read_args_array(argc - 1, &argv[1]));
 }
