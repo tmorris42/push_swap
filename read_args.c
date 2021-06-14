@@ -12,29 +12,26 @@
 
 #include "stack.h"
 
-int	ft_isdigits_minus(char *str)
+int	ft_isdigits_or(char *str, char *extra)
 {
-	int		i;
-
-	i = 0;
-	while (str && str[i])
-	{
-		if (!(ft_isdigit(str[i])) && str[i] != '-')
-			return (0);
-		++i;
-	}
-	return (1);
-}
-
-int	ft_isdigits_minus_space(char *str)
-{
-	int		i;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (str && str[i])
 	{
 		if (!(ft_isdigit(str[i])) && str[i] != '-' && str[i] != ' ')
-			return (0);
+		{
+			j = ft_strlen(extra) - 1;
+			while (j > -1 && extra)
+			{
+				if (str[i] == extra[j])
+					break ;
+				--j;
+			}
+			if (j < 0)
+				return (0);
+		}
 		++i;
 	}
 	return (1);
@@ -51,30 +48,18 @@ t_stack	*read_args_array(int argc, char **argv)
 	i = 0;
 	while (i < argc)
 	{
-		if (!(ft_isdigits_minus(argv[i])))
-		{
-			ft_putstr_fd("Error\n", 2);
-			stack_clear(&a);
-			return (NULL);
-		}
+		if (!(ft_isdigits_or(argv[i], "-")))
+			return (error_and_clear(a, NULL));
 		value = ft_atoi(argv[i]);
 		index = a;
 		while (index)
 		{
 			if (index->value == value)
-			{
-				ft_putstr_fd("Error\n", 2);
-				stack_clear(&a);
-				return (NULL);
-			}
+				return (error_and_clear(a, NULL));
 			index = index->next;
 		}
 		if (stack_new_add_back(&a, value) == -1)
-		{
-			ft_putstr_fd("Error\n", 2);
-			stack_clear(&a);
-			return (NULL);
-		}
+			return (error_and_clear(a, NULL));
 		++i;
 	}
 	return (a);
@@ -110,7 +95,7 @@ t_stack	*read_args(int argc, char **argv)
 	int		len;
 	t_stack	*stack;
 
-	if (argc == 2 && ft_isdigits_minus_space(argv[1]))
+	if (argc == 2 && ft_isdigits_or(argv[1], "- "))
 	{
 		strs = ft_split(argv[1], ' ');
 		if (!strs)

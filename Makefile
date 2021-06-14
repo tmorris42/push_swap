@@ -4,7 +4,8 @@ PUSH_SWAP = push_swap
 FLAGS = -Wall -Wextra -Werror
 LIBFT = ./libft/libft.a
 
-STACK_SRCS = stack.c stack_utils.c stack_operations.c read_args.c commands.c
+STACK_SRCS = stack.c stack_utils.c stack_operations.c read_args.c commands.c \
+			 errors.c
 STACK_OBJS = ${STACK_SRCS:.c=.o}
 CHECKER_SRCS = checker.c 
 CHECKER_OBJS = ${CHECKER_SRCS:.c=.o}

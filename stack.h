@@ -38,6 +38,7 @@ enum	e_cmd
 	REV_ROTATE_BOTH
 };
 
+void			*error_and_clear(t_stack *a, t_stack *b);
 int				stack_len(t_stack *stack);
 void			stack_clear(t_stack **stack);
 t_stack			*stack_last(t_stack *stack);
