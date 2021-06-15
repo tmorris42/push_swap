@@ -40,13 +40,16 @@ fclean: clean
 
 re: fclean all
 
-vis500:
+vis500: $(PUSH_SWAP)
 	python3.7 ../push_swap_visualizer/pyviz.py `ruby -e "puts (-250..250).to_a.shuffle.join(' ')"`
 
-vis100:
+vis100: $(PUSH_SWAP)
 	python3.7 ../push_swap_visualizer/pyviz.py `ruby -e "puts (-50..50).to_a.shuffle.join(' ')"`
 
-vis50:
+vis50: $(PUSH_SWAP)
 	python3.7 ../push_swap_visualizer/pyviz.py `ruby -e "puts (-25..25).to_a.shuffle.join(' ')"`
+
+test:
+	python3.7 ./test.py
 
 .PHONY: all clean fclean re test
