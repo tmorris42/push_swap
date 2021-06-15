@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 13:56:43 by tmorris           #+#    #+#             */
-/*   Updated: 2021/06/15 13:57:12 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/06/15 14:33:27 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -522,6 +522,7 @@ int	pass_lowest_x(t_stack **a, t_stack **b, int x)
 	amt_moved = 0;
 	stop = NULL;
 	pivot = get_pivot(*a, &x); //
+	x = x / 2; // change this is pivot is updated to modify x properly
 	cursor = (*a);
 	while (cursor)
 	{
@@ -549,15 +550,17 @@ int	take_highest_x(t_stack **a, t_stack **b, int x)
 	t_stack	*cursor;
 	t_stack	*next;
 	int	amt_moved;
+	int	amt_skipped;
 
 	if (!a || !b)
 		return (-1);
 	amt_moved = 0;
-	if (x < 4)
+	amt_skipped = 0;
+	if (x < 3)
 	{
 		while (x > 0)
 		{
-			insert_b_in_place(a, b);
+			insert_in_place(a, b);
 			++amt_moved;
 			--x;
 		}
@@ -565,14 +568,14 @@ int	take_highest_x(t_stack **a, t_stack **b, int x)
 	else
 	{
 		stop = NULL;
-		pivot = get_pivot(*a, &x); //
+		pivot = get_pivot(*b, &x); //
 		cursor = (*a);
-		while (cursor && amt_moved < x)
+		while (cursor && amt_skipped + amt_moved < x)
 		{
 			if (!stop && cursor->value > pivot)
 				stop = cursor;
 			next = cursor->next;
-			if (cursor->value > pivot)
+			if (cursor->value >= pivot)
 			{
 				send_command("pa", a, b);
 				++amt_moved;
@@ -580,6 +583,9 @@ int	take_highest_x(t_stack **a, t_stack **b, int x)
 			else
 			{
 				send_command("rb", a, b);
+				++amt_skipped;
+//				stack_print(*a, *b);
+//				printf("amt_skipped = %d, x = %d, pivot = %d, value=%d\n", amt_skipped, x, pivot, (*b)->value); //DEL
 			}
 		}
 	}
@@ -598,18 +604,32 @@ int	quicksort(t_stack **a, t_stack **b)
 	tracker = NULL;
 	while (a && b && (!stack_is_ordered(*a) || stack_len(*b)))
 	{
-		while (stack_len(*a) - amt_sorted > 3)
+		while (stack_len(*a) - amt_sorted > 2)
 		{
 			amt_moved = pass_lowest_x(a, b, stack_len(*a) - amt_sorted);
 			temp = stack_new(amt_moved);
 			if (!temp)
 				return (-1); //clear tracker first
 			stack_add_front(&tracker, temp);
+//			stack_print(tracker, NULL);
+			temp = NULL;
 		}
-		sort_3(a, b); //change to sort top three
-		rotate_high_to_bottom(a); //might not always want to do this. think about it
+		if (stack_len(*a) > 1 && (*a)->value > (*a)->next->value)
+			send_command("sa", a, b);
+		if (stack_is_ordered(*a))
+			amt_sorted = stack_len(*a);
 		// here we should take back a chunk from b
-		break ; //doing this now because we haven'timplemented take back from b
+		if (tracker)
+		{
+			tracker->value -= take_highest_x(a, b, tracker->value);
+			if (tracker->value < 1)
+			{
+				temp = tracker;
+				tracker = tracker->next;
+				free(temp);
+				temp = NULL;
+			}
+		}
 	}
 	while (*b)
 	{
