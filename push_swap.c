@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 13:56:43 by tmorris           #+#    #+#             */
-/*   Updated: 2021/06/15 12:32:19 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/06/15 13:54:07 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -469,12 +469,13 @@ int	five_hold_sort_mod(t_stack **a, t_stack **b)
 	return (0);
 }
 
-int	get_pivot(t_stack *a, int limit)
+int	get_pivot(t_stack *a, int *limit)
 {
 	int	median;
 	int	lower;
 	int	higher;
 	t_stack	*index;
+	int	i;
 
 	if (limit == 0)
 		return (a->value);
@@ -483,14 +484,16 @@ int	get_pivot(t_stack *a, int limit)
 	{
 		lower = 0;
 		higher = 0;
+		i = 0;
 		index = a;
-		while (index)
+		while (index && i < *limit)
 		{
 			if (index->value < median)
 				++lower;
 			if (index->value > median)
 				++higher;
 			index = index->next;
+			++i;
 		}
 		if (lower == higher)
 			return (median);
@@ -506,27 +509,111 @@ int	get_pivot(t_stack *a, int limit)
 	return (median);
 }
 
-int	quicksort(t_stack **a, t_stack **b)
+int	pass_lowest_x(t_stack **a, t_stack **b, int x)
 {
 	int	pivot;
+	t_stack *stop;
 	t_stack	*cursor;
 	t_stack	*next;
+	int	amt_moved;
 
 	if (!a || !b)
 		return (-1);
-	pivot = get_pivot(*a, stack_len(*a)); //
-	printf("pivot = %d\n", pivot); //delete this
+	amt_moved = 0;
+	stop = NULL;
+	pivot = get_pivot(*a, &x); //
 	cursor = (*a);
 	while (cursor)
 	{
+		if (!stop && cursor->value > pivot)
+			stop = cursor;
 		next = cursor->next;
 		if (cursor->value < pivot)
 		{
 			send_command("pb", a, b);
+			++amt_moved;
 		}
+		else
+			send_command("ra", a, b);
 		cursor = next;
+		if (cursor == stop)
+			return (amt_moved);
 	}
+	return (amt_moved);
+}
 
+int	take_highest_x(t_stack **a, t_stack **b, int x)
+{
+	int	pivot;
+	t_stack *stop;
+	t_stack	*cursor;
+	t_stack	*next;
+	int	amt_moved;
+
+	if (!a || !b)
+		return (-1);
+	if (x < 4)
+	{
+		while (x > 0)
+		{
+			insert_b_in_place(a, b);
+			--x;
+		}
+	}
+	else
+	{
+		amt_moved = 0;
+		stop = NULL;
+		pivot = get_pivot(*a, &x); //
+		cursor = (*a);
+		while (cursor && amt_moved < x)
+		{
+			if (!stop && cursor->value > pivot)
+				stop = cursor;
+			next = cursor->next;
+			if (cursor->value > pivot)
+			{
+				send_command("pa", a, b);
+				++amt_moved;
+			}
+			else
+			{
+				send_command("rb", a, b);
+			}
+		}
+	}
+	return (amt_moved);
+}
+
+int	quicksort(t_stack **a, t_stack **b)
+{
+	int	amt_sorted;
+	int	amt_moved;
+	t_stack	*tracker;
+	t_stack	*temp;
+
+	amt_sorted = 0;
+	amt_moved = 0;
+	tracker = NULL;
+	while (a && b && (!stack_is_ordered(*a) || stack_len(*b)))
+	{
+		while (stack_len(*a) - amt_sorted > 3)
+		{
+			amt_moved = pass_lowest_x(a, b, stack_len(*a) - amt_sorted);
+			temp = stack_new(amt_moved);
+			if (!temp)
+				return (-1); //clear tracker first
+			stack_add_front(&tracker, temp);
+		}
+		sort_3(a, b); //change to sort top three
+		rotate_high_to_bottom(a); //might not always want to do this. think about it
+		// here we should take back a chunk from b
+		break ; //doing this now because we haven'timplemented take back from b
+	}
+	while (*b)
+	{
+		insert_in_place(a, b);
+	}
 	return (0);
 }
 
@@ -545,13 +632,16 @@ int	main(int argc, char **argv)
 		sort_3(&a, &b);
 	else if (len < 6)
 		sort_5(&a, &b);
+/*	else if (len < 50)i
+	{
+		four_hold_sort_mod(&a, &b);
+		hold_sort_mod(&a, &b);
+	}	*/
 	else
 	{
-//		four_hold_sort_mod(&a, &b);
-//		hold_sort_mod(&a, &b);
 		quicksort(&a, &b);
 	}
-//	rotate_high_to_bottom(&a);
+	rotate_high_to_bottom(&a);
 	stack_clear(&a);
 	stack_clear(&b);
 	return (0);
