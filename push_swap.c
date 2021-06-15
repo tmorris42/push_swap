@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 13:56:43 by tmorris           #+#    #+#             */
-/*   Updated: 2021/06/15 13:54:07 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/06/15 13:57:12 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -552,17 +552,18 @@ int	take_highest_x(t_stack **a, t_stack **b, int x)
 
 	if (!a || !b)
 		return (-1);
+	amt_moved = 0;
 	if (x < 4)
 	{
 		while (x > 0)
 		{
 			insert_b_in_place(a, b);
+			++amt_moved;
 			--x;
 		}
 	}
 	else
 	{
-		amt_moved = 0;
 		stop = NULL;
 		pivot = get_pivot(*a, &x); //
 		cursor = (*a);
