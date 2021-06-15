@@ -49,6 +49,15 @@ vis100: $(PUSH_SWAP)
 vis50: $(PUSH_SWAP)
 	python3.7 ../push_swap_visualizer/pyviz.py `ruby -e "puts (-25..25).to_a.shuffle.join(' ')"`
 
+vis10: $(PUSH_SWAP)
+	python3.7 ../push_swap_visualizer/pyviz.py `ruby -e "puts (-5..5).to_a.shuffle.join(' ')"`
+
+vis5: $(PUSH_SWAP)
+	python3.7 ../push_swap_visualizer/pyviz.py `ruby -e "puts (-2..2).to_a.shuffle.join(' ')"`
+
+vis3: $(PUSH_SWAP)
+	python3.7 ../push_swap_visualizer/pyviz.py `ruby -e "puts (-1..1).to_a.shuffle.join(' ')"`
+
 test:
 	python3.7 ./test.py
 
