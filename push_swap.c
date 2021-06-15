@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 13:56:43 by tmorris           #+#    #+#             */
-/*   Updated: 2021/06/12 17:31:27 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/06/15 12:32:19 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -469,6 +469,67 @@ int	five_hold_sort_mod(t_stack **a, t_stack **b)
 	return (0);
 }
 
+int	get_pivot(t_stack *a, int limit)
+{
+	int	median;
+	int	lower;
+	int	higher;
+	t_stack	*index;
+
+	if (limit == 0)
+		return (a->value);
+	median = a->value;
+	while (1)
+	{
+		lower = 0;
+		higher = 0;
+		index = a;
+		while (index)
+		{
+			if (index->value < median)
+				++lower;
+			if (index->value > median)
+				++higher;
+			index = index->next;
+		}
+		if (lower == higher)
+			return (median);
+		if (lower == higher - 1 || higher == lower - 1)
+		{
+			return (median + higher - lower);
+		}
+		if (higher > lower)
+			++median;
+		else if (higher < lower)
+			--median;
+	}
+	return (median);
+}
+
+int	quicksort(t_stack **a, t_stack **b)
+{
+	int	pivot;
+	t_stack	*cursor;
+	t_stack	*next;
+
+	if (!a || !b)
+		return (-1);
+	pivot = get_pivot(*a, stack_len(*a)); //
+	printf("pivot = %d\n", pivot); //delete this
+	cursor = (*a);
+	while (cursor)
+	{
+		next = cursor->next;
+		if (cursor->value < pivot)
+		{
+			send_command("pb", a, b);
+		}
+		cursor = next;
+	}
+
+	return (0);
+}
+
 int	main(int argc, char **argv)
 {
 	t_stack	*a;
@@ -486,10 +547,11 @@ int	main(int argc, char **argv)
 		sort_5(&a, &b);
 	else
 	{
-		four_hold_sort_mod(&a, &b);
-		hold_sort_mod(&a, &b);
+//		four_hold_sort_mod(&a, &b);
+//		hold_sort_mod(&a, &b);
+		quicksort(&a, &b);
 	}
-	rotate_high_to_bottom(&a);
+//	rotate_high_to_bottom(&a);
 	stack_clear(&a);
 	stack_clear(&b);
 	return (0);
