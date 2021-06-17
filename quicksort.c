@@ -4,6 +4,7 @@
 void	insert_in_place(t_stack **a, t_stack**b);
 int	quicksort_left(t_stack **a, t_stack **b, int amount);
 void	rotate_high_to_bottom(t_stack **a);
+int	sort_3(t_stack **a, t_stack **b);
 
 float	get_pivot(t_stack *a, int limit)
 {
@@ -326,6 +327,11 @@ void	sort_top_3(t_stack **a, int amount)
 		send_command("sa", a, NULL);
 	else if (amount == 3)
 	{
+		if (stack_len(*a) == 3)
+		{
+			sort_3(a, NULL);
+			return ;
+		}
 		first = (*a)->value;
 		second = (*a)->next->value;
 		third = (*a)->next->next->value;
