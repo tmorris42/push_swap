@@ -2,10 +2,19 @@
 
 import subprocess
 import random
+import itertools
+from datetime import datetime
 
 ERROR = -1
 KO = 0
 OK = 1
+
+LOGFILE = "logs/" +  datetime.now().strftime("%Y-%m-%d-%H-%M-%S") + ".log"
+
+def error_log(nums):
+    with open(LOGFILE, "a") as out:
+        out.write(nums);
+        out.write("\n\n");
 
 def maximum_moves(number_of_numbers):
     maximum = 0
@@ -21,7 +30,7 @@ def maximum_moves(number_of_numbers):
             return maximum
 
 def check_nums(program_name, nums):
-    out_bytes = subprocess.check_output(f"{program_name} {nums} | wc -l", shell=True)
+    out_bytes = subprocess.check_output(f"{program_name} {nums} | wc -l", shell=True, stderr=subprocess.DEVNULL)
     number_of_lines = int(out_bytes.decode("utf-8"))
     out_bytes = subprocess.check_output(f"{program_name} {nums} | ./checker {nums}", shell=True, stderr=subprocess.STDOUT)
     out_str = out_bytes.decode("utf-8")
@@ -29,9 +38,9 @@ def check_nums(program_name, nums):
     if len(nums) > 20:
         nums = "/" + str(num_of_nums) + " numbers/"
     if number_of_lines <= maximum_moves(num_of_nums):
-        print("\033[0;32m", end='')
+        print("[\033[0;32m", end='')
     else:
-        print("\033[0;31m", end='')
+        print("[\033[0;31m", end='')
     print(f"({number_of_lines})\033[0;0m] {nums} [", end="")
     if "Error\n" in out_str:
         #print("ERROR MESSAGES: ==========\n", out_str, "\n==========\n")
@@ -49,13 +58,16 @@ def check_OK(program_name, nums, expected=1):
         print("\033[0;32m", end="")
     else:
         print("\033[0;31m", end="")
+        error_log(nums)
     print(f"{msg[res + 1]}\033[0;0m]", end="\n")
     return res == expected
 
 if __name__ == '__main__':
     subprocess.call("make")
 
-    test_cases = [
+    test_cases = []
+# test_cases = [str(x).replace(',', '').replace('(', '').replace(')', '') for x in itertools.permutations(range(-5, 5), 3)]
+    test_cases += [
             "4 2 3",
             "4 3 1",
             "2 -1 5",
@@ -69,24 +81,25 @@ if __name__ == '__main__':
             "1 5 9 7 3 4 8 6 2",
             "1 76 4 6 38 9 18 -4 -36 100 -72 0 -41 3 17",
             " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
-            " ".join(random.sample([str(x) for x in range(-300, 300)], 500)),
+#            " ".join(random.sample([str(x) for x in range(-300, 300)], 500)),
             ]
     error_cases = ["1 one 3", "1 3 1 2", "2 % 4", "1 0 -5 7 -0 8",
             "2147483648", "-2147483649"]
-    test_cases = [
-            " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
-            " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
-            " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
-            " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
-            " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
-            " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
-            " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
-            " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
-            " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
-            " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
-            " ".join(random.sample([str(x) for x in range(-300, 300)], 500)),
-        ]
+ #   test_cases = [
+ #           " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
+ #           " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
+ #           " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
+ #           " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
+ #           " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
+ #           " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
+ #           " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
+ #           " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
+ #           " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
+ #           " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
+ #           " ".join(random.sample([str(x) for x in range(-300, 300)], 500)),
+#        ]
 #    error_cases = []
+
     program_names = [
             "./push_swap",
            # "./four_hold_sort_mod", 
