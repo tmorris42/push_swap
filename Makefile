@@ -2,6 +2,7 @@ CHECKER = checker
 PUSH_SWAP = push_swap
 
 FLAGS = -Wall -Wextra -Werror
+DEBUG_FLAGS = -fsanitize=address
 LIBFT = ./libft/libft.a
 
 STACK_SRCS = stack.c stack_utils.c stack_operations.c read_args.c commands.c \
@@ -60,5 +61,9 @@ vis3: $(PUSH_SWAP)
 
 test:
 	python3.7 ./test.py
+
+debug: $(STACK_SRCS) $(PUSH_SWAP_SRCS)
+	gcc $(FLAGS) $(DEBUG_FLAGS) $(STACK_SRCS) $(PUSH_SWAP_SRCS) $(LIBFT) -o debug
+
 
 .PHONY: all clean fclean re test
