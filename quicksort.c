@@ -173,7 +173,7 @@ int	take_highest_x(t_stack **a, t_stack **b, int x)
 //		stack_print(*a, *b); //
 //	}//
 	cursor = (*b);
-	while (cursor && amt_skipped + amt_moved < x)
+	while (cursor && (amt_skipped + amt_moved < x && 2 * amt_moved <= x))
 	{
 		cursor = (*b);
 		if (cursor->value >= pivot)
@@ -197,6 +197,88 @@ int	take_highest_x(t_stack **a, t_stack **b, int x)
 	return (amt_moved);
 }
 
+void put_top_3(t_stack **a, t_stack **b, int amount)
+{
+	int	first;
+	int	second;
+	int	third;
+
+//	printf("put top 3!!\n"); //
+	if (!a || !b || !(*b) || amount > 3 || amount > stack_len(*b))
+		return ;
+	if (amount > 3)
+		printf("ERROR, MORE THAN 3 PUT AT SORT TOP THREE\n");//
+	if (amount > 0)
+		first = (*b)->value;
+	if (amount > 1)
+		second = (*b)->next->value;
+	if (amount > 2)
+		third = (*b)->next->next->value;
+	if (amount == 2 && second > first )
+		send_command("sb", a, b);
+	if (amount == 2)
+		send_command("pa", a, b);
+	if (amount == 1 || amount == 2)
+		send_command("pa", a, b);
+	else if (amount == 3)
+	{
+		if (first < second && second < third) //1 2 3
+		{
+			send_command("sb", a, b);
+			send_command("pa", a, b);
+			send_command("sb", a, b);
+			send_command("pa", a, b);
+			send_command("sa", a, b);
+			send_command("pa", a, b);
+		}
+		else if (second < first && first < third) // 2 1 3
+		{
+			send_command("pa", a, b);
+			send_command("sb", a, b);
+			send_command("pa", a, b);
+			send_command("sa", a, b);
+			send_command("pa", a, b);
+		}
+		else if (second < third && third < first) // 3 1 2
+		{
+			send_command("pa", a, b);
+			send_command("sb", a, b);
+			send_command("pa", a, b);
+			send_command("pa", a, b);
+		}
+		else if (first < third && third < second) // 1 3 2
+		{
+			send_command("rb", a, b);
+			send_command("pa", a, b);
+			send_command("pa", a, b);
+			send_command("rrb", a, b);
+			send_command("pa", a, b);
+		}
+		else if (third < first && first < second) // 2 3 1
+		{
+			send_command("sb", a, b);
+			send_command("pa", a, b);
+			send_command("pa", a, b);
+			send_command("pa", a, b);
+		}
+		else if (third < second && second < first) // 3 2 1
+		{
+			send_command("pa", a, b);
+			send_command("pa", a, b);
+			send_command("pa", a, b);
+		}
+		first = (*a)->value; //
+		second = (*a)->next->value; //
+		third = (*a)->next->next->value; //
+		if (first > second || second > third || first > third) //
+		{//
+			printf("ERROR not sorted after top 3\n"); //
+			stack_print(*a, NULL);//
+		}//
+	}
+
+}
+
 int	quicksort_right(t_stack **a, t_stack **b, int amount)
 {
 	int	amt_moved;
@@ -206,13 +288,14 @@ int	quicksort_right(t_stack **a, t_stack **b, int amount)
 		return (0);
 	if (amount < 4)
 	{
-		while (amt_moved < amount)
-		{
-			send_command("pa", a, b);
+		put_top_3(a, b, amount);
+//		while (amt_moved < amount)
+//		{
+//			send_command("pa", a, b);
 //			insert_in_place(a, b);
-			++amt_moved;
-		}
-		quicksort_left(a, b, amt_moved);
+//			++amt_moved;
+//		}
+//		quicksort_left(a, b, amt_moved);
 	}
 	else
 	{
@@ -246,46 +329,25 @@ void	sort_top_3(t_stack **a, int amount)
 		first = (*a)->value;
 		second = (*a)->next->value;
 		third = (*a)->next->next->value;
+		if (first > second)
+			send_command("sa", a, NULL);
 		if (first > second && third > first)
+			return ;
+		send_command("ra", a, NULL);
+		send_command("sa", a, NULL);
+		send_command("rra", a, NULL);
+		if (first > third && second > first)
 			send_command("sa", a, NULL);
-		else if (first > second && first > third && third > second)
-		{
+		if (first > second && second > third)
 			send_command("sa", a, NULL);
-			send_command("ra", a, NULL);
-			send_command("sa", a, NULL);
-			send_command("rra", a, NULL);
-		}
-		else if (first < second && first < third && second > third)
-		{
-			send_command("ra", a, NULL);
-			send_command("sa", a, NULL);
-			send_command("rra", a, NULL);
-		}
-		else if (first > third && second > first)
-		{
-			send_command("ra", a, NULL);
-			send_command("sa", a, NULL);
-			send_command("rra", a, NULL);
-			send_command("sa", a, NULL);
-		}
-		else if (first > second && second > third)
-		{
-			send_command("sa", a, NULL);
-			send_command("ra", a, NULL);
-			send_command("sa", a, NULL);
-			send_command("rra", a, NULL);
-			send_command("sa", a, NULL);
-		}
-		else
-			printf("ERROR unexpected sort_top_3 case\n"); //
 		first = (*a)->value; //
 		second = (*a)->next->value; //
 		third = (*a)->next->next->value; //
-		if (first > second || second > third || first > third)
-		{
+		if (first > second || second > third || first > third) //
+		{//
 			printf("ERROR not sorted after top 3\n"); //
-			stack_print(*a, NULL);
-		}
+			stack_print(*a, NULL);//
+		}//
 	}
 }
 
