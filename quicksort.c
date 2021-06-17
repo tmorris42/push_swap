@@ -190,7 +190,7 @@ int	take_highest_x(t_stack **a, t_stack **b, int x)
 //				printf("amt_skipped = %d, x = %d, pivot = %d, value=%d\n", amt_skipped, x, pivot, (*b)->value); //DEL
 		}
 	}
-	while (amt_skipped > 0)
+	while (amt_skipped != stack_len(*b) && amt_skipped > 0)
 	{
 		send_command("rrb", a, b);
 		--amt_skipped;
