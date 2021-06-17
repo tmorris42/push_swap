@@ -65,5 +65,9 @@ test:
 debug: $(STACK_SRCS) $(PUSH_SWAP_SRCS)
 	gcc $(FLAGS) $(DEBUG_FLAGS) $(STACK_SRCS) $(PUSH_SWAP_SRCS) $(LIBFT) -o debug
 
+clearlogs:
+	rm -rf logs
+	mkdir logs
+
 
 .PHONY: all clean fclean re test
