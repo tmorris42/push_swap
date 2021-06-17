@@ -141,26 +141,41 @@ int	pass_lowest_x(t_stack **a, t_stack **b, int x)
 int	take_highest_x(t_stack **a, t_stack **b, int x)
 {
 	float	pivot;
-	t_stack *stop;
 	t_stack	*cursor;
-	t_stack	*next;
 	int	amt_moved;
 	int	amt_skipped;
 
 	if (!a || !b)
 		return (-1);
 	if (x < 0)
-		printf("ERROR take_highest x is neg\n");
+		printf("ERROR take_highest x is neg\n"); //
+	if (x == 1)
+	{
+		send_command("pa", a, b);
+		return (0);
+	}
 	amt_moved = 0;
 	amt_skipped = 0;
-	stop = NULL;
+	if (x > stack_len(*b))
+		x = stack_len(*b);
 	pivot = get_pivot(*b, x); //
-	cursor = (*a);
+	while (x < 3 && amt_moved < x)
+	{
+//		insert_in_place(a, b);
+		send_command("sa", a, b);
+		++amt_moved;
+	}
+	if (x < 4)
+		return (amt_moved);
+//	if (x == 5)//
+//	{//
+//		printf("x=%d, pivot=%f\n", x, pivot);//
+//		stack_print(*a, *b); //
+//	}//
+	cursor = (*b);
 	while (cursor && amt_skipped + amt_moved < x)
 	{
-		if (!stop && cursor->value > pivot)
-			stop = cursor;
-		next = cursor->next;
+		cursor = (*b);
 		if (cursor->value >= pivot)
 		{
 			send_command("pa", a, b);
@@ -187,19 +202,91 @@ int	quicksort_right(t_stack **a, t_stack **b, int amount)
 	int	amt_moved;
 
 	amt_moved = 0;
-	if (amount == 0 || !stack_len(*b))
+	if (amount < 1 || !stack_len(*b))
 		return (0);
-	if (amount == 1)
-		send_command("pa", a, b);
+	if (amount < 4)
+	{
+		while (amt_moved < amount)
+		{
+			send_command("pa", a, b);
+//			insert_in_place(a, b);
+			++amt_moved;
+		}
+		quicksort_left(a, b, amt_moved);
+	}
 	else
 	{
 		amt_moved = take_highest_x(a, b, amount);
+		if (amt_moved == amount) //
+			printf ("ERROR, moved whole stack\n"); //
+		if (amt_moved > amount) //
+			printf("ERROR, moved more than whole stack\n"); //
 		//move from right to left (amount / 2))
 		//	remember that if amount < 0: cmd = "rrb" else "rb"
 		quicksort_left(a, b, amt_moved);
 		quicksort_right(a, b, amount - amt_moved);
 	}
-	return (0);
+	return (amt_moved);
+}
+
+void	sort_top_3(t_stack **a, int amount)
+{
+	int	first;
+	int	second;
+	int	third;
+
+	if (!a || !(*a) || amount < 2 || amount > stack_len(*a))
+		return ;
+	if (amount > 3)
+		printf("ERROR, MORE THAN 3 PUT AT SORT TOP THREE\n");//
+	if (amount == 2)
+		send_command("sa", a, NULL);
+	else if (amount == 3)
+	{
+		first = (*a)->value;
+		second = (*a)->next->value;
+		third = (*a)->next->next->value;
+		if (first > second && third > first)
+			send_command("sa", a, NULL);
+		else if (first > second && first > third && third > second)
+		{
+			send_command("sa", a, NULL);
+			send_command("ra", a, NULL);
+			send_command("sa", a, NULL);
+			send_command("rra", a, NULL);
+		}
+		else if (first < second && first < third && second > third)
+		{
+			send_command("ra", a, NULL);
+			send_command("sa", a, NULL);
+			send_command("rra", a, NULL);
+		}
+		else if (first > third && second > first)
+		{
+			send_command("ra", a, NULL);
+			send_command("sa", a, NULL);
+			send_command("rra", a, NULL);
+			send_command("sa", a, NULL);
+		}
+		else if (first > second && second > third)
+		{
+			send_command("sa", a, NULL);
+			send_command("ra", a, NULL);
+			send_command("sa", a, NULL);
+			send_command("rra", a, NULL);
+			send_command("sa", a, NULL);
+		}
+		else
+			printf("ERROR unexpected sort_top_3 case\n"); //
+		first = (*a)->value; //
+		second = (*a)->next->value; //
+		third = (*a)->next->next->value; //
+		if (first > second || second > third || first > third)
+		{
+			printf("ERROR not sorted after top 3\n"); //
+			stack_print(*a, NULL);
+		}
+	}
 }
 
 int	quicksort_left(t_stack **a, t_stack **b, int amount)
@@ -209,16 +296,19 @@ int	quicksort_left(t_stack **a, t_stack **b, int amount)
 	amt_moved = 0;
 	if (stack_is_sorted(*a) || amount == 0)
 		return (0);
-	if (amount > -3 && amount < 3)
+	if (amount > -3 && amount < 4)
 	{
 		//swap the top two, or pull down and swap the top two
-		if (amount < 0)
-			send_command("rra", a, b);
-		send_command("sa", a, b);
+//		if (amount < 0)
+//			send_command("rra", a, b);
+//		send_command("sa", a, b);
+		sort_top_3(a, amount);
 	}
 	else
 	{
 		amt_moved = pass_lowest_x(a, b, amount);
+		if (amt_moved == amount) //
+			printf ("ERROR, moved whole stack from left to right\n"); //
 		//move from left to right (amount - (amount / 2))
 		//	remember that if amount < 0: cmd = "rra" else "ra"
 		quicksort_left(a, b, amount - amt_moved);
