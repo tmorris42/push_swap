@@ -66,7 +66,7 @@ if __name__ == '__main__':
     subprocess.call("make")
 
     test_cases = []
-# test_cases = [str(x).replace(',', '').replace('(', '').replace(')', '') for x in itertools.permutations(range(-5, 5), 3)]
+    test_cases = [str(x).replace(',', '').replace('(', '').replace(')', '') for x in itertools.permutations(range(0, 3), 3)]
     test_cases += [
             "4 2 3",
             "4 3 1",
@@ -85,19 +85,19 @@ if __name__ == '__main__':
             ]
     error_cases = ["1 one 3", "1 3 1 2", "2 % 4", "1 0 -5 7 -0 8",
             "2147483648", "-2147483649"]
- #   test_cases = [
- #           " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
- #           " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
- #           " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
- #           " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
- #           " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
- #           " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
- #           " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
- #           " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
- #           " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
- #           " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
- #           " ".join(random.sample([str(x) for x in range(-300, 300)], 500)),
-#        ]
+    test_cases += [
+            " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
+            " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
+            " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
+            " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
+            " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
+            " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
+            " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
+            " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
+            " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
+            " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
+            " ".join(random.sample([str(x) for x in range(-300, 300)], 500)),
+        ]
 #    error_cases = []
 
     program_names = [
