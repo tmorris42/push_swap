@@ -223,6 +223,9 @@ void put_top_3(t_stack **a, t_stack **b, int amount)
 		send_command("pa", a, b);
 	else if (amount == 3)
 	{
+		first = (*b)->value;
+		second = (*b)->next->value;
+		third = (*b)->next->next->value;
 		if (first < second && second < third) //1 2 3
 		{
 			send_command("sb", a, b);
@@ -273,7 +276,7 @@ void put_top_3(t_stack **a, t_stack **b, int amount)
 		third = (*a)->next->next->value; //
 		if (first > second || second > third || first > third) //
 		{//
-			printf("ERROR not sorted after top 3\n"); //
+			printf("ERROR not sorted after top 3 PLACED\n"); //
 			stack_print(*a, NULL);//
 		}//
 	}
@@ -318,6 +321,9 @@ void	sort_top_3(t_stack **a, int amount)
 	int	first;
 	int	second;
 	int	third;
+	t_stack **b; //
+
+	b = NULL; //
 
 	if (!a || !(*a) || amount < 2 || amount > stack_len(*a))
 		return ;
@@ -335,7 +341,40 @@ void	sort_top_3(t_stack **a, int amount)
 		first = (*a)->value;
 		second = (*a)->next->value;
 		third = (*a)->next->next->value;
-		if (first > second)
+		if (first < second && second < third) //1 2 3
+		{
+		}
+		else if (second < first && first < third) // 2 1 3
+			send_command("sa", a, b);
+		else if (second < third && third < first) // 3 1 2
+		{
+			send_command("sa", a, b);
+			send_command("ra", a, b);
+			send_command("sa", a, b);
+			send_command("rra", a, b);
+		}
+		else if (first < third && third < second) // 1 3 2
+		{
+			send_command("ra", a, b);
+			send_command("sa", a, b);
+			send_command("rra", a, b);
+		}
+		else if (third < first && first < second) // 2 3 1
+		{
+			send_command("ra", a, b);
+			send_command("sa", a, b);
+			send_command("rra", a, b);
+			send_command("sa", a, b);
+		}
+		else if (third < second && second < first) // 3 2 1
+		{
+			send_command("sa", a, b);
+			send_command("ra", a, b);
+			send_command("sa", a, b);
+			send_command("rra", a, b);
+			send_command("sa", a, b);
+		}
+/*		if (first > second)
 			send_command("sa", a, NULL);
 		if (first > second && third > first)
 			return ;
@@ -345,7 +384,7 @@ void	sort_top_3(t_stack **a, int amount)
 		if (first > third && second > first)
 			send_command("sa", a, NULL);
 		if (first > second && second > third)
-			send_command("sa", a, NULL);
+			send_command("sa", a, NULL); */
 		first = (*a)->value; //
 		second = (*a)->next->value; //
 		third = (*a)->next->next->value; //
