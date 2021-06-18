@@ -8,6 +8,7 @@ from datetime import datetime
 ERROR = -1
 KO = 0
 OK = 1
+TIMEOUT = 2
 
 LOGFILE = "logs/" +  datetime.now().strftime("%Y-%m-%d-%H-%M-%S") + ".log"
 
@@ -30,11 +31,14 @@ def maximum_moves(number_of_numbers):
             return maximum
 
 def check_nums(program_name, nums):
-    out_bytes = subprocess.check_output(f"{program_name} {nums} | wc -l", shell=True, stderr=subprocess.DEVNULL)
-    number_of_lines = int(out_bytes.decode("utf-8"))
-    out_bytes = subprocess.check_output(f"{program_name} {nums} | ./checker {nums}", shell=True, stderr=subprocess.STDOUT)
-    out_str = out_bytes.decode("utf-8")
-    num_of_nums = len(nums.split())
+    try:
+        out_bytes = subprocess.run(f"{program_name} {nums} | wc -l", shell=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, timeout=5)
+        number_of_lines = int(out_bytes.stdout.decode("utf-8"))
+        out_bytes = subprocess.run(f"{program_name} {nums} | ./checker {nums}", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=5)
+        out_str = out_bytes.stdout.decode("utf-8")
+        num_of_nums = len(nums.split())
+    except subprocess.TimeoutExpired:
+        return TIMEOUT
     if len(nums) > 20:
         nums = "/" + str(num_of_nums) + " numbers/"
     if number_of_lines <= maximum_moves(num_of_nums):
@@ -52,7 +56,7 @@ def check_nums(program_name, nums):
     return -2
 
 def check_OK(program_name, nums, expected=1):
-    msg = ["ERROR", "KO", "OK"]
+    msg = ["ERROR", "KO", "OK", "TIMEOUT"]
     res = check_nums(program_name, nums)
     if res == expected:
         print("\033[0;32m", end="")
