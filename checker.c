@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   checker.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/08 16:31:09 by tmorris           #+#    #+#             */
-/*   Updated: 2021/06/17 12:23:59 by tmorris          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "libft/libft.h"
 #include "checker.h"
 
@@ -30,7 +18,7 @@ int	get_commands(t_stack **a, t_stack **b)
 			if (cmd > 0)
 			{
 				run_command(cmd, a, b);
-				stack_print(*a, *b);
+		//		stack_print(*a, *b);
 			}
 			else
 			{

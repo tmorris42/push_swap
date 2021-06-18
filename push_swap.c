@@ -468,7 +468,7 @@ int	main(int argc, char **argv)
 	b = NULL;
 	a = read_args(argc, argv);
 	if (!a)
-		return (-1);
+		return (0);
 	len = stack_len(a);
 	if (len < 4)
 		sort_3(&a, &b);
