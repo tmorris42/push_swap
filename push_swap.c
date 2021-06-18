@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   push_swap.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/11 13:56:43 by tmorris           #+#    #+#             */
-/*   Updated: 2021/06/16 15:06:27 by tmorris          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "push_swap.h"
 #include <stdio.h> //debug only
 
@@ -480,7 +468,7 @@ int	main(int argc, char **argv)
 	b = NULL;
 	a = read_args(argc, argv);
 	if (!a)
-		return (-1);
+		return (0);
 	len = stack_len(a);
 	if (len < 4)
 		sort_3(&a, &b);
