@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/08 17:57:54 by tmorris           #+#    #+#             */
-/*   Updated: 2021/06/12 16:46:41 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/06/18 14:24:11 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ t_stack	*stack_new(int value)
 		return (NULL);
 	new->value = value;
 	new->next = NULL;
+	new->prev = NULL;
 	return (new);
 }
 
