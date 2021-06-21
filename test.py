@@ -9,6 +9,7 @@ ERROR = -1
 KO = 0
 OK = 1
 TIMEOUT = 2
+UNKNOWN = 3
 
 LOGFILE = "logs/" +  datetime.now().strftime("%Y-%m-%d-%H-%M-%S") + ".log"
 
@@ -53,10 +54,10 @@ def check_nums(program_name, nums):
         return KO
     if "OK\n" in out_str:
         return OK
-    return -2
+    return 3
 
 def check_OK(program_name, nums, expected=1):
-    msg = ["ERROR", "KO", "OK", "TIMEOUT"]
+    msg = ["ERROR", "KO", "OK", "TIMEOUT", "UNKNOWN"]
     res = check_nums(program_name, nums)
     if res == expected:
         print("\033[0;32m", end="")
@@ -84,6 +85,7 @@ if __name__ == '__main__':
             "-5 10 8 -7 94 -800 33",
             "1 5 9 7 3 4 8 6 2",
             "1 76 4 6 38 9 18 -4 -36 100 -72 0 -41 3 17",
+            "-261 -271 -117 -231 56 59 144 -283 260 272 49 171 -91 -189 62 -208 -266 -101 298 20 -239 -16 28 -103 93 -73 167 -259 -4 75 248 263 5 -275 -33 118 -45 -121 143 210 132 -60 -67 64 -164 135 29 -246 -50 84 35 -214 -85 -148 57 4 166 242 9 -145 -147 -22 160 -104 -267 -15 65 73 184 50 218 -150 180 -251 -107 -44 106 -235 154 141 63 234 -221 159 261 193 70 113 -210 276 -127 -293 179 -176 197 -270 -27 -232 262 240",
             " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
 #            " ".join(random.sample([str(x) for x in range(-300, 300)], 500)),
             ]
