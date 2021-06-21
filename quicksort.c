@@ -98,6 +98,7 @@ unsigned int	pass_lowest_x_rev(t_stack **a, t_stack **b, unsigned int x)
 	unsigned int	amt_moved;
 	int	amt_skipped;
 
+//	printf("Pass lowest rev x=%d, and sorted == %d\n", x, stack_is_sorted(*a));
 	if (!a || !b)
 		return (-1);
 	if (x < 0)
@@ -144,6 +145,7 @@ unsigned int	pass_lowest_x(t_stack **a, t_stack **b, unsigned int x)
 	unsigned int	amt_moved;
 	unsigned int	amt_skipped;
 
+//	printf("Pass lowest x=%d, and sorted == %d\n", x, stack_is_sorted(*a));
 	if (!a || !b || x > (unsigned int)stack_len(*a))
 	{
 		printf("ERROR x=%u and stack_len=%u\n", x, (unsigned int)stack_len(*a));
@@ -189,14 +191,16 @@ int	take_highest_x_rev(t_stack **a, t_stack **b, int x)
 	int	amt_moved;
 	int	amt_skipped;
 
+//	printf("Take highest rev x=%d, and sorted == %d\n", x, stack_is_sorted(*a));
 	if (!a || !b)
 		return (-1);
 	if (x < 0)
 		printf("ERROR take_highest x is neg\n"); //
 	if (x == 1)
 	{
+		send_command("rrb", a, b);
 		send_command("pa", a, b);
-		return (0);
+		return (1);
 	}
 	amt_moved = 0;
 	amt_skipped = 0;
@@ -205,20 +209,17 @@ int	take_highest_x_rev(t_stack **a, t_stack **b, int x)
 	pivot = get_pivot_rev(*b, x); //
 	while (x < 3 && amt_moved < x)
 	{
-//		insert_in_place(a, b);
-		send_command("sa", a, b);
+		insert_in_place(a, b);
+		send_command("rrb", a, b);
+		send_command("pa", a, b);
 		++amt_moved;
 	}
 	if (x < 4)
 		return (amt_moved);
-//	if (x == 5)//
-//	{//
-//		printf("x=%d, pivot=%f\n", x, pivot);//
-//		stack_print(*a, *b); //
-//	}//
 	cursor = (*b);
-	while (cursor && (amt_skipped + amt_moved < x && 2 * amt_moved <= x))
+	while (cursor && amt_skipped + amt_moved < x)
 	{
+		send_command("rrb", a, b);
 		cursor = (*b);
 		if (cursor->value >= pivot)
 		{
@@ -227,16 +228,10 @@ int	take_highest_x_rev(t_stack **a, t_stack **b, int x)
 		}
 		else
 		{
-			send_command("rrb", a, b);
 			++amt_skipped;
 //				stack_print(*a, *b);
 //				printf("amt_skipped = %d, x = %d, pivot = %d, value=%d\n", amt_skipped, x, pivot, (*b)->value); //DEL
 		}
-	}
-	while (amt_skipped != stack_len(*b) && amt_skipped > 0)
-	{
-		send_command("rb", a, b);
-		--amt_skipped;
 	}
 	return (amt_moved);
 }
@@ -248,6 +243,7 @@ int	take_highest_x(t_stack **a, t_stack **b, int x)
 	int	amt_moved;
 	int	amt_skipped;
 
+//	printf("Take highest x=%d, and sorted == %d\n", x, stack_is_sorted(*a));
 	if (!a || !b)
 		return (-1);
 	if (x < 0)
@@ -270,13 +266,8 @@ int	take_highest_x(t_stack **a, t_stack **b, int x)
 	}
 	if (x < 4)
 		return (amt_moved);
-//	if (x == 5)//
-//	{//
-//		printf("x=%d, pivot=%f\n", x, pivot);//
-//		stack_print(*a, *b); //
-//	}//
 	cursor = (*b);
-	while (cursor && (amt_skipped + amt_moved < x && 2 * amt_moved <= x))
+	while (cursor && (amt_skipped + amt_moved < x))
 	{
 		cursor = (*b);
 		if (cursor->value >= pivot)
@@ -288,15 +279,9 @@ int	take_highest_x(t_stack **a, t_stack **b, int x)
 		{
 			send_command("rb", a, b);
 			++amt_skipped;
-//				stack_print(*a, *b);
-//				printf("amt_skipped = %d, x = %d, pivot = %d, value=%d\n", amt_skipped, x, pivot, (*b)->value); //DEL
 		}
 	}
-	while (amt_skipped != stack_len(*b) && amt_skipped > 0)
-	{
-		send_command("rrb", a, b);
-		--amt_skipped;
-	}
+//	printf("Finished take highest x=%d, and sorted == %d\n", x, stack_is_sorted(*a));
 	return (amt_moved);
 }
 
@@ -306,9 +291,19 @@ void put_top_3(t_stack **a, t_stack **b, int amount)
 	int	second;
 	int	third;
 
-//	printf("put top 3!!\n"); //
+//	printf("putting top 3 and sorted == %d\n", stack_is_sorted(*a));
 	if (!a || !b || !(*b) || amount > 3 || amount > stack_len(*b))
 		return ;
+	if (amount < -3 || amount < -stack_len(*b))
+		return ;
+	first = 0;
+	while (amount + first < 0) //can be sorted as it is pulled down to save steps
+	{
+		send_command("rrb", a, b);
+		++first;
+	}
+	if (amount < 0)
+		amount *= -1;
 	if (amount > 3)
 		printf("ERROR, MORE THAN 3 PUT AT SORT TOP THREE\n");//
 	if (amount > 0)
@@ -379,21 +374,34 @@ void put_top_3(t_stack **a, t_stack **b, int amount)
 		if (first > second || second > third || first > third) //
 		{//
 			printf("ERROR not sorted after top 3 PLACED\n"); //
-			stack_print(*a, NULL);//
+//			stack_print(*a, NULL);//
 		}//
 	}
-
+//	printf("Finished putting top 3 and sorted == %d\n", stack_is_sorted(*a));
+	if (!stack_is_sorted(*a))
+	{
+		printf("ERROR not sorted after top 3 PLACED\n"); //
+		read(0, NULL, 1);
+	}
 }
 
 int	quicksort_right(t_stack **a, t_stack **b, int amount)
 {
-	int	amt_moved;
+	unsigned int	amt_moved;
 
+//	printf("Quicksorting_right, amount=%d, and sorted == %d\n", amount, stack_is_sorted(*a));
+//	if (1 || !stack_is_sorted(*a)) //
+//	{ //
+//		printf("print the stack\n"); //
+//		stack_print(*a, *b); //
+//	}
 	amt_moved = 0;
-	if (amount < 1 || !stack_len(*b))
+	if (amount == 0 || !stack_len(*b))
 		return (0);
-	if (amount < 4)
+	if (amount > -4 && amount < 4)
 	{
+//		if (amount < 0)
+//			printf("WARNING, does put_top_3 really work with amount <0 ==%d\n", amount);
 		put_top_3(a, b, amount);
 //		while (amt_moved < amount)
 //		{
@@ -405,15 +413,21 @@ int	quicksort_right(t_stack **a, t_stack **b, int amount)
 	}
 	else
 	{
-		amt_moved = take_highest_x(a, b, amount);
-		if (amt_moved == amount) //
+		if (amount > 0)
+			amt_moved = take_highest_x(a, b, ft_abs(amount));
+		else
+			amt_moved = take_highest_x_rev(a, b, ft_abs(amount));
+		if (amt_moved == ft_abs(amount)) //
 			printf ("ERROR, moved whole stack\n"); //
-		if (amt_moved > amount) //
+		if (amt_moved > ft_abs(amount)) //
 			printf("ERROR, moved more than whole stack\n"); //
 		//move from right to left (amount / 2))
 		//	remember that if amount < 0: cmd = "rrb" else "rb"
-		quicksort_left(a, b, amt_moved);
-		quicksort_right(a, b, amount - amt_moved);
+		quicksort_left(a, b, (int)amt_moved);
+		if (amount < 0)
+			quicksort_right(a, b, (int)(ft_abs(amount) - amt_moved));
+		else
+			quicksort_right(a, b, (-1) * (int)(amount - amt_moved));
 	}
 	return (amt_moved);
 }
@@ -439,7 +453,11 @@ void	sort_top_3(t_stack **a, int amount)
 		amount *= -1;
 	if (amount > 3)
 		printf("ERROR, MORE THAN 3 PUT AT SORT TOP THREE\n");//
-	if (amount == 2 && (*a)->value > (*a)->next->value)
+//	first = (*a)->value;  //
+//	second = (*a)->next->value; //
+//	third = (*a)->next->next->value; //
+//	printf("a: %d %d %d ... %d\n", first, second, third, stack_last(*a)->value); //
+	if (amount == 2)
 		send_command("sa", a, NULL);
 	else if (amount == 3)
 	{
@@ -496,21 +514,37 @@ void	sort_top_3(t_stack **a, int amount)
 			send_command("sa", a, NULL);
 		if (first > second && second > third)
 			send_command("sa", a, NULL); */
-		first = (*a)->value; //
-		second = (*a)->next->value; //
-		third = (*a)->next->next->value; //
-		if (first > second || second > third || first > third) //
-		{//
-			printf("ERROR not sorted after top 3\n"); //
-			stack_print(*a, NULL);//
-		}//
+//		first = (*a)->value; //
+//		second = (*a)->next->value; //
+//		third = (*a)->next->next->value; //
+//		if (first > second || second > third || first > third) //
+//		{//
+//			printf("ERROR not sorted after top 3\n"); //
+//			stack_print(*a, NULL);//
+//		}//
 	}
+//	first = (*a)->value;  //
+//	second = (*a)->next->value; //
+//	third = (*a)->next->next->value; //
+//	printf("a: %d %d %d ... %d\n", first, second, third, stack_last(*a)->value); //
+//	if (!stack_is_sorted(*a)) //
+//	{ //
+//		printf("print the stack\n"); //
+//		stack_print(*a, NULL); //
+//		exit(0); //
+//	}
 }
 
 int	quicksort_left(t_stack **a, t_stack **b, int amount)
 {
 	unsigned int	amt_moved;
 
+//	printf("Quicksorting_left, amount=%d, and sorted == %d\n", amount, stack_is_sorted(*a));
+//	if (1 || !stack_is_sorted(*a)) //
+//	{ //
+//		printf("print the stack\n"); //
+//		stack_print(*a, *b); //
+//	}
 	amt_moved = 0;
 	if (stack_is_sorted(*a) || amount == 0)
 		return (0);
