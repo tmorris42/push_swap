@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   stack_utils.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/08 17:57:54 by tmorris           #+#    #+#             */
-/*   Updated: 2021/06/18 14:30:01 by tmorris          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "stack.h"
 
 void	stack_add_back(t_stack **stack, t_stack *new)
@@ -25,6 +13,7 @@ void	stack_add_back(t_stack **stack, t_stack *new)
 		last = stack_last(*stack);
 		last->next = new;
 		new->prev = last;
+		new->next = NULL;
 	}
 }
 

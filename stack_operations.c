@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   stack_operations.c                                 :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/08 17:57:54 by tmorris           #+#    #+#             */
-/*   Updated: 2021/06/18 14:33:52 by tmorris          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "stack.h"
 
 void	stack_verify(t_stack *a, t_stack *b)
@@ -46,7 +34,8 @@ void	stack_push(t_stack **src, t_stack **dest)
 	temp = (*src)->next;
 	stack_add_front(dest, (*src));
 	(*src) = temp;
-	(*src)->prev = NULL;
+	if (*src)
+		(*src)->prev = NULL;
 }
 
 void	stack_rotate(t_stack **stack)
