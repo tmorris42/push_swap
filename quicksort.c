@@ -48,51 +48,6 @@ float	get_pivot(t_stack *a, int limit)
 	return (median);
 }
 
-/*int	quicksort_iter(t_stack **a, t_stack **b)
-{
-	float pivot;
-	int	limit;
-	int	i;
-	int	amt_skipped;
-	int	amt_sorted;
-
-	if (!a || !b)
-		return (-1);
-	amt_sorted = 0;
-	while (!stack_is_ordered(*a)) //|| stack_len(*b))
-	{
-		limit = stack_len(*a) - amt_sorted;
-		pivot = get_pivot(*a, limit);
-		printf("Pivot = %f\n", pivot);
-		i = 0;
-		amt_skipped = 0;
-		while (i < limit)
-		{
-			if ((*a)->value < pivot)
-			{
-				send_command("pb", a,b);
-			}
-			else
-			{
-				send_command("ra", a, b);
-				++amt_skipped;
-			}
-			++i;
-		}
-		while (amt_sorted && amt_skipped)
-		{
-			send_command("rra", a, b);
-			--amt_skipped;
-		}
-	}
-	if (stack_len(*b))
-	{
-		take_from_b(a, b);
-		// start over
-	}
-	return (0);
-}*/
-
 int	pass_lowest_x(t_stack **a, t_stack **b, int x)
 {
 	float	pivot;
