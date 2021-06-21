@@ -22,7 +22,8 @@ void	stack_swap(t_stack **stack)
 	(*stack)->next = temp;
 	(*stack)->prev = temp->prev;
 	temp->prev = (*stack);
-	temp->next->prev = temp;
+	if (temp->next)
+		temp->next->prev = temp;
 }
 
 void	stack_push(t_stack **src, t_stack **dest)
@@ -31,11 +32,13 @@ void	stack_push(t_stack **src, t_stack **dest)
 
 	if (!src || !(*src))
 		return ;
-	temp = (*src)->next;
-	stack_add_front(dest, (*src));
-	(*src) = temp;
+	temp = (*src);
+	(*src) = (*src)->next;
 	if (*src)
 		(*src)->prev = NULL;
+	temp->next = NULL;
+	temp->prev = NULL;
+	stack_add_front(dest, temp);
 }
 
 void	stack_rotate(t_stack **stack)
@@ -63,4 +66,5 @@ void	stack_reverse_rotate(t_stack **stack)
 	last->prev = NULL;
 	last->next = (*stack);
 	last->next->prev = last;
+	(*stack) = last;
 }
