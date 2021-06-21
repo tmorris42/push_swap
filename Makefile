@@ -59,7 +59,7 @@ vis5: $(PUSH_SWAP)
 vis3: $(PUSH_SWAP)
 	python3.7 ../push_swap_visualizer/pyviz.py `ruby -e "puts (-1..1).to_a.shuffle.join(' ')"`
 
-test:
+test: all
 	python3.7 ./test.py
 
 debug: $(STACK_SRCS) $(PUSH_SWAP_SRCS)
