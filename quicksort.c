@@ -439,7 +439,7 @@ void	sort_top_3(t_stack **a, int amount)
 		amount *= -1;
 	if (amount > 3)
 		printf("ERROR, MORE THAN 3 PUT AT SORT TOP THREE\n");//
-	if (amount == 2)
+	if (amount == 2 && (*a)->value > (*a)->next->value)
 		send_command("sa", a, NULL);
 	else if (amount == 3)
 	{
