@@ -52,19 +52,21 @@ void	stack_rotate(t_stack **stack)
 	last->next->prev = last;
 	*stack = (*stack)->next;
 	(*stack)->prev = NULL;
-	last->next->next = NULL;
+	if (last->next)
+		last->next->next = NULL;
 }
 
 void	stack_reverse_rotate(t_stack **stack)
 {
 	t_stack *last;
 
-	if (!stack || !(*stack))
+	if (!stack || !(*stack) || !((*stack)->next))
 		return ;
 	last = stack_last(*stack);
 	last->prev->next = NULL;
 	last->prev = NULL;
 	last->next = (*stack);
-	last->next->prev = last;
+	if (last->next)
+		last->next->prev = last;
 	(*stack) = last;
 }
