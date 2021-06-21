@@ -6,6 +6,8 @@ int	quicksort_left(t_stack **a, t_stack **b, int amount);
 void	rotate_high_to_bottom(t_stack **a);
 int	sort_3(t_stack **a, t_stack **b);
 
+static	int	DEBUG = 0;
+
 float	get_pivot(t_stack *a, int limit)
 {
 	float	median;
@@ -98,7 +100,8 @@ unsigned int	pass_lowest_x_rev(t_stack **a, t_stack **b, unsigned int x)
 	unsigned int	amt_moved;
 	int	amt_skipped;
 
-//	printf("Pass lowest rev x=%d, and sorted == %d\n", x, stack_is_sorted(*a));
+	if (DEBUG > 2)
+		printf("Pass lowest rev x=%d, and sorted == %d\n", x, stack_is_sorted(*a));
 	if (!a || !b)
 		return (-1);
 	if (x < 0)
@@ -106,9 +109,12 @@ unsigned int	pass_lowest_x_rev(t_stack **a, t_stack **b, unsigned int x)
 	amt_moved = 0;
 	amt_skipped = 0;
 	pivot = get_pivot_rev(*a, x); //
-//	printf("Trying rev pass low with x = %d\n", x); //;
-//	printf("And pivot = %f\n", pivot);//
-//	stack_print(*a, *b);//
+	if (DEBUG > 2 && !stack_is_sorted(*a))
+	{
+		printf("Trying rev pass low with x = %d\n", x); //;
+		printf("And pivot = %f\n", pivot);//
+		stack_print(*a, *b);//
+	}
 	cursor = (*a);;
 	while (cursor && amt_moved + amt_skipped < x)
 	{
@@ -191,7 +197,8 @@ int	take_highest_x_rev(t_stack **a, t_stack **b, int x)
 	int	amt_moved;
 	int	amt_skipped;
 
-//	printf("Take highest rev x=%d, and sorted == %d\n", x, stack_is_sorted(*a));
+	if (DEBUG > 2)
+		printf("Take highest rev x=%d, and sorted == %d\n", x, stack_is_sorted(*a));
 	if (!a || !b)
 		return (-1);
 	if (x < 0)
@@ -243,7 +250,8 @@ int	take_highest_x(t_stack **a, t_stack **b, int x)
 	int	amt_moved;
 	int	amt_skipped;
 
-//	printf("Take highest x=%d, and sorted == %d\n", x, stack_is_sorted(*a));
+	if (DEBUG > 2)
+		printf("Take highest x=%d, and sorted == %d\n", x, stack_is_sorted(*a));
 	if (!a || !b)
 		return (-1);
 	if (x < 0)
@@ -261,7 +269,7 @@ int	take_highest_x(t_stack **a, t_stack **b, int x)
 	while (x < 3 && amt_moved < x)
 	{
 //		insert_in_place(a, b);
-		send_command("sa", a, b);
+		send_command("pa", a, b);
 		++amt_moved;
 	}
 	if (x < 4)
@@ -281,7 +289,8 @@ int	take_highest_x(t_stack **a, t_stack **b, int x)
 			++amt_skipped;
 		}
 	}
-//	printf("Finished take highest x=%d, and sorted == %d\n", x, stack_is_sorted(*a));
+	if (DEBUG > 2)
+		printf("Finished take highest x=%d, and sorted == %d\n", x, stack_is_sorted(*a));
 	return (amt_moved);
 }
 
@@ -380,8 +389,8 @@ void put_top_3(t_stack **a, t_stack **b, int amount)
 //	printf("Finished putting top 3 and sorted == %d\n", stack_is_sorted(*a));
 	if (!stack_is_sorted(*a))
 	{
-		printf("ERROR not sorted after top 3 PLACED\n"); //
-		read(0, NULL, 1);
+//		printf("ERROR not sorted after top 3 PLACED\n"); //
+//		read(0, NULL, 1);
 	}
 }
 
