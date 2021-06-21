@@ -48,30 +48,121 @@ float	get_pivot(t_stack *a, int limit)
 	return (median);
 }
 
-int	pass_lowest_x(t_stack **a, t_stack **b, int x)
+float	get_pivot_rev(t_stack *a, int limit)
+{
+	float	median;
+	int	lower;
+	int	higher;
+	t_stack	*index;
+	int	i;
+
+	if (!a)
+		return (0);
+	if (limit == 0)
+		return (a->value);
+	median = stack_last(a)->value;
+	while (1)
+	{
+//		printf("Trying median = %f\n", median);
+		lower = 0;
+		higher = 0;
+		i = 0;
+		index = stack_last(a);
+		while (index && i < limit)
+		{
+			if (index->value < median)
+				++lower;
+			if (index->value > median)
+				++higher;
+			index = index->prev;
+			++i;
+		}
+		if (lower == higher)
+			return (median);
+		if (lower == higher - 1 || higher == lower - 1)
+		{
+			return (median + higher - lower);
+		}
+		if (higher > lower)
+			++median;
+		else if (higher < lower)
+			--median;
+	}
+	return (median);
+}
+
+unsigned int	pass_lowest_x_rev(t_stack **a, t_stack **b, unsigned int x)
 {
 	float	pivot;
-	t_stack *stop;
 	t_stack	*cursor;
-	t_stack	*next;
-	int	amt_moved;
+	unsigned int	amt_moved;
 	int	amt_skipped;
 
 	if (!a || !b)
 		return (-1);
 	if (x < 0)
-		printf("ERROR pass_lowest x is neg\n");
+		printf("ERROR pass_lowest_rev x is neg (== %d)\n", x);
 	amt_moved = 0;
 	amt_skipped = 0;
-	stop = NULL;
+	pivot = get_pivot_rev(*a, x); //
+//	printf("Trying rev pass low with x = %d\n", x); //;
+//	printf("And pivot = %f\n", pivot);//
+//	stack_print(*a, *b);//
+	cursor = (*a);;
+	while (cursor && amt_moved + amt_skipped < x)
+	{
+//		printf("And pivot = %f\n", pivot);//
+		send_command("rra", a, b);
+		cursor = (*a);;
+		if (cursor->value < pivot)
+		{
+			send_command("pb", a, b);
+			++amt_moved;
+		}
+		else
+		{
+	//		send_command("rra", a, b);
+			++amt_skipped;
+		}
+	}
+//	printf("Done trying rev pass low with x = %d\n", x);
+//	stack_print(*a, *b);
+//	read(0, NULL, 1); //
+//	exit(0); ////DEBUG
+//	while (amt_skipped > 0)
+//	{
+//		send_command("ra", a, b);
+//		--amt_skipped;
+//	}
+	return (amt_moved);
+}
+
+unsigned int	pass_lowest_x(t_stack **a, t_stack **b, unsigned int x)
+{
+	float	pivot;
+	t_stack	*cursor;
+	unsigned int	amt_moved;
+	unsigned int	amt_skipped;
+
+	if (!a || !b || x > (unsigned int)stack_len(*a))
+	{
+		printf("ERROR x=%u and stack_len=%u\n", x, (unsigned int)stack_len(*a));
+		read(0, NULL, 1);
+		return (-1);
+	}
+	if (x < 0)
+		printf("ERROR pass_lowest x is neg (== %d)\n", x);
+	amt_moved = 0;
+	amt_skipped = 0;
+//	printf("About to go get pivot\n"); //
 	pivot = get_pivot(*a, x); //
+//	printf("Trying pass low with x = %d\n", x); //;
+//	printf("And pivot = %f\n", pivot);//
 	//printf("Pivot = %d\n", pivot);
 	cursor = (*a);
 	while (cursor && amt_moved + amt_skipped < x)
 	{
-		if (!stop && cursor->value > pivot)
-			stop = cursor;
-		next = cursor->next;
+		cursor = (*a);
 		if (cursor->value < pivot)
 		{
 			send_command("pb", a, b);
@@ -82,13 +173,69 @@ int	pass_lowest_x(t_stack **a, t_stack **b, int x)
 			send_command("ra", a, b);
 			++amt_skipped;
 		}
-		cursor = next;
-		if (cursor == stop)
-			return (amt_moved);
 	}
-	while (amt_skipped > 0)
+//	while (amt_skipped > 0)
+//	{
+//		send_command("rra", a, b);
+//		--amt_skipped;
+//	}
+	return (amt_moved);
+}
+
+int	take_highest_x_rev(t_stack **a, t_stack **b, int x)
+{
+	float	pivot;
+	t_stack	*cursor;
+	int	amt_moved;
+	int	amt_skipped;
+
+	if (!a || !b)
+		return (-1);
+	if (x < 0)
+		printf("ERROR take_highest x is neg\n"); //
+	if (x == 1)
 	{
-		send_command("rra", a, b);
+		send_command("pa", a, b);
+		return (0);
+	}
+	amt_moved = 0;
+	amt_skipped = 0;
+	if (x > stack_len(*b))
+		x = stack_len(*b);
+	pivot = get_pivot_rev(*b, x); //
+	while (x < 3 && amt_moved < x)
+	{
+//		insert_in_place(a, b);
+		send_command("sa", a, b);
+		++amt_moved;
+	}
+	if (x < 4)
+		return (amt_moved);
+//	if (x == 5)//
+//	{//
+//		printf("x=%d, pivot=%f\n", x, pivot);//
+//		stack_print(*a, *b); //
+//	}//
+	cursor = (*b);
+	while (cursor && (amt_skipped + amt_moved < x && 2 * amt_moved <= x))
+	{
+		cursor = (*b);
+		if (cursor->value >= pivot)
+		{
+			send_command("pa", a, b);
+			++amt_moved;
+		}
+		else
+		{
+			send_command("rrb", a, b);
+			++amt_skipped;
+//				stack_print(*a, *b);
+//				printf("amt_skipped = %d, x = %d, pivot = %d, value=%d\n", amt_skipped, x, pivot, (*b)->value); //DEL
+		}
+	}
+	while (amt_skipped != stack_len(*b) && amt_skipped > 0)
+	{
+		send_command("rb", a, b);
 		--amt_skipped;
 	}
 	return (amt_moved);
@@ -280,8 +427,16 @@ void	sort_top_3(t_stack **a, int amount)
 
 	b = NULL; //
 
-	if (!a || !(*a) || amount < 2 || amount > stack_len(*a))
+	if (!a || !(*a) || amount > stack_len(*a))
 		return ;
+	first = 0;
+	while (amount + first < 0)
+	{
+		send_command("rra", a, NULL);
+		++first;
+	}
+	if (amount < 0)
+		amount *= -1;
 	if (amount > 3)
 		printf("ERROR, MORE THAN 3 PUT AT SORT TOP THREE\n");//
 	if (amount == 2)
@@ -354,31 +509,44 @@ void	sort_top_3(t_stack **a, int amount)
 
 int	quicksort_left(t_stack **a, t_stack **b, int amount)
 {
-	int	amt_moved;
+	unsigned int	amt_moved;
 
 	amt_moved = 0;
 	if (stack_is_sorted(*a) || amount == 0)
 		return (0);
-	if (amount > -3 && amount < 4)
+	if (amount > -4 && amount < 4)
 	{
-		//swap the top two, or pull down and swap the top two
-//		if (amount < 0)
-//			send_command("rra", a, b);
-//		send_command("sa", a, b);
 		sort_top_3(a, amount);
 	}
 	else
 	{
-		amt_moved = pass_lowest_x(a, b, amount);
-		if (amt_moved == amount) //
+		if (amount > 0 || ft_abs(amount) == (unsigned int)stack_len(*a))
+		{
+//			printf("proceeding with lowest forward amount = %d\n", amount);
+			amt_moved = pass_lowest_x(a, b, (unsigned int)ft_abs(amount));
+		}
+		else
+		{
+//			printf("proceeding with lowest reverse amount = %d\n", amount);
+			amt_moved = pass_lowest_x_rev(a, b, ft_abs(amount));
+		}
+		if (ft_abs(amt_moved) == ft_abs(amount)) //
 			printf ("ERROR, moved whole stack from left to right\n"); //
 		//move from left to right (amount - (amount / 2))
 		//	remember that if amount < 0: cmd = "rra" else "ra"
-		quicksort_left(a, b, amount - amt_moved);
+		if (amount < 0)
+		{
+			quicksort_left(a, b, ft_abs(amount) - amt_moved);
 //		printf("amt_moved == %d, stack_len(a) == %d\n", amt_moved, stack_len(*a));
 //		stack_print(*a, *b);
 //		exit(0); //TESTING
-		quicksort_right(a, b, amt_moved);
+			quicksort_right(a, b, amt_moved);
+		}
+		else
+		{
+			quicksort_left(a, b, (-1) * (amount - amt_moved));
+			quicksort_right(a, b, amt_moved);
+		}
 	}
 	return (0);
 }
