@@ -336,6 +336,7 @@ void	sort_top_3(t_stack **a, int amount)
 		if (stack_len(*a) == 3)
 		{
 			sort_3(a, NULL);
+			rotate_high_to_bottom(a);
 			return ;
 		}
 		first = (*a)->value;
