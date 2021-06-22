@@ -296,7 +296,7 @@ int	take_highest_6(t_stack **a, t_stack **b, int x)
 		if ((*b)->value > pivot)
 		{
 			send_command("pa", a, b);
-			if ((*a)->value == lowhigh[0] && amt_moved != 2)
+			if ((*a)->value == lowhigh[0] && (*a)->next->value != lowhigh[1] && amt_moved < 2)
 				send_command("ra", a, b); //could also check if "rb" happens next
 			else if (amt_moved > 1 && (*a)->value > (*a)->next->value)
 				send_command("sa", a, b); //could ss be useful here ever?
