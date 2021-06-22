@@ -76,17 +76,17 @@ float	get_upper_pivot(t_stack *a, float pivot)
 			if (index->value >= pivot)
 			{
 			}
-			else if (index->value <= median)
+			else if (index->value < median)
 				++lower;
-			else if (index->value > median)
+			else if (index->value >= median)
 				++higher;
 			index = index->next;
 		}
 		if (lower == higher)
 			return (median);
-		if (lower == higher - 1 || higher == lower - 1)
+		if (lower == higher - 1) // || higher == lower - 1)
 		{
-			return (median + higher - lower);
+			return (median);
 		}
 		if (higher > lower)
 			++median;
@@ -212,7 +212,7 @@ unsigned int	pass_lowest_x_double(t_stack **a, t_stack **b, unsigned int x)
 		if ((*a)->value < pivot)
 		{
 			send_command("pb", a, b);
-			if ((*b)->value <= upper_pivot && (*b)->next && (*b)->next->value >= upper_pivot)
+			if ((*b)->value < upper_pivot && (*b)->next && (*b)->next->value >= upper_pivot)
 				send_command("rb", a, b); // use rr if appropriate
 			++amt_moved;
 		}
