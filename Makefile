@@ -10,7 +10,7 @@ STACK_SRCS = stack.c stack_utils.c stack_operations.c read_args.c commands.c \
 STACK_OBJS = ${STACK_SRCS:.c=.o}
 CHECKER_SRCS = checker.c 
 CHECKER_OBJS = ${CHECKER_SRCS:.c=.o}
-PUSH_SWAP_SRCS = push_swap.c quicksort.c
+PUSH_SWAP_SRCS = push_swap.c quicksort.c pivot.c lowhigh.c
 PUSH_SWAP_OBJS = ${PUSH_SWAP_SRCS:.c=.o}
 
 all: $(CHECKER) $(PUSH_SWAP)

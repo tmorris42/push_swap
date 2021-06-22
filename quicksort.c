@@ -14,131 +14,6 @@ void put_top_3(t_stack **a, t_stack **b, int amount);
 # define DEBUG 0
 #endif
 
-float	get_pivot(t_stack *a, int limit)
-{
-	float	median;
-	int	lower;
-	int	higher;
-	t_stack	*index;
-	int	i;
-
-	if (!a)
-		return (0);
-	if (limit == 0)
-		return (a->value);
-	median = a->value;
-	while (1)
-	{
-		lower = 0;
-		higher = 0;
-		i = 0;
-		index = a;
-		while (index && i < limit)
-		{
-			if (index->value < median)
-				++lower;
-			if (index->value > median)
-				++higher;
-			index = index->next;
-			++i;
-		}
-		if (lower == higher)
-			return (median);
-		if (lower == higher - 1 || higher == lower - 1)
-		{
-			return (median + higher - lower);
-		}
-		if (higher > lower)
-			++median;
-		else if (higher < lower)
-			--median;
-	}
-	return (median);
-}
-
-float	get_upper_pivot(t_stack *a, float pivot)
-{
-	float	median;
-	int	lower;
-	int	higher;
-	t_stack	*index;
-
-	if (!a)
-		return (0);
-	median = a->value;
-	while (1)
-	{
-		lower = 0;
-		higher = 0;
-		index = a;
-		while (index)
-		{
-			if (index->value >= pivot)
-			{
-			}
-			else if (index->value < median)
-				++lower;
-			else if (index->value >= median)
-				++higher;
-			index = index->next;
-		}
-		if (lower == higher)
-			return (median);
-		if (lower == higher - 1) // || higher == lower - 1)
-		{
-			return (median);
-		}
-		if (higher > lower)
-			++median;
-		else if (higher < lower)
-			--median;
-	}
-	return (median);
-}
-
-float	get_pivot_rev(t_stack *a, int limit)
-{
-	float	median;
-	int	lower;
-	int	higher;
-	t_stack	*index;
-	int	i;
-
-	if (!a)
-		return (0);
-	if (limit == 0)
-		return (a->value);
-	median = stack_last(a)->value;
-	while (1)
-	{
-//		printf("Trying median = %f\n", median);
-		lower = 0;
-		higher = 0;
-		i = 0;
-		index = stack_last(a);
-		while (index && i < limit)
-		{
-			if (index->value < median)
-				++lower;
-			if (index->value > median)
-				++higher;
-			index = index->prev;
-			++i;
-		}
-		if (lower == higher)
-			return (median);
-		if (lower == higher - 1 || higher == lower - 1)
-		{
-			return (median + higher - lower);
-		}
-		if (higher > lower)
-			++median;
-		else if (higher < lower)
-			--median;
-	}
-	return (median);
-}
-
 unsigned int	pass_lowest_x_rev(t_stack **a, t_stack **b, unsigned int x)
 {
 	float	pivot;
@@ -275,29 +150,6 @@ unsigned int	pass_lowest_x(t_stack **a, t_stack **b, unsigned int x)
 	return (amt_moved);
 }
 
-void	lowhigh_prev_x(t_stack *stack, int x, int pivot, int *lowhigh)
-{
-	int	low;
-	int high;
-	int	i;
-
-	i = 0;
-	low = pivot - 1;
-	high = pivot - 1;
-	stack = stack_last(stack);
-	while (stack && i < x)
-	{
-		if (stack->value > pivot && (stack->value < low || low < pivot))
-			low = stack->value;
-		if (stack->value > pivot && (stack->value > high))
-			high = stack->value;
-		stack = stack->prev;
-		++i;
-	}
-	lowhigh[0] = low;
-	lowhigh[1] = high;
-}
-
 int	take_highest_6_rev(t_stack **a, t_stack **b, int x)
 {
 	float	pivot;
@@ -406,28 +258,6 @@ int	take_highest_x_rev(t_stack **a, t_stack **b, int x)
 	if (DEBUG > 2)
 		printf("Finished take highest rev x=%d, moved=%d, and sorted == %d\n", x, amt_moved, stack_is_sorted(*a));
 	return (amt_moved);
-}
-
-void	lowhigh_next_x(t_stack *stack, int x, int pivot, int *lowhigh)
-{
-	int	low;
-	int high;
-	int	i;
-
-	i = 0;
-	low = pivot - 1;
-	high = pivot - 1;
-	while (stack && i < x)
-	{
-		if (stack->value > pivot && (stack->value < low || low < pivot))
-			low = stack->value;
-		if (stack->value > pivot && (stack->value > high))
-			high = stack->value;
-		stack = stack->next;
-		++i;
-	}
-	lowhigh[0] = low;
-	lowhigh[1] = high;
 }
 
 int	take_highest_6(t_stack **a, t_stack **b, int x)
