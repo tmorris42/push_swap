@@ -471,7 +471,7 @@ void	sort_top_3(t_stack **a, int amount)
 //	second = (*a)->next->value; //
 //	third = (*a)->next->next->value; //
 //	printf("a: %d %d %d ... %d\n", first, second, third, stack_last(*a)->value); //
-	if (amount == 2)
+	if (amount == 2 && (*a)->value > (*a)->next->value)
 		send_command("sa", a, NULL);
 	else if (amount == 3)
 	{
