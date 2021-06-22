@@ -110,8 +110,6 @@ unsigned int	pass_lowest_x_rev(t_stack **a, t_stack **b, unsigned int x)
 		printf("Pass lowest rev x=%d, and sorted == %d\n", x, stack_is_sorted(*a));
 	if (!a || !b)
 		return (-1);
-	if (x < 0)
-		printf("ERROR pass_lowest_rev x is neg (== %d)\n", x);
 	amt_moved = 0;
 	amt_skipped = 0;
 	pivot = get_pivot_rev(*a, x); //
@@ -160,8 +158,6 @@ unsigned int	pass_lowest_x(t_stack **a, t_stack **b, unsigned int x)
 		read(0, NULL, 1);
 		return (-1);
 	}
-	if (x < 0)
-		printf("ERROR pass_lowest x is neg (== %d)\n", x);
 	amt_moved = 0;
 	amt_skipped = 0;
 //	printf("About to go get pivot\n"); //
