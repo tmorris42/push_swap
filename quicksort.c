@@ -655,6 +655,15 @@ int	quicksort_right(t_stack **a, t_stack **b, int amount)
 //		}
 //		quicksort_left(a, b, amt_moved);
 	}
+	else if (amount > 0 && amount < 7)
+	{
+		while (amt_moved < ft_abs(amount))
+		{
+			insert_in_place(a, b);
+			++amt_moved;
+		}
+		rotate_high_to_bottom(a);
+	}
 	else
 	{
 		if (amount > 0)
