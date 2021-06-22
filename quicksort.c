@@ -279,7 +279,7 @@ int	take_highest_x(t_stack **a, t_stack **b, int x)
 	while (cursor && (amt_skipped + amt_moved < x))
 	{
 		cursor = (*b);
-		if (cursor->value >= pivot)
+		if (cursor->value > pivot)
 		{
 			send_command("pa", a, b);
 			++amt_moved;
