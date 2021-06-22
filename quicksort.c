@@ -73,7 +73,7 @@ float	get_upper_pivot(t_stack *a, float pivot)
 		index = a;
 		while (index)
 		{
-			if (index->value > pivot)
+			if (index->value >= pivot)
 			{
 			}
 			else if (index->value <= median)
@@ -209,7 +209,7 @@ unsigned int	pass_lowest_x_double(t_stack **a, t_stack **b, unsigned int x)
 		printf("And upper pivot = %f\n", upper_pivot);//
 	while ((*a) && amt_moved + amt_skipped < x)
 	{
-		if ((*a)->value <= pivot)
+		if ((*a)->value < pivot)
 		{
 			send_command("pb", a, b);
 			if ((*b)->value <= upper_pivot && (*b)->next && (*b)->next->value >= upper_pivot)
