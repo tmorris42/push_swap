@@ -16,10 +16,7 @@ int	get_commands(t_stack **a, t_stack **b)
 		{
 			cmd = parse_command(buf);
 			if (cmd > 0)
-			{
 				run_command(cmd, a, b);
-		//		stack_print(*a, *b);
-			}
 			else
 			{
 				free(buf);
