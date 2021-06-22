@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   stack_utils.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/08 17:57:54 by tmorris           #+#    #+#             */
-/*   Updated: 2021/06/12 16:46:11 by tmorris          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "stack.h"
 
 void	stack_add_back(t_stack **stack, t_stack *new)
@@ -24,6 +12,8 @@ void	stack_add_back(t_stack **stack, t_stack *new)
 	{
 		last = stack_last(*stack);
 		last->next = new;
+		new->prev = last;
+		new->next = NULL;
 	}
 }
 
@@ -32,7 +22,10 @@ void	stack_add_front(t_stack **stack, t_stack *node)
 	if (!stack || !node)
 		return ;
 	node->next = *stack;
+	node->prev = NULL;
 	*stack = node;
+	if (node->next)
+		node->next->prev = node;
 }
 
 int	stack_is_ordered(t_stack *stack)
