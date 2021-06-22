@@ -1,11 +1,13 @@
 #include "push_swap.h"
 #include <stdio.h> //debug only
 
+int	four_hold_sort_mod(t_stack **a, t_stack **b);
 void	insert_in_place(t_stack **a, t_stack**b);
 int	quicksort_left(t_stack **a, t_stack **b, int amount);
 void	rotate_high_to_bottom(t_stack **a);
 void	sort_top_3(t_stack **a, t_stack **b, int amount);
 int	sort_3(t_stack **a, t_stack **b);
+int	sort_5(t_stack **a, t_stack **b);
 void put_top_3(t_stack **a, t_stack **b, int amount);
 
 #ifndef DEBUG
@@ -845,7 +847,35 @@ int	quicksort_left(t_stack **a, t_stack **b, int amount)
 		return (0);
 	if (amount > -4 && amount < 4)
 	{
-		sort_top_3(a, b, amount);
+		if (stack_len(*a) < 4)
+		{
+			sort_3(a, b);
+			rotate_high_to_bottom(a);
+		}
+		else
+			sort_top_3(a, b, amount);
+	}
+	else if (amount > -6 && amount < 6 && stack_len(*a) < 6)
+	{
+		sort_5(a, b);
+		rotate_high_to_bottom(a);
+	}
+	else if ((amount == -6 || amount == 6) && stack_len(*a) == 6)
+	{
+		if (DEBUG > 2)
+		{
+			stack_print(*a, *b);
+			read(0, NULL, 1);
+		}
+		send_command("pb", a, b);
+		sort_5(a, b);
+		insert_in_place(a, b);
+		rotate_high_to_bottom(a);
+		if (DEBUG > 2)
+		{
+			stack_print(*a, *b);
+			read(0, NULL, 1);
+		}
 	}
 	else
 	{
