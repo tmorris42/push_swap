@@ -6,6 +6,7 @@ int	quicksort_left(t_stack **a, t_stack **b, int amount);
 void	rotate_high_to_bottom(t_stack **a);
 void	sort_top_3(t_stack **a, t_stack **b, int amount);
 int	sort_3(t_stack **a, t_stack **b);
+void put_top_3(t_stack **a, t_stack **b, int amount);
 
 #ifndef DEBUG
 # define DEBUG 0
@@ -295,6 +296,76 @@ int	take_highest_x(t_stack **a, t_stack **b, int x)
 	return (amt_moved);
 }
 
+void put_top_3_rev(t_stack **a, t_stack **b, int amount)
+{
+	int	first;
+	int	second;
+	int	third;
+
+	if (DEBUG > 2)
+	{
+		printf("PUT TOP 3 REV: amount=%d\n", amount);
+		stack_print(*a, *b);
+	}
+	if (amount != -3)
+	{
+		if (amount < 0)
+			send_command("rrb", a, b);
+		if (amount < -1)
+			send_command("rrb", a, b);
+		put_top_3(a, b, amount * (-1));
+		if (DEBUG > 2)
+		{
+			printf("FINISHED PUT TOP 3 REV: amount=%d\n", amount);
+			stack_print(*a, *b);
+		}
+		return ;
+	}
+	first = stack_last(*b)->value;
+	second = stack_last(*b)->prev->value;
+	third = stack_last(*b)->prev->prev->value;
+	if (first > second && first > third)
+	{
+		send_command("rrb", a, b);
+		send_command("pa", a, b);
+		send_command("rrb", a, b);
+		if (second > third)
+			send_command("pa", a, b);
+		send_command("rrb", a, b);
+		send_command("pa", a, b);
+		if (second < third)
+			send_command("pa", a, b);
+	}
+	if (second > first && second > third)
+	{
+		send_command("rrb", a, b);
+		send_command("rrb", a, b);
+		send_command("pa", a, b);
+		if (first > third)
+			send_command("pa", a, b);
+		send_command("rrb", a, b);
+		send_command("pa", a, b);
+		if (first < third)
+			send_command("pa", a, b);
+	}
+	if (third > second && third > first)
+	{
+		send_command("rrb", a, b);
+		send_command("rrb", a, b);
+		send_command("rrb", a, b);
+		send_command("pa", a, b);
+		if (first > second)
+			send_command("sb", a, b);
+		send_command("pa", a, b);
+		send_command("pa", a, b);
+	}
+	if (DEBUG > 2)
+	{
+		printf("FINISHED PUT TOP 3 REV: amount=%d\n", amount);
+		stack_print(*a, *b);
+	}
+}
+
 void put_top_3(t_stack **a, t_stack **b, int amount)
 {
 	int	first;
@@ -306,14 +377,21 @@ void put_top_3(t_stack **a, t_stack **b, int amount)
 		return ;
 	if (amount < -3 || amount < -stack_len(*b))
 		return ;
-	first = 0;
-	while (amount + first < 0) //can be sorted as it is pulled down to save steps
-	{
-		send_command("rrb", a, b);
-		++first;
-	}
 	if (amount < 0)
-		amount *= -1;
+	{
+		put_top_3_rev(a, b, amount);
+		return ;
+	}
+//	first = 0;
+//	while (amount + first < 0) //can be sorted as it is pulled down to save steps
+//	{
+//		if (DEBUG > 2)
+//			printf("REWINDING 1\n");
+//		send_command("rrb", a, b);
+//		++first;
+//	}
+//	if (amount < 0)
+//		amount *= -1;
 	if (amount > 3)
 		printf("ERROR, MORE THAN 3 PUT AT SORT TOP THREE\n");//
 	if (amount > 0)
@@ -645,6 +723,8 @@ int	quicksort_left(t_stack **a, t_stack **b, int amount)
 			quicksort_right(a, b, amt_moved);
 		}
 	}
+	if (DEBUG > 2)
+		printf("Finished quicksort_left amount=%d,  nd sorted == %d\n", amount, stack_is_sorted(*a));
 	return (0);
 }
 
