@@ -56,6 +56,46 @@ float	get_pivot(t_stack *a, int limit)
 	return (median);
 }
 
+float	get_upper_pivot(t_stack *a, float pivot)
+{
+	float	median;
+	int	lower;
+	int	higher;
+	t_stack	*index;
+
+	if (!a)
+		return (0);
+	median = a->value;
+	while (1)
+	{
+		lower = 0;
+		higher = 0;
+		index = a;
+		while (index)
+		{
+			if (index->value > pivot)
+			{
+			}
+			else if (index->value <= median)
+				++lower;
+			else if (index->value > median)
+				++higher;
+			index = index->next;
+		}
+		if (lower == higher)
+			return (median);
+		if (lower == higher - 1 || higher == lower - 1)
+		{
+			return (median + higher - lower);
+		}
+		if (higher > lower)
+			++median;
+		else if (higher < lower)
+			--median;
+	}
+	return (median);
+}
+
 float	get_pivot_rev(t_stack *a, int limit)
 {
 	float	median;
@@ -139,6 +179,53 @@ unsigned int	pass_lowest_x_rev(t_stack **a, t_stack **b, unsigned int x)
 	if (DEBUG > 2)
 	{
 		printf("Finished pass low with  x=%d, moved=%d, and sorted == %d\n", x, amt_moved, stack_is_sorted(*a));
+	}
+	return (amt_moved);
+}
+
+unsigned int	pass_lowest_x_double(t_stack **a, t_stack **b, unsigned int x)
+{
+	float	pivot;
+	float	upper_pivot;
+	unsigned int	amt_moved;
+	unsigned int	amt_skipped;
+
+	if (DEBUG > 2)
+		printf("Pass lowest x_double=%d, and sorted == %d\n", x, stack_is_sorted(*a));
+	if (!a || !b || x > (unsigned int)stack_len(*a))
+	{
+//		printf("ERROR x=%u and stack_len=%u\n", x, (unsigned int)stack_len(*a));
+//		read(0, NULL, 1);
+		return (-1);
+	}
+	amt_moved = 0;
+	amt_skipped = 0;
+//	printf("About to go get pivot\n"); //
+	pivot = get_pivot(*a, x);
+	if (DEBUG > 3)
+		printf("And pivot = %f\n", pivot);//
+	upper_pivot = get_upper_pivot(*a, pivot);
+	if (DEBUG > 3)
+		printf("And upper pivot = %f\n", upper_pivot);//
+	while ((*a) && amt_moved + amt_skipped < x)
+	{
+		if ((*a)->value <= pivot)
+		{
+			send_command("pb", a, b);
+			if ((*b)->value <= upper_pivot && (*b)->next && (*b)->next->value >= upper_pivot)
+				send_command("rb", a, b); // use rr if appropriate
+			++amt_moved;
+		}
+		else
+		{
+			send_command("ra", a, b);
+			++amt_skipped;
+		}
+	}
+	if (DEBUG > 2)
+	{
+		printf("Finished pass low double with  x=%d, moved=%d, and sorted == %d\n", x, amt_moved, stack_is_sorted(*a));
+		stack_print(*a, *b);
 	}
 	return (amt_moved);
 }
@@ -678,6 +765,8 @@ int	quicksort_right(t_stack **a, t_stack **b, int amount)
 		else
 			quicksort_right(a, b, (-1) * (int)(amount - amt_moved));
 	}
+	if (DEBUG > 2)
+		printf("Finished quicksort_right amount=%d, and sorted == %d\n", amount, stack_is_sorted(*a));
 	return (amt_moved);
 }
 
@@ -804,36 +893,7 @@ void	sort_top_3(t_stack **a, t_stack **b, int amount)
 			send_command("rra", a, b);
 			send_command("sa", a, b);
 		}
-/*		if (first > second)
-			send_command("sa", a, NULL);
-		if (first > second && third > first)
-			return ;
-		send_command("ra", a, NULL);
-		send_command("sa", a, NULL);
-		send_command("rra", a, NULL);
-		if (first > third && second > first)
-			send_command("sa", a, NULL);
-		if (first > second && second > third)
-			send_command("sa", a, NULL); */
-//		first = (*a)->value; //
-//		second = (*a)->next->value; //
-//		third = (*a)->next->next->value; //
-//		if (first > second || second > third || first > third) //
-//		{//
-//			printf("ERROR not sorted after top 3\n"); //
-//			stack_print(*a, NULL);//
-//		}//
 	}
-//	first = (*a)->value;  //
-//	second = (*a)->next->value; //
-//	third = (*a)->next->next->value; //
-//	printf("a: %d %d %d ... %d\n", first, second, third, stack_last(*a)->value); //
-//	if (!stack_is_sorted(*a)) //
-//	{ //
-//		printf("print the stack\n"); //
-//		stack_print(*a, NULL); //
-//		exit(0); //
-//	}
 }
 
 int	quicksort_left(t_stack **a, t_stack **b, int amount)
@@ -881,6 +941,14 @@ int	quicksort_left(t_stack **a, t_stack **b, int amount)
 			stack_print(*a, *b);
 			read(0, NULL, 1);
 		}
+	}
+	else if (amount == stack_len(*a) && stack_len(*b) == 0)
+	{
+		amt_moved = pass_lowest_x_double(a, b, (unsigned int)ft_abs(amount));
+		quicksort_left(a, b, (-1) * (amount - amt_moved));
+		quicksort_right(a, b, (amt_moved / 2) + (amt_moved % 2));
+		quicksort_right(a, b, (amt_moved / 2));
+//		quicksort_right(a, b, (amt_moved / 2) + (amt_moved % 2));
 	}
 	else
 	{
