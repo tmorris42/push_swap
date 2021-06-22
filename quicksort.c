@@ -243,6 +243,8 @@ int	take_highest_x_rev(t_stack **a, t_stack **b, int x)
 //				printf("amt_skipped = %d, x = %d, pivot = %d, value=%d\n", amt_skipped, x, pivot, (*b)->value); //DEL
 		}
 	}
+	if (DEBUG > 2)
+		printf("Finished take highest rev x=%d, moved=%d, and sorted == %d\n", x, amt_moved, stack_is_sorted(*a));
 	return (amt_moved);
 }
 
@@ -551,7 +553,8 @@ int	quicksort_left(t_stack **a, t_stack **b, int amount)
 {
 	unsigned int	amt_moved;
 
-//	printf("Quicksorting_left, amount=%d, and sorted == %d\n", amount, stack_is_sorted(*a));
+	if (DEBUG > 2)
+		printf("Quicksorting_left, amount=%d, and sorted == %d\n", amount, stack_is_sorted(*a));
 //	if (1 || !stack_is_sorted(*a)) //
 //	{ //
 //		printf("print the stack\n"); //
@@ -600,6 +603,8 @@ int	quicksort_left(t_stack **a, t_stack **b, int amount)
 int	quicksort_recursive(t_stack **a, t_stack **b)
 {
 	quicksort_left(a, b, stack_len(*a));
+	if (DEBUG > 2)
+		stack_print(*a, *b);
 	return (0);
 }
 
