@@ -307,13 +307,27 @@ void put_top_3_rev(t_stack **a, t_stack **b, int amount)
 		printf("PUT TOP 3 REV: amount=%d\n", amount);
 		stack_print(*a, *b);
 	}
-	if (amount != -3)
+	if (amount < -3 || amount > -1)
 	{
-		if (amount < 0)
-			send_command("rrb", a, b);
-		if (amount < -1)
-			send_command("rrb", a, b);
-		put_top_3(a, b, amount * (-1));
+		printf("ERROR\n"); //
+	}
+	first = stack_last(*b)->value;
+	if (amount == -1)
+	{
+		send_command("rrb", a, b);
+		send_command("pa", a, b);
+		return ;
+	}
+	second = stack_last(*b)->prev->value;
+	if (amount == -2)
+	{
+		send_command("rrb", a, b);
+		if (first > second)
+			send_command("pa", a, b);
+		send_command("rrb", a, b);
+		send_command("pa", a, b);
+		if (first < second)
+			send_command("pa", a, b);
 		if (DEBUG > 2)
 		{
 			printf("FINISHED PUT TOP 3 REV: amount=%d\n", amount);
@@ -321,8 +335,6 @@ void put_top_3_rev(t_stack **a, t_stack **b, int amount)
 		}
 		return ;
 	}
-	first = stack_last(*b)->value;
-	second = stack_last(*b)->prev->value;
 	third = stack_last(*b)->prev->prev->value;
 	if (first > second && first > third)
 	{
