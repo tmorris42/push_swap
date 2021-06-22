@@ -4,6 +4,7 @@
 void	insert_in_place(t_stack **a, t_stack**b);
 int	quicksort_left(t_stack **a, t_stack **b, int amount);
 void	rotate_high_to_bottom(t_stack **a);
+void	sort_top_3(t_stack **a, t_stack **b, int amount);
 int	sort_3(t_stack **a, t_stack **b);
 
 #ifndef DEBUG
@@ -441,25 +442,77 @@ int	quicksort_right(t_stack **a, t_stack **b, int amount)
 	return (amt_moved);
 }
 
-void	sort_top_3(t_stack **a, int amount)
+void	sort_top_3_rev(t_stack **a, t_stack **b, int amount)
+{
+	int	count;
+	int	first;
+	int	second;
+	int	third;
+
+	count = 0;
+	if (amount > -3)
+	{
+		while (amount + count < 0)
+		{
+			send_command("rra", a, NULL);
+			++count;
+		}
+		sort_top_3(a, b, count);
+	}
+	else if (amount == -3)
+	{
+		first = stack_last(*a)->prev->prev->value;
+		second = stack_last(*a)->prev->value;
+		third = stack_last(*a)->value;
+		send_command("rra", a, b);
+		if (third < first && third < second)
+		{
+			send_command("pb", a, b);
+			send_command("rra", a, b);
+			send_command("rra", a, b);
+			if (second < first)
+				send_command("sa", a, b);
+			send_command("pa", a, b);
+		}
+		else if (second < first && second < third)
+		{
+			send_command("rra", a, b);
+			send_command("pb", a, b);
+			send_command("rra", a, b);
+			if (first > third)
+				send_command("sa", a, b);
+			send_command("pa", a, b);
+		}
+		else
+		{
+			send_command("rra", a, b);
+			if (second > third)
+				send_command("sa", a, b);
+			send_command("rra", a, b);
+		}
+	}
+}
+
+void	sort_top_3(t_stack **a, t_stack **b, int amount)
 {
 	int	first;
 	int	second;
 	int	third;
-	t_stack **b; //
-
-	b = NULL; //
 
 	if (!a || !(*a) || amount > stack_len(*a))
 		return ;
-	first = 0;
-	while (amount + first < 0)
-	{
-		send_command("rra", a, NULL);
-		++first;
-	}
+//	first = 0;
+//	while (amount + first < 0)
+//	{
+//		send_command("rra", a, NULL);
+//		++first;
+//	}
 	if (amount < 0)
-		amount *= -1;
+	{
+		sort_top_3_rev(a, b, amount);
+		return ;
+	}
+//		amount *= -1;
 	if (amount > 3)
 		printf("ERROR, MORE THAN 3 PUT AT SORT TOP THREE\n");//
 //	first = (*a)->value;  //
@@ -560,7 +613,7 @@ int	quicksort_left(t_stack **a, t_stack **b, int amount)
 		return (0);
 	if (amount > -4 && amount < 4)
 	{
-		sort_top_3(a, amount);
+		sort_top_3(a, b, amount);
 	}
 	else
 	{
