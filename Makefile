@@ -11,7 +11,8 @@ STACK_OBJS = ${STACK_SRCS:.c=.o}
 CHECKER_SRCS = checker.c 
 CHECKER_OBJS = ${CHECKER_SRCS:.c=.o}
 PUSH_SWAP_SRCS = push_swap.c quicksort.c pivot.c lowhigh.c pass_lowest.c \
-				 take_highest.c
+				 take_highest.c \
+				 sort_3.c
 PUSH_SWAP_OBJS = ${PUSH_SWAP_SRCS:.c=.o}
 
 all: $(CHECKER) $(PUSH_SWAP)
