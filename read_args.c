@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   read_args.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/11 14:00:41 by tmorris           #+#    #+#             */
-/*   Updated: 2021/06/12 17:00:42 by tmorris          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "stack.h"
 
 int	ft_isdigits_or(char *str, char *extra)
@@ -48,9 +36,9 @@ t_stack	*read_args_array(int argc, char **argv)
 	i = 0;
 	while (i < argc)
 	{
-		if (!(ft_isdigits_or(argv[i], "-")))
-			return (error_and_clear(a, NULL));
 		value = ft_atoi(argv[i]);
+		if (!(ft_isdigits_or(argv[i], "-")) || (value != (int)ft_atol(argv[i])))
+			return (error_and_clear(a, NULL));
 		index = a;
 		while (index)
 		{
