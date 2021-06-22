@@ -43,6 +43,7 @@ re: fclean all
 
 visARG: $(PUSH_SWAP)
 	python3.7 ../push_swap_visualizer/pyviz.py `ruby -e "puts '${ARGS}'"`
+
 vis500: $(PUSH_SWAP)
 	python3.7 ../push_swap_visualizer/pyviz.py `ruby -e "puts (-250..250).to_a.shuffle.join(' ')"`
 
