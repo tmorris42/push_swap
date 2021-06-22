@@ -6,7 +6,9 @@ int	quicksort_left(t_stack **a, t_stack **b, int amount);
 void	rotate_high_to_bottom(t_stack **a);
 int	sort_3(t_stack **a, t_stack **b);
 
-static	int	DEBUG =  1 + 0;
+#ifndef DEBUG
+# define DEBUG 0
+#endif
 
 float	get_pivot(t_stack *a, int limit)
 {

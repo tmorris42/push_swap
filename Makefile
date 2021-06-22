@@ -2,7 +2,7 @@ CHECKER = checker
 PUSH_SWAP = push_swap
 
 FLAGS = -Wall -Wextra -Werror
-DEBUG_FLAGS = -fsanitize=address
+DEBUG_FLAGS = -fsanitize=address -D DEBUG=10
 LIBFT = ./libft/libft.a
 
 STACK_SRCS = stack.c stack_utils.c stack_operations.c read_args.c commands.c \
