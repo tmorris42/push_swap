@@ -134,15 +134,10 @@ unsigned int	pass_lowest_x_rev(t_stack **a, t_stack **b, unsigned int x)
 			++amt_skipped;
 		}
 	}
-//	printf("Done trying rev pass low with x = %d\n", x);
-//	stack_print(*a, *b);
-//	read(0, NULL, 1); //
-//	exit(0); ////DEBUG
-//	while (amt_skipped > 0)
-//	{
-//		send_command("ra", a, b);
-//		--amt_skipped;
-//	}
+	if (DEBUG > 2)
+	{
+		printf("Finished pass low with  x=%d, moved=%d, and sorted == %d\n", x, amt_moved, stack_is_sorted(*a));
+	}
 	return (amt_moved);
 }
 
@@ -188,7 +183,7 @@ unsigned int	pass_lowest_x(t_stack **a, t_stack **b, unsigned int x)
 	}
 	if (DEBUG > 2)
 	{
-		printf("Finished pass low with x = %d\n", x); //;
+		printf("Finished pass low with  x=%d, moved=%d, and sorted == %d\n", x, amt_moved, stack_is_sorted(*a));
 	}
 	return (amt_moved);
 }
@@ -239,8 +234,8 @@ int	take_highest_x_rev(t_stack **a, t_stack **b, int x)
 		else
 		{
 			++amt_skipped;
-//				stack_print(*a, *b);
-//				printf("amt_skipped = %d, x = %d, pivot = %d, value=%d\n", amt_skipped, x, pivot, (*b)->value); //DEL
+//			stack_print(*a, *b);
+//			printf("amt_skipped = %d, x = %d, pivot = %d, value=%d\n", amt_skipped, x, pivot, (*b)->value); //DEL
 		}
 	}
 	if (DEBUG > 2)
