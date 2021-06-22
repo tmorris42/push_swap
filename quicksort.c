@@ -245,7 +245,7 @@ int	take_highest_x_rev(t_stack **a, t_stack **b, int x)
 	return (amt_moved);
 }
 
-void	lowest_of_next_x_above_pivot(t_stack *stack, int x, int pivot, int *lowhigh)
+void	lowhigh_next_x(t_stack *stack, int x, int pivot, int *lowhigh)
 {
 	int	low;
 	int high;
@@ -284,7 +284,7 @@ int	take_highest_6(t_stack **a, t_stack **b, int x)
 	if (x > stack_len(*b))
 		x = stack_len(*b);
 	pivot = get_pivot(*b, x); //
-	lowest_of_next_x_above_pivot(*b, x, pivot, &lowhigh[0]);
+	lowhigh_next_x(*b, x, pivot, &lowhigh[0]);
 	if (DEBUG > 2)
 	{
 		printf("low=%d, high=%d\n", lowhigh[0], lowhigh[1]);
