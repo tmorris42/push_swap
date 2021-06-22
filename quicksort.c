@@ -123,7 +123,7 @@ unsigned int	pass_lowest_x_rev(t_stack **a, t_stack **b, unsigned int x)
 //		printf("And pivot = %f\n", pivot);//
 		send_command("rra", a, b);
 		cursor = (*a);;
-		if (cursor->value < pivot)
+		if (cursor->value <= pivot)
 		{
 			send_command("pb", a, b);
 			++amt_moved;
@@ -170,7 +170,7 @@ unsigned int	pass_lowest_x(t_stack **a, t_stack **b, unsigned int x)
 	while (cursor && amt_moved + amt_skipped < x)
 	{
 		cursor = (*a);
-		if (cursor->value < pivot)
+		if (cursor->value <= pivot)
 		{
 			send_command("pb", a, b);
 			++amt_moved;
@@ -226,7 +226,7 @@ int	take_highest_x_rev(t_stack **a, t_stack **b, int x)
 	{
 		send_command("rrb", a, b);
 		cursor = (*b);
-		if (cursor->value >= pivot)
+		if (cursor->value > pivot)
 		{
 			send_command("pa", a, b);
 			++amt_moved;
