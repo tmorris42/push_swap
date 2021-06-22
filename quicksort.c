@@ -6,7 +6,7 @@ int	quicksort_left(t_stack **a, t_stack **b, int amount);
 void	rotate_high_to_bottom(t_stack **a);
 int	sort_3(t_stack **a, t_stack **b);
 
-static	int	DEBUG = 0;
+static	int	DEBUG =  1 + 0;
 
 float	get_pivot(t_stack *a, int limit)
 {
@@ -151,7 +151,8 @@ unsigned int	pass_lowest_x(t_stack **a, t_stack **b, unsigned int x)
 	unsigned int	amt_moved;
 	unsigned int	amt_skipped;
 
-//	printf("Pass lowest x=%d, and sorted == %d\n", x, stack_is_sorted(*a));
+	if (DEBUG > 2)
+		printf("Pass lowest x=%d, and sorted == %d\n", x, stack_is_sorted(*a));
 	if (!a || !b || x > (unsigned int)stack_len(*a))
 	{
 		printf("ERROR x=%u and stack_len=%u\n", x, (unsigned int)stack_len(*a));
@@ -163,10 +164,11 @@ unsigned int	pass_lowest_x(t_stack **a, t_stack **b, unsigned int x)
 	amt_moved = 0;
 	amt_skipped = 0;
 //	printf("About to go get pivot\n"); //
-	pivot = get_pivot(*a, x); //
-//	printf("Trying pass low with x = %d\n", x); //;
-//	printf("And pivot = %f\n", pivot);//
-	//printf("Pivot = %d\n", pivot);
+	pivot = get_pivot(*a, x);
+	if (DEBUG > 3)
+	{
+		printf("And pivot = %f\n", pivot);//
+	}
 	cursor = (*a);
 	while (cursor && amt_moved + amt_skipped < x)
 	{
@@ -182,11 +184,10 @@ unsigned int	pass_lowest_x(t_stack **a, t_stack **b, unsigned int x)
 			++amt_skipped;
 		}
 	}
-//	while (amt_skipped > 0)
-//	{
-//		send_command("rra", a, b);
-//		--amt_skipped;
-//	}
+	if (DEBUG > 2)
+	{
+		printf("Finished pass low with x = %d\n", x); //;
+	}
 	return (amt_moved);
 }
 
@@ -290,7 +291,7 @@ int	take_highest_x(t_stack **a, t_stack **b, int x)
 		}
 	}
 	if (DEBUG > 2)
-		printf("Finished take highest x=%d, and sorted == %d\n", x, stack_is_sorted(*a));
+		printf("Finished take highest x=%d, moved=%d, and sorted == %d\n", x, amt_moved, stack_is_sorted(*a));
 	return (amt_moved);
 }
 
