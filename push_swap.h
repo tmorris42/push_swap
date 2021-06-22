@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 14:03:46 by tmorris           #+#    #+#             */
-/*   Updated: 2021/06/22 18:12:29 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/06/22 18:17:01 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,6 @@ void	sort_top_3(t_stack **a, t_stack **b, int amount);
 int	sort_3(t_stack **a, t_stack **b);
 int	sort_5(t_stack **a, t_stack **b);
 void put_top_3(t_stack **a, t_stack **b, int amount);
+int	quicksort(t_stack **a, t_stack **b);
 
 #endif

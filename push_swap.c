@@ -1,8 +1,6 @@
 #include "push_swap.h"
 #include <stdio.h> //debug only
 
-int	quicksort(t_stack **a, t_stack **b);
-
 void	get_low_high(t_stack *a, int *low, int *high)
 {
 	int		l;
@@ -158,29 +156,6 @@ void	rotate_high_to_bottom(t_stack **a)
 	get_low_high(*a, &low, &high);
 	low = find_index(a, high + 1);
 	rotate_to_index(a, low);
-}
-
-int	sort_3(t_stack **a, t_stack **b)
-{
-	int		first;
-	int		second;
-	int		third;
-
-	if (stack_is_ordered(*a))
-		return (0);
-	first = (*a)->value;
-	second = (*a)->next->value;
-	third = (*a)->next->next->value;
-	if (first > second && first > third && third > second)
-		send_command("ra", a, b);
-	else if (second > first && second > third && first > third)
-		send_command("rra", a, b);
-	else
-	{
-		send_command("sa", a, b);
-		return (sort_3(a, b));
-	}
-	return (0);
 }
 
 int	sort_5(t_stack **a, t_stack **b)
