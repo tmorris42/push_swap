@@ -66,19 +66,17 @@ int	quicksort_left(t_stack **a, t_stack **b, int amount)
 		quicksort_left(a, b, (-1) * (amount - amt_moved));
 		quicksort_right(a, b, (amt_moved / 2) + (amt_moved % 2));
 		quicksort_right(a, b, (amt_moved / 2));
+		return (0);
 	}
+	if (amount > 0 || ft_abs(amount) == (unsigned int)stack_len(*a))
+		amt_moved = pass_lowest_x(a, b, ft_abs(amount));
 	else
-	{
-		if (amount > 0 || ft_abs(amount) == (unsigned int)stack_len(*a))
-			amt_moved = pass_lowest_x(a, b, ft_abs(amount));
-		else
-			amt_moved = pass_lowest_x_rev(a, b, ft_abs(amount));
-		if (amount < 0)
-			quicksort_left(a, b, ft_abs(amount) - amt_moved);
-		else
-			quicksort_left(a, b, (-1) * (amount - amt_moved));
-		quicksort_right(a, b, amt_moved);
-	}
+		amt_moved = pass_lowest_x_rev(a, b, ft_abs(amount));
+	if (amount < 0)
+		quicksort_left(a, b, ft_abs(amount) - amt_moved);
+	else
+		quicksort_left(a, b, (-1) * (amount - amt_moved));
+	quicksort_right(a, b, amt_moved);
 	return (0);
 }
 
