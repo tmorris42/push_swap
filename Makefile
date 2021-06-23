@@ -72,7 +72,13 @@ vis3: $(PUSH_SWAP)
 	python3.7 ../push_swap_visualizer/pyviz.py `ruby -e "puts (-1..1).to_a.shuffle.join(' ')"`
 
 test: all
-	python3.7 ./test.py
+	@echo "Copying push_swap and checker into tests directory"
+	@cp ./push_swap ./tests/
+	@cp ./checker ./tests/
+	@python3.7 ./tests/test.py
+	@echo "Cleaning up..."
+	@rm ./tests/push_swap ./tests/checker
+	@echo "Done."
 
 debug: $(STACK_SRCS) $(PUSH_SWAP_SRCS)
 	gcc $(FLAGS) $(DEBUG_FLAGS) $(STACK_SRCS) $(PUSH_SWAP_SRCS) $(LIBFT) -o debug
@@ -82,4 +88,4 @@ clearlogs:
 	mkdir logs
 
 
-.PHONY: all clean fclean re test
+.PHONY: all clean fclean re test clearlogs
