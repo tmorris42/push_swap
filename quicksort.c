@@ -25,10 +25,6 @@ int	quicksort_right(t_stack **a, t_stack **b, int amount)
 			amt_moved = take_highest_x(a, b, ft_abs(amount));
 		else
 			amt_moved = take_highest_x_rev(a, b, ft_abs(amount));
-		if (amt_moved == ft_abs(amount)) //
-			printf ("ERROR, moved whole stack\n"); //
-		if (amt_moved > ft_abs(amount)) //
-			printf("ERROR, moved more than whole stack\n"); //
 		quicksort_left(a, b, (int)amt_moved);
 		if (amount < 0)
 			quicksort_right(a, b, (int)(ft_abs(amount) - amt_moved));
@@ -80,8 +76,6 @@ int	quicksort_left(t_stack **a, t_stack **b, int amount)
 			amt_moved = pass_lowest_x(a, b, (unsigned int)ft_abs(amount));
 		else
 			amt_moved = pass_lowest_x_rev(a, b, ft_abs(amount));
-		if (ft_abs(amt_moved) == ft_abs(amount)) //
-			printf ("ERROR, moved whole stack from left to right\n"); //
 		if (amount < 0)
 		{
 			quicksort_left(a, b, ft_abs(amount) - amt_moved);
