@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 14:23:11 by tmorris           #+#    #+#             */
-/*   Updated: 2021/06/23 14:15:24 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/06/23 14:32:46 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,12 @@ void	send_command_chain(char *cmds, t_stack **a, t_stack **b)
 	int		i;
 
 	i = 0;
+	while (i < 4)
+	{
+		cmd[i] = '\0';
+		++i;
+	}
+	i = 0;
 	while (cmds && i < 4)
 	{
 		if (cmds[i] == ' ' || cmds[i] == '\0')
@@ -88,6 +94,7 @@ void	send_command_chain(char *cmds, t_stack **a, t_stack **b)
 			send_command(cmd, a, b);
 			if (cmds[i])
 				send_command_chain(&cmds[i + 1], a, b);
+			return ;
 		}
 		else
 			cmd[i] = cmds[i];

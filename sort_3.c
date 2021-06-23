@@ -231,46 +231,19 @@ void	sort_top_3(t_stack **a, t_stack **b, int amount)
 		return ;
 	if (amount == 2 && (*a)->value > (*a)->next->value)
 		send_command("sa", a, b);
-	else if (amount == 3)
-	{
-		if (stack_len(*a) == 3)
-		{
-			sort_3(a, NULL);
-			rotate_high_to_bottom(a);
-			return ;
-		}
-		first = (*a)->value;
-		second = (*a)->next->value;
-		third = (*a)->next->next->value;
-		if (second < first && first < third) // 2 1 3
-			send_command("sa", a, b);
-		else if (second < third && third < first) // 3 1 2
-		{
-			send_command("sa", a, b);
-			send_command("ra", a, b);
-			send_command("sa", a, b);
-			send_command("rra", a, b);
-		}
-		else if (first < third && third < second) // 1 3 2
-		{
-			send_command("ra", a, b);
-			send_command("sa", a, b);
-			send_command("rra", a, b);
-		}
-		else if (third < first && first < second) // 2 3 1
-		{
-			send_command("ra", a, b);
-			send_command("sa", a, b);
-			send_command("rra", a, b);
-			send_command("sa", a, b);
-		}
-		else if (third < second && second < first) // 3 2 1
-		{
-			send_command("sa", a, b);
-			send_command("ra", a, b);
-			send_command("sa", a, b);
-			send_command("rra", a, b);
-			send_command("sa", a, b);
-		}
-	}
+	if (amount != 3)
+		return ;
+	first = (*a)->value;
+	second = (*a)->next->value;
+	third = (*a)->next->next->value;
+	if (second < first && first < third)
+		send_command("sa", a, b);
+	else if (second < third && third < first)
+		send_command_chain("sa ra sa rra", a, b);
+	else if (first < third && third < second)
+		send_command_chain("ra sa rra", a, b);
+	else if (third < first && first < second)
+		send_command_chain("ra sa rra sa", a, b);
+	else if (third < second && second < first)
+		send_command_chain("sa ra sa rra sa", a, b);
 }
