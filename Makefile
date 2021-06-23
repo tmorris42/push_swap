@@ -2,7 +2,6 @@ CHECKER = checker
 PUSH_SWAP = push_swap
 
 FLAGS = -Wall -Wextra -Werror
-DEBUG_FLAGS = -fsanitize=address -D DEBUG=10
 LIBFT = ./libft/libft.a
 
 INCLUDES = -Iincludes/ -Ilibft/
@@ -79,9 +78,6 @@ test: all
 	@echo "Cleaning up..."
 	@rm ./tests/push_swap ./tests/checker
 	@echo "Done."
-
-debug: $(STACK_SRCS) $(PUSH_SWAP_SRCS)
-	gcc $(FLAGS) $(DEBUG_FLAGS) $(STACK_SRCS) $(PUSH_SWAP_SRCS) $(LIBFT) -o debug
 
 clearlogs:
 	rm -rf logs
