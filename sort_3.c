@@ -1,5 +1,4 @@
 #include "push_swap.h"
-#include <stdio.h> //debug only
 
 int	sort_3(t_stack **a, t_stack **b)
 {
@@ -31,9 +30,7 @@ void	put_top_3_rev(t_stack **a, t_stack **b, int amount)
 	int	third;
 
 	if (amount < -3 || amount > -1)
-	{
-		printf("ERROR\n"); //
-	}
+		return ;
 	first = stack_last(*b)->value;
 	if (amount == -1)
 	{
@@ -106,8 +103,6 @@ void put_top_3(t_stack **a, t_stack **b, int amount)
 		put_top_3_rev(a, b, amount);
 		return ;
 	}
-	if (amount > 3)
-		printf("ERROR, MORE THAN 3 PUT AT SORT TOP THREE\n");//
 	if (amount > 0)
 		first = (*b)->value;
 	if (amount > 1)
@@ -170,11 +165,6 @@ void put_top_3(t_stack **a, t_stack **b, int amount)
 			send_command("pa", a, b);
 			send_command("pa", a, b);
 		}
-		first = (*a)->value; //
-		second = (*a)->next->value; //
-		third = (*a)->next->next->value; //
-		if (first > second || second > third || first > third) //
-			printf("ERROR not sorted after top 3 PLACED\n"); //
 	}
 }
 
@@ -235,15 +225,13 @@ void	sort_top_3(t_stack **a, t_stack **b, int amount)
 	int	second;
 	int	third;
 
-	if (!a || !(*a) || amount > stack_len(*a))
+	if (!a || !(*a) || amount > stack_len(*a) || amount > 3)
 		return ;
 	if (amount < 0)
 	{
 		sort_top_3_rev(a, b, amount);
 		return ;
 	}
-	if (amount > 3)
-		printf("ERROR, MORE THAN 3 PUT AT SORT TOP THREE\n");//
 	if (amount == 2 && (*a)->value > (*a)->next->value)
 		send_command("sa", a, NULL);
 	else if (amount == 3)
