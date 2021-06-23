@@ -8,7 +8,7 @@ int	take_highest_6_rev(t_stack **a, t_stack **b, int x)
 	int		amt_skipped;
 	int		lowhigh[2];
 
-	if (!a || !b)
+	if (!a || !b || !(*b))
 		return (-1);
 	if (x < 4)
 		printf("ERROR take_highest x is neg or too low\n"); //
@@ -16,7 +16,7 @@ int	take_highest_6_rev(t_stack **a, t_stack **b, int x)
 	amt_skipped = 0;
 	if (x > stack_len(*b))
 		x = stack_len(*b);
-	pivot = get_pivot_rev(*b, x); //
+	pivot = get_pivot_rev(*b, x, (*b)->value); //
 	lowhigh_prev_x(*b, x, pivot, &lowhigh[0]);
 	if (DEBUG > 2)
 	{
@@ -63,7 +63,7 @@ int	take_highest_x_rev(t_stack **a, t_stack **b, int x)
 		return (take_highest_6_rev(a, b, x));
 	if (DEBUG > 2)
 		printf("Take highest rev x=%d, and sorted == %d\n", x, stack_is_sorted(*a));
-	if (!a || !b)
+	if (!a || !b || !(*b))
 		return (-1);
 	if (x < 0)
 		printf("ERROR take_highest x is neg\n"); //
@@ -77,7 +77,7 @@ int	take_highest_x_rev(t_stack **a, t_stack **b, int x)
 	amt_skipped = 0;
 	if (x > stack_len(*b))
 		x = stack_len(*b);
-	pivot = get_pivot_rev(*b, x); //
+	pivot = get_pivot_rev(*b, x, (*b)->value);
 	while (x < 3 && amt_moved < x)
 	{
 		insert_in_place(a, b);
@@ -118,7 +118,7 @@ int	take_highest_6(t_stack **a, t_stack **b, int x)
 
 	if (DEBUG > 2)
 		printf("Take highest x=%d, and sorted == %d\n", x, stack_is_sorted(*a));
-	if (!a || !b)
+	if (!a || !b || !(*b))
 		return (-1);
 	if (x < 4)
 		printf("ERROR take_highest x is neg or too low\n"); //
@@ -126,7 +126,7 @@ int	take_highest_6(t_stack **a, t_stack **b, int x)
 	amt_skipped = 0;
 	if (x > stack_len(*b))
 		x = stack_len(*b);
-	pivot = get_pivot(*b, x); //
+	pivot = get_pivot(*b, x, (*b)->value);
 	lowhigh_next_x(*b, x, pivot, &lowhigh[0]);
 	if (DEBUG > 2)
 	{
@@ -173,7 +173,7 @@ int	take_highest_x(t_stack **a, t_stack **b, int x)
 		return (take_highest_6(a, b, x));
 	if (DEBUG > 2)
 		printf("Take highest x=%d, and sorted == %d\n", x, stack_is_sorted(*a));
-	if (!a || !b)
+	if (!a || !b || !(*b))
 		return (-1);
 	if (x < 4)
 		printf("ERROR take_highest x is neg or too low\n"); //
@@ -181,7 +181,7 @@ int	take_highest_x(t_stack **a, t_stack **b, int x)
 	amt_skipped = 0;
 	if (x > stack_len(*b))
 		x = stack_len(*b);
-	pivot = get_pivot(*b, x); //
+	pivot = get_pivot(*b, x, (*b)->value); //
 	cursor = (*b);
 	while (cursor && (amt_skipped + amt_moved < x))
 	{

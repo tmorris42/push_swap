@@ -8,11 +8,11 @@ unsigned int	push_lowest_x_rev(t_stack **a, t_stack **b, unsigned int x)
 	unsigned int	amt_moved;
 	int				amt_skipped;
 
-	if (!a || !b)
+	if (!a || !(*a) || !b)
 		return (-1);
 	amt_moved = 0;
 	amt_skipped = 0;
-	pivot = get_pivot_rev(*a, x);
+	pivot = get_pivot_rev(*a, x, (*a)->value);
 	cursor = (*a);
 	while (cursor && amt_moved + amt_skipped < x)
 	{
@@ -40,7 +40,7 @@ unsigned int	push_lowest_x_double(t_stack **a, t_stack **b, unsigned int x)
 		return (0);
 	amt_moved = 0;
 	amt_skipped = 0;
-	pivot = get_pivot(*a, x);
+	pivot = get_pivot(*a, x, (*a)->value);
 	upper = get_upper_pivot(*a, pivot);
 	while ((*a) && amt_moved + amt_skipped < x)
 	{
@@ -64,11 +64,11 @@ unsigned int	push_lowest_x(t_stack **a, t_stack **b, unsigned int x)
 	unsigned int	amt_moved;
 	unsigned int	amt_skipped;
 
-	if (!a || !b || x > (unsigned int)stack_len(*a))
+	if (!a || !(*a) || !b || x > (unsigned int)stack_len(*a))
 		return (0);
 	amt_moved = 0;
 	amt_skipped = 0;
-	pivot = get_pivot(*a, x);
+	pivot = get_pivot(*a, x, (*a)->value);
 	while ((*a) && amt_moved + amt_skipped < x)
 	{
 		if ((*a)->value <= pivot)
