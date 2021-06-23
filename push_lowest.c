@@ -41,7 +41,7 @@ unsigned int	push_lowest_x_double(t_stack **a, t_stack **b, unsigned int x)
 	amt_moved = 0;
 	amt_skipped = 0;
 	pivot = get_pivot(*a, x, (*a)->value);
-	upper = get_upper_pivot(*a, pivot);
+	upper = get_upper_pivot(*a, pivot, pivot);
 	while ((*a) && amt_moved + amt_skipped < x)
 	{
 		if ((*a)->value < pivot)

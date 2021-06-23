@@ -1,6 +1,6 @@
 #include "push_swap.h"
 
-float	get_pivot(t_stack *a, int limit, float median)
+float	get_pivot(t_stack *a, int limit, float guess)
 {
 	int		lower;
 	int		higher;
@@ -15,7 +15,7 @@ float	get_pivot(t_stack *a, int limit, float median)
 	index = a;
 	while (index && i < limit)
 	{
-		if (index->value <= median)
+		if (index->value <= guess)
 			++lower;
 		else
 			++higher;
@@ -23,51 +23,41 @@ float	get_pivot(t_stack *a, int limit, float median)
 		++i;
 	}
 	if (lower == higher || lower == higher - 1 || higher == lower - 1)
-		return (median);
+		return (guess);
 	if (higher > lower)
-		return (get_pivot(a, limit, median + 1));
-	return (get_pivot(a, limit, median - 1));
+		return (get_pivot(a, limit, guess + 1));
+	return (get_pivot(a, limit, guess - 1));
 }
 
-float	get_upper_pivot(t_stack *a, float pivot)
+float	get_upper_pivot(t_stack *a, float pivot, float guess)
 {
-	float	median;
 	int		lower;
 	int		higher;
 	t_stack	*index;
 
 	if (!a)
 		return (0);
-	median = a->value;
-	while (1)
+	lower = 0;
+	higher = 0;
+	index = a;
+	while (index)
 	{
-		lower = 0;
-		higher = 0;
-		index = a;
-		while (index)
-		{
-			if (index->value >= pivot)
-			{
-			}
-			else if (index->value < median)
-				++lower;
-			else if (index->value >= median)
-				++higher;
-			index = index->next;
-		}
-		if (lower == higher)
-			return (median);
-		if (lower == higher - 1)
-			return (median);
-		if (higher > lower)
-			++median;
-		else if (higher < lower)
-			--median;
+		if (index->value < pivot && index->value < guess)
+			++lower;
+		else if (index->value < pivot && index->value >= guess)
+			++higher;
+		index = index->next;
 	}
-	return (median);
+	if (lower == higher)
+		return (guess);
+	if (lower == higher - 1)
+		return (guess);
+	if (higher > lower)
+		return (get_upper_pivot(a, pivot, guess + 1));
+	return (get_upper_pivot(a, pivot, guess - 1));
 }
 
-float	get_pivot_rev(t_stack *a, int limit, float median)
+float	get_pivot_rev(t_stack *a, int limit, float guess)
 {
 	int		lower;
 	int		higher;
@@ -82,16 +72,16 @@ float	get_pivot_rev(t_stack *a, int limit, float median)
 	index = stack_last(a);
 	while (index && i < limit)
 	{
-		if (index->value < median)
+		if (index->value < guess)
 			++lower;
-		if (index->value > median)
+		if (index->value > guess)
 			++higher;
 		index = index->prev;
 		++i;
 	}
 	if (lower == higher || lower == higher - 1 || higher == lower - 1)
-		return (median + higher - lower);
+		return (guess + higher - lower);
 	if (higher > lower)
-		return (get_pivot_rev(a, limit, median + 1));
-	return (get_pivot_rev(a, limit, median - 1));
+		return (get_pivot_rev(a, limit, guess + 1));
+	return (get_pivot_rev(a, limit, guess - 1));
 }
