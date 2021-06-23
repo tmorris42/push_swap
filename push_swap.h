@@ -19,7 +19,7 @@ void			rotate_high_to_bottom(t_stack **a);
 void			sort_top_3(t_stack **a, t_stack **b, int amount);
 int				sort_3(t_stack **a, t_stack **b);
 int				sort_5(t_stack **a, t_stack **b);
-void			put_top_3(t_stack **a, t_stack **b, int amount);
+void			take_top_3(t_stack **a, t_stack **b, int amount);
 int				quicksort(t_stack **a, t_stack **b);
 
 #endif

@@ -23,7 +23,7 @@ static void	run_top_3_rev_patterns(t_stack **a, t_stack **b)
 		send_command_chain("rrb rrb rrb pa pa pa", a, b);
 }
 
-void	put_top_3_rev(t_stack **a, t_stack **b, int amount)
+void	take_top_3_rev(t_stack **a, t_stack **b, int amount)
 {
 	if (amount < -3 || amount > -1)
 		return ;
@@ -67,14 +67,14 @@ static void	run_top_3_patterns(t_stack **a, t_stack **b)
 		send_command_chain("pa pa pa", a, b);
 }
 
-void	put_top_3(t_stack **a, t_stack **b, int amount)
+void	take_top_3(t_stack **a, t_stack **b, int amount)
 {
 	if (!a || !b || !(*b) || amount > 3 || amount > stack_len(*b))
 		return ;
 	if (amount < -3 || amount < -stack_len(*b))
 		return ;
 	if (amount < 0)
-		put_top_3_rev(a, b, amount);
+		take_top_3_rev(a, b, amount);
 	else if (amount == 2 && (*b)->next->value > (*b)->value)
 		send_command_chain("sb pa pa", a, b);
 	else if (amount == 2)

@@ -8,7 +8,7 @@ int	quicksort_right(t_stack **a, t_stack **b, int amount)
 	if (amount == 0 || !stack_len(*b))
 		return (0);
 	if (amount > -4 && amount < 4)
-		put_top_3(a, b, amount);
+		take_top_3(a, b, amount);
 	else
 	{
 		if (amount > 0)
