@@ -20,8 +20,6 @@ int	main(int argc, char **argv)
 	a = read_args(argc, argv);
 	if (!a)
 		return (0);
-//	send_command_chain("ra sa rra sa", &a, &b); //
-//	exit(0);
 	len = stack_len(a);
 	if (len < 4)
 		sort_3(&a, &b);
