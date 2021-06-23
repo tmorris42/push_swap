@@ -39,7 +39,12 @@ def check_nums(program_name, nums):
     try:
         out_bytes = subprocess.run(f"{program_name} {nums} | wc -l", shell=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, timeout=5)
         number_of_lines = int(out_bytes.stdout.decode("utf-8"))
-        out_bytes = subprocess.run(f"{program_name} {nums} | ./checker {nums}", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=5)
+        if os.path.exists("./checker_Linux"):
+            out_bytes = subprocess.run(f"{program_name} {nums} | ./checker_Linux {nums}", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=5)
+        elif os.path.exists("./checker_Mac"):
+            out_bytes = subprocess.run(f"{program_name} {nums} | ./checker_Mac {nums}", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=5)
+        else:
+            out_bytes = subprocess.run(f"{program_name} {nums} | ./checker {nums}", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=5)
         out_str = out_bytes.stdout.decode("utf-8")
         num_of_nums = len(nums.split())
     except subprocess.TimeoutExpired:
@@ -132,6 +137,12 @@ if __name__ == '__main__':
             "./push_swap",
             ]
 
+    if os.path.exists("./checker_Linux"):
+        print("Official checker_Linux detected.\n")
+    elif os.path.exists("./checker_Mac"):
+        print("Official checker_Mac detected.\n")
+    else:
+        print("Using user's checker.\n")
     for program_name in program_names:
         total = 0
         success = 0
