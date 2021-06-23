@@ -5,12 +5,20 @@ FLAGS = -Wall -Wextra -Werror
 DEBUG_FLAGS = -fsanitize=address -D DEBUG=10
 LIBFT = ./libft/libft.a
 
-STACK_SRCS = stack.c stack_utils.c stack_operations.c read_args.c commands.c \
-			 errors.c
+STACK_SRCS = stack.c stack_utils.c stack_operations.c \
+			 read_args.c commands.c errors.c
 STACK_OBJS = ${STACK_SRCS:.c=.o}
 CHECKER_SRCS = checker.c 
 CHECKER_OBJS = ${CHECKER_SRCS:.c=.o}
-PUSH_SWAP_SRCS = push_swap.c quicksort.c
+PUSH_SWAP_SRCS = push_swap.c \
+				 lowhigh.c \
+				 pivot.c \
+				 push_lowest.c \
+				 quicksort.c \
+				 rotate_and_insert.c \
+				 sort_3.c \
+				 take_highest.c \
+				 take_top_3.c 
 PUSH_SWAP_OBJS = ${PUSH_SWAP_SRCS:.c=.o}
 
 all: $(CHECKER) $(PUSH_SWAP)

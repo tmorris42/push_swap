@@ -1,5 +1,6 @@
 #! /usr/bin/python3
 
+import os
 import subprocess
 import random
 import itertools
@@ -14,6 +15,9 @@ UNKNOWN = 3
 LOGFILE = "logs/" +  datetime.now().strftime("%Y-%m-%d-%H-%M-%S") + ".log"
 
 def error_log(nums):
+    if not os.path.exists("./logs/"):
+        os.mkdir("./logs")
+
     with open(LOGFILE, "a") as out:
         out.write(nums);
         out.write("\n\n");

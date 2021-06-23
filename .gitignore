@@ -1,3 +1,6 @@
 *.o
 checker
 push_swap
+logs/
+checker_Mac
+checker_Linux
