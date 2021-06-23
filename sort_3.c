@@ -103,13 +103,7 @@ void	put_top_3(t_stack **a, t_stack **b, int amount)
 		put_top_3_rev(a, b, amount);
 		return ;
 	}
-	if (amount > 0)
-		first = (*b)->value;
-	if (amount > 1)
-		second = (*b)->next->value;
-	if (amount > 2)
-		third = (*b)->next->next->value;
-	if (amount == 2 && second > first)
+	if (amount == 2 && (*b)->next->value > (*b)->value)
 		send_command("sb", a, b);
 	if (amount == 2)
 		send_command("pa", a, b);
@@ -121,50 +115,17 @@ void	put_top_3(t_stack **a, t_stack **b, int amount)
 		second = (*b)->next->value;
 		third = (*b)->next->next->value;
 		if (first < second && second < third) //1 2 3
-		{
-			send_command("sb", a, b);
-			send_command("pa", a, b);
-			send_command("sb", a, b);
-			send_command("pa", a, b);
-			send_command("sa", a, b);
-			send_command("pa", a, b);
-		}
+			send_command_chain("sb pa sb pa sa pa", a, b);
 		else if (second < first && first < third) // 2 1 3
-		{
-			send_command("pa", a, b);
-			send_command("sb", a, b);
-			send_command("pa", a, b);
-			send_command("sa", a, b);
-			send_command("pa", a, b);
-		}
+			send_command_chain("pa sb pa sa pa", a, b);
 		else if (second < third && third < first) // 3 1 2
-		{
-			send_command("pa", a, b);
-			send_command("sb", a, b);
-			send_command("pa", a, b);
-			send_command("pa", a, b);
-		}
+			send_command_chain("pa sb pa pa", a, b);
 		else if (first < third && third < second) // 1 3 2
-		{
-			send_command("rb", a, b);
-			send_command("pa", a, b);
-			send_command("pa", a, b);
-			send_command("rrb", a, b);
-			send_command("pa", a, b);
-		}
+			send_command_chain("rb pa pa rrb pa", a, b);
 		else if (third < first && first < second) // 2 3 1
-		{
-			send_command("sb", a, b);
-			send_command("pa", a, b);
-			send_command("pa", a, b);
-			send_command("pa", a, b);
-		}
+			send_command_chain("sb pa pa pa", a, b);
 		else if (third < second && second < first) // 3 2 1
-		{
-			send_command("pa", a, b);
-			send_command("pa", a, b);
-			send_command("pa", a, b);
-		}
+			send_command_chain("pa pa pa", a, b);
 	}
 }
 
