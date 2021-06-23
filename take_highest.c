@@ -1,41 +1,6 @@
 #include <stdio.h> //DEBUG ONLY
 #include "push_swap.h"
 
-int	take_highest_6_rev(t_stack **a, t_stack **b, int x)
-{
-	float	pivot;
-	int		amt_moved;
-	int		amt_skipped;
-	int		lowhigh[2];
-
-	if (!a || !b || !(*b) || x < 4)
-		return (0);
-	amt_moved = 0;
-	amt_skipped = 0;
-	if (x > stack_len(*b))
-		x = stack_len(*b);
-	pivot = get_pivot_rev(*b, x, (*b)->value);
-	lowhigh_prev_x(*b, x, pivot, &lowhigh[0]);
-	while (b && (*b) && (amt_skipped + amt_moved < x))
-	{
-		send_command("rrb", a, b);
-		if ((*b)->value > pivot)
-		{
-			send_command("pa", a, b);
-			if ((*a)->value == lowhigh[0] && (*a)->next->value != lowhigh[1] && amt_moved < 2)
-				send_command("ra", a, b);
-			else if (amt_moved > 1 && (*a)->value > (*a)->next->value)
-				send_command("sa", a, b);
-			++amt_moved;
-		}
-		else
-			++amt_skipped;
-	}
-	if (stack_last(*a)->value == lowhigh[0])
-		send_command("rra", a, b);
-	return (amt_moved);
-}
-
 int	take_highest_x_rev(t_stack **a, t_stack **b, int x)
 {
 	float	pivot;
@@ -45,8 +10,6 @@ int	take_highest_x_rev(t_stack **a, t_stack **b, int x)
 
 	if (!a || !b || !(*b) || x < 0)
 		return (0);
-	if (x == 6)
-		return (take_highest_6_rev(a, b, x));
 	if (x == 1)
 	{
 		send_command("rrb", a, b);
@@ -85,64 +48,21 @@ int	take_highest_x_rev(t_stack **a, t_stack **b, int x)
 	return (amt_moved);
 }
 
-int	take_highest_6(t_stack **a, t_stack **b, int x)
-{
-	float	pivot;
-	int		amt_moved;
-	int		amt_skipped;
-	int		lowhigh[2];
-
-	if (!a || !b || !(*b) || x < 4)
-		return (0);
-	amt_moved = 0;
-	amt_skipped = 0;
-	if (x > stack_len(*b))
-		x = stack_len(*b);
-	pivot = get_pivot(*b, x, (*b)->value);
-	lowhigh_next_x(*b, x, pivot, &lowhigh[0]);
-	while (b && (*b) && (amt_skipped + amt_moved < x))
-	{
-		if ((*b)->value > pivot)
-		{
-			send_command("pa", a, b);
-			if ((*a)->value == lowhigh[0] && (*a)->next->value != lowhigh[1] && amt_moved < 2)
-				send_command("ra", a, b);
-			else if (amt_moved > 1 && (*a)->value > (*a)->next->value)
-				send_command("sa", a, b);
-			++amt_moved;
-		}
-		else
-		{
-			send_command("rb", a, b);
-			++amt_skipped;
-		}
-	}
-	if (stack_last(*a)->value == lowhigh[0])
-		send_command("rra", a, b);
-	return (amt_moved);
-}
-
 int	take_highest_x(t_stack **a, t_stack **b, int x)
 {
 	float	pivot;
-	t_stack	*cursor;
 	int		amt_moved;
 	int		amt_skipped;
 
 	if (!a || !b || !(*b) || x < 4)
 		return (-1);
-	if (x == 6)
-		return (take_highest_6(a, b, x));
 	amt_moved = 0;
 	amt_skipped = 0;
-	if (x > stack_len(*b))
-		x = stack_len(*b);
+	x = ft_min(x, stack_len(*b));
 	pivot = get_pivot(*b, x, (*b)->value);
-	cursor = (*b);
-	while (cursor && (amt_skipped + amt_moved < x))
+	while ((*b) && (amt_skipped + amt_moved < x))
 	{
-		cursor = (*b);
-		if (cursor->value > pivot)
+		if ((*b)->value > pivot)
 		{
 			send_command("pa", a, b);
 			++amt_moved;
