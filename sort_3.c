@@ -225,15 +225,12 @@ void	sort_top_3(t_stack **a, t_stack **b, int amount)
 	int	second;
 	int	third;
 
-	if (!a || !(*a) || amount > stack_len(*a) || amount > 3)
-		return ;
 	if (amount < 0)
-	{
 		sort_top_3_rev(a, b, amount);
+	if (!a || !(*a) || amount > stack_len(*a) || amount > 3 || amount < 2)
 		return ;
-	}
 	if (amount == 2 && (*a)->value > (*a)->next->value)
-		send_command("sa", a, NULL);
+		send_command("sa", a, b);
 	else if (amount == 3)
 	{
 		if (stack_len(*a) == 3)
@@ -245,10 +242,7 @@ void	sort_top_3(t_stack **a, t_stack **b, int amount)
 		first = (*a)->value;
 		second = (*a)->next->value;
 		third = (*a)->next->next->value;
-		if (first < second && second < third) //1 2 3
-		{
-		}
-		else if (second < first && first < third) // 2 1 3
+		if (second < first && first < third) // 2 1 3
 			send_command("sa", a, b);
 		else if (second < third && third < first) // 3 1 2
 		{
