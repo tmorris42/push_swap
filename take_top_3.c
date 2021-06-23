@@ -75,12 +75,12 @@ void	put_top_3(t_stack **a, t_stack **b, int amount)
 		return ;
 	if (amount < 0)
 		put_top_3_rev(a, b, amount);
-	if (amount == 2 && (*b)->next->value > (*b)->value)
-		send_command("sb", a, b);
-	if (amount == 2)
+	else if (amount == 2 && (*b)->next->value > (*b)->value)
+		send_command_chain("sb pa pa", a, b);
+	else if (amount == 2)
+		send_command_chain("pa pa", a, b);
+	else if (amount == 1)
 		send_command("pa", a, b);
-	if (amount == 1 || amount == 2)
-		send_command("pa", a, b);
-	if (amount == 3)
+	else if (amount == 3)
 		run_top_3_patterns(a, b);
 }
