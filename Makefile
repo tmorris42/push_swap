@@ -5,6 +5,7 @@ FLAGS = -Wall -Wextra -Werror
 DEBUG_FLAGS = -fsanitize=address -D DEBUG=10
 LIBFT = ./libft/libft.a
 
+INCLUDES = -Iincludes/ -Ilibft/
 STACK_SRCS = stack.c stack_utils.c stack_operations.c \
 			 read_args.c commands.c errors.c
 STACK_OBJS = ${STACK_SRCS:.c=.o}
@@ -26,20 +27,20 @@ all: $(CHECKER) $(PUSH_SWAP)
 $(LIBFT):
 	$(MAKE) -C libft
 
-$(STACK_OBJS): %.o : %.c
-	gcc $(FLAGS) -c $< -o $@
+$(STACK_OBJS): %.o : srcs/%.c
+	gcc $(FLAGS) $(INCLUDES) -c $< -o $@
 
-$(CHECKER_OBJS): %.o : %.c
-	gcc $(FLAGS) -c $< -o $@
+$(CHECKER_OBJS): %.o : srcs/%.c
+	gcc $(FLAGS) $(INCLUDES) -c $< -o $@
 
 $(CHECKER): $(LIBFT) $(STACK_OBJS) $(CHECKER_OBJS)
-	gcc $(FLAGS) $(CHECKER_OBJS) $(STACK_OBJS) $(LIBFT) -o $(CHECKER)
+	gcc $(FLAGS) $(INCLUDES) $(CHECKER_OBJS) $(STACK_OBJS) $(LIBFT) -o $(CHECKER)
 
-$(PUSH_SWAP_OBJS): %.o : %.c
-	gcc $(FLAGS) -c $< -o $@
+$(PUSH_SWAP_OBJS): %.o : srcs/%.c
+	gcc $(FLAGS) $(INCLUDES) -c $< -o $@
 
 $(PUSH_SWAP): $(LIBFT) $(STACK_OBJS) $(PUSH_SWAP_OBJS)
-	gcc $(FLAGS) $(PUSH_SWAP_OBJS) $(STACK_OBJS) $(LIBFT) -o $(PUSH_SWAP)
+	gcc $(FLAGS) $(INCLUDES) $(PUSH_SWAP_OBJS) $(STACK_OBJS) $(LIBFT) -o $(PUSH_SWAP)
 
 clean:
 	rm -f $(CHECKER_OBJS) $(PUSH_SWAP_OBJS) $(STACK_OBJS)

@@ -1,4 +1,3 @@
-#include "libft/libft.h"
 #include "checker.h"
 
 int	get_commands(t_stack **a, t_stack **b)
