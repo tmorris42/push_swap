@@ -104,7 +104,10 @@ if __name__ == '__main__':
 #            " ".join(random.sample([str(x) for x in range(-300, 300)], 500)),
             ]
     error_cases = ["1 one 3", "1 3 1 2", "2 % 4", "1 0 -5 7 -0 8",
-            "2147483648", "-2147483649"]
+            "2147483648", "-2147483649",
+            "1 2 2",
+            "1 0 2 -0",
+            ]
     test_cases += [
             " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
             " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
@@ -117,6 +120,7 @@ if __name__ == '__main__':
             " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
             " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
             " ".join(random.sample([str(x) for x in range(-300, 300)], 500)),
+            " ".join(random.sample([str(x) for x in range(-300, 300)], random.randint(1, 500))),
         ]
 #    error_cases = []
 
