@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   pivot.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/23 11:53:22 by tmorris           #+#    #+#             */
-/*   Updated: 2021/06/23 11:57:40 by tmorris          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "push_swap.h"
 
 float	get_pivot(t_stack *a, int limit, float median)
@@ -101,9 +89,7 @@ float	get_pivot_rev(t_stack *a, int limit, float median)
 		index = index->prev;
 		++i;
 	}
-	if (lower == higher)
-		return (median);
-	if (lower == higher - 1 || higher == lower - 1)
+	if (lower == higher || lower == higher - 1 || higher == lower - 1)
 		return (median + higher - lower);
 	if (higher > lower)
 		return (get_pivot_rev(a, limit, median + 1));
