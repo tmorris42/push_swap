@@ -17,7 +17,8 @@ PUSH_SWAP_SRCS = push_swap.c \
 				 quicksort.c \
 				 rotate_and_insert.c \
 				 sort_3.c \
-				 take_highest.c
+				 take_highest.c \
+				 take_top_3.c 
 PUSH_SWAP_OBJS = ${PUSH_SWAP_SRCS:.c=.o}
 
 all: $(CHECKER) $(PUSH_SWAP)
