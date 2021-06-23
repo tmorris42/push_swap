@@ -15,6 +15,7 @@ PUSH_SWAP_SRCS = push_swap.c \
 				 pivot.c \
 				 push_lowest.c \
 				 quicksort.c \
+				 rotate_and_insert.c \
 				 sort_3.c \
 				 take_highest.c
 PUSH_SWAP_OBJS = ${PUSH_SWAP_SRCS:.c=.o}
