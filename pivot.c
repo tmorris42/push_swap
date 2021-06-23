@@ -19,7 +19,7 @@ float	get_pivot(t_stack *a, int limit)
 		index = a;
 		while (index && i < limit)
 		{
-			if (index->value < median)
+			if (index->value <= median)
 				++lower;
 			if (index->value > median)
 				++higher;
