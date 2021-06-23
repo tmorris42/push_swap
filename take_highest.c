@@ -18,12 +18,6 @@ int	take_highest_6_rev(t_stack **a, t_stack **b, int x)
 		x = stack_len(*b);
 	pivot = get_pivot_rev(*b, x, (*b)->value); //
 	lowhigh_prev_x(*b, x, pivot, &lowhigh[0]);
-	if (DEBUG > 2)
-	{
-		printf("low=%d, high=%d\n", lowhigh[0], lowhigh[1]);
-		stack_print(NULL, *b);
-		read(0, NULL, 1);
-	}
 	while (b && (*b) && (amt_skipped + amt_moved < x))
 	{
 		send_command("rrb", a, b);
@@ -43,12 +37,6 @@ int	take_highest_6_rev(t_stack **a, t_stack **b, int x)
 	}
 	if (stack_last(*a)->value == lowhigh[0])
 		send_command("rra", a, b);
-	if (DEBUG > 2)
-	{
-		printf("Finished take highest x=%d, moved=%d, and sorted == %d\n", x, amt_moved, stack_is_sorted(*a));
-		stack_print(*a, *b);
-		read(0, NULL, 1);
-	}
 	return (amt_moved);
 }
 
@@ -61,8 +49,6 @@ int	take_highest_x_rev(t_stack **a, t_stack **b, int x)
 
 	if (x == 6)
 		return (take_highest_6_rev(a, b, x));
-	if (DEBUG > 2)
-		printf("Take highest rev x=%d, and sorted == %d\n", x, stack_is_sorted(*a));
 	if (!a || !b || !(*b))
 		return (-1);
 	if (x < 0)
@@ -100,12 +86,8 @@ int	take_highest_x_rev(t_stack **a, t_stack **b, int x)
 		else
 		{
 			++amt_skipped;
-//			stack_print(*a, *b);
-//			printf("amt_skipped = %d, x = %d, pivot = %d, value=%d\n", amt_skipped, x, pivot, (*b)->value); //DEL
 		}
 	}
-	if (DEBUG > 2)
-		printf("Finished take highest rev x=%d, moved=%d, and sorted == %d\n", x, amt_moved, stack_is_sorted(*a));
 	return (amt_moved);
 }
 
@@ -116,8 +98,6 @@ int	take_highest_6(t_stack **a, t_stack **b, int x)
 	int		amt_skipped;
 	int		lowhigh[2];
 
-	if (DEBUG > 2)
-		printf("Take highest x=%d, and sorted == %d\n", x, stack_is_sorted(*a));
 	if (!a || !b || !(*b))
 		return (-1);
 	if (x < 4)
@@ -128,12 +108,6 @@ int	take_highest_6(t_stack **a, t_stack **b, int x)
 		x = stack_len(*b);
 	pivot = get_pivot(*b, x, (*b)->value);
 	lowhigh_next_x(*b, x, pivot, &lowhigh[0]);
-	if (DEBUG > 2)
-	{
-		printf("low=%d, high=%d\n", lowhigh[0], lowhigh[1]);
-		stack_print(NULL, *b);
-		read(0, NULL, 1);
-	}
 	while (b && (*b) && (amt_skipped + amt_moved < x))
 	{
 		if ((*b)->value > pivot)
@@ -153,12 +127,6 @@ int	take_highest_6(t_stack **a, t_stack **b, int x)
 	}
 	if (stack_last(*a)->value == lowhigh[0])
 		send_command("rra", a, b);
-	if (DEBUG > 2)
-	{
-		printf("Finished take highest x=%d, moved=%d, and sorted == %d\n", x, amt_moved, stack_is_sorted(*a));
-		stack_print(*a, *b);
-		read(0, NULL, 1);
-	}
 	return (amt_moved);
 }
 
@@ -171,8 +139,6 @@ int	take_highest_x(t_stack **a, t_stack **b, int x)
 
 	if (x == 6)
 		return (take_highest_6(a, b, x));
-	if (DEBUG > 2)
-		printf("Take highest x=%d, and sorted == %d\n", x, stack_is_sorted(*a));
 	if (!a || !b || !(*b))
 		return (-1);
 	if (x < 4)
@@ -197,7 +163,5 @@ int	take_highest_x(t_stack **a, t_stack **b, int x)
 			++amt_skipped;
 		}
 	}
-	if (DEBUG > 2)
-		printf("Finished take highest x=%d, moved=%d, and sorted == %d\n", x, amt_moved, stack_is_sorted(*a));
 	return (amt_moved);
 }

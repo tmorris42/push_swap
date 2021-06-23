@@ -24,17 +24,12 @@ int	sort_3(t_stack **a, t_stack **b)
 	return (0);
 }
 
-void put_top_3_rev(t_stack **a, t_stack **b, int amount)
+void	put_top_3_rev(t_stack **a, t_stack **b, int amount)
 {
 	int	first;
 	int	second;
 	int	third;
 
-	if (DEBUG > 2)
-	{
-		printf("PUT TOP 3 REV: amount=%d\n", amount);
-		stack_print(*a, *b);
-	}
 	if (amount < -3 || amount > -1)
 	{
 		printf("ERROR\n"); //
@@ -56,11 +51,6 @@ void put_top_3_rev(t_stack **a, t_stack **b, int amount)
 		send_command("pa", a, b);
 		if (first < second)
 			send_command("pa", a, b);
-		if (DEBUG > 2)
-		{
-			printf("FINISHED PUT TOP 3 REV: amount=%d\n", amount);
-			stack_print(*a, *b);
-		}
 		return ;
 	}
 	third = stack_last(*b)->prev->prev->value;
@@ -99,11 +89,6 @@ void put_top_3_rev(t_stack **a, t_stack **b, int amount)
 		send_command("pa", a, b);
 		send_command("pa", a, b);
 	}
-	if (DEBUG > 2)
-	{
-		printf("FINISHED PUT TOP 3 REV: amount=%d\n", amount);
-		stack_print(*a, *b);
-	}
 }
 
 void put_top_3(t_stack **a, t_stack **b, int amount)
@@ -112,7 +97,6 @@ void put_top_3(t_stack **a, t_stack **b, int amount)
 	int	second;
 	int	third;
 
-//	printf("putting top 3 and sorted == %d\n", stack_is_sorted(*a));
 	if (!a || !b || !(*b) || amount > 3 || amount > stack_len(*b))
 		return ;
 	if (amount < -3 || amount < -stack_len(*b))
@@ -122,16 +106,6 @@ void put_top_3(t_stack **a, t_stack **b, int amount)
 		put_top_3_rev(a, b, amount);
 		return ;
 	}
-//	first = 0;
-//	while (amount + first < 0) //can be sorted as it is pulled down to save steps
-//	{
-//		if (DEBUG > 2)
-//			printf("REWINDING 1\n");
-//		send_command("rrb", a, b);
-//		++first;
-//	}
-//	if (amount < 0)
-//		amount *= -1;
 	if (amount > 3)
 		printf("ERROR, MORE THAN 3 PUT AT SORT TOP THREE\n");//
 	if (amount > 0)
@@ -200,16 +174,7 @@ void put_top_3(t_stack **a, t_stack **b, int amount)
 		second = (*a)->next->value; //
 		third = (*a)->next->next->value; //
 		if (first > second || second > third || first > third) //
-		{//
 			printf("ERROR not sorted after top 3 PLACED\n"); //
-//			stack_print(*a, NULL);//
-		}//
-	}
-//	printf("Finished putting top 3 and sorted == %d\n", stack_is_sorted(*a));
-	if (!stack_is_sorted(*a))
-	{
-//		printf("ERROR not sorted after top 3 PLACED\n"); //
-//		read(0, NULL, 1);
 	}
 }
 
@@ -272,24 +237,13 @@ void	sort_top_3(t_stack **a, t_stack **b, int amount)
 
 	if (!a || !(*a) || amount > stack_len(*a))
 		return ;
-//	first = 0;
-//	while (amount + first < 0)
-//	{
-//		send_command("rra", a, NULL);
-//		++first;
-//	}
 	if (amount < 0)
 	{
 		sort_top_3_rev(a, b, amount);
 		return ;
 	}
-//		amount *= -1;
 	if (amount > 3)
 		printf("ERROR, MORE THAN 3 PUT AT SORT TOP THREE\n");//
-//	first = (*a)->value;  //
-//	second = (*a)->next->value; //
-//	third = (*a)->next->next->value; //
-//	printf("a: %d %d %d ... %d\n", first, second, third, stack_last(*a)->value); //
 	if (amount == 2 && (*a)->value > (*a)->next->value)
 		send_command("sa", a, NULL);
 	else if (amount == 3)
