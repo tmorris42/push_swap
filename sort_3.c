@@ -88,7 +88,7 @@ void	put_top_3_rev(t_stack **a, t_stack **b, int amount)
 	}
 }
 
-void put_top_3(t_stack **a, t_stack **b, int amount)
+void	put_top_3(t_stack **a, t_stack **b, int amount)
 {
 	int	first;
 	int	second;
@@ -109,7 +109,7 @@ void put_top_3(t_stack **a, t_stack **b, int amount)
 		second = (*b)->next->value;
 	if (amount > 2)
 		third = (*b)->next->next->value;
-	if (amount == 2 && second > first )
+	if (amount == 2 && second > first)
 		send_command("sb", a, b);
 	if (amount == 2)
 		send_command("pa", a, b);
