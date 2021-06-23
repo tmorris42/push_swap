@@ -130,9 +130,7 @@ if __name__ == '__main__':
 
     program_names = [
             "./push_swap",
-           # "./four_hold_sort_mod", 
             ]
-            #"./hold_sort_mod",]# "./best_so_far", ]#"./sort_5", "./rough_sort"]
 
     for program_name in program_names:
         total = 0
