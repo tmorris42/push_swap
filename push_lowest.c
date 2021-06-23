@@ -1,4 +1,3 @@
-#include <stdio.h> //DEBUG ONLY
 #include "push_swap.h"
 
 unsigned int	push_lowest_x_rev(t_stack **a, t_stack **b, unsigned int x)

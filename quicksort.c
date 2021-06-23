@@ -1,5 +1,4 @@
 #include "push_swap.h"
-#include <stdio.h> //debug only
 
 int	quicksort_right(t_stack **a, t_stack **b, int amount)
 {
