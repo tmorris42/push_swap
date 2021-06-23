@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   stack.h                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/08 16:52:08 by tmorris           #+#    #+#             */
-/*   Updated: 2021/06/18 14:22:42 by tmorris          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef STACK_H
 # define STACK_H
 
@@ -59,5 +47,6 @@ t_stack			*read_args(int argc, char **argv);
 int				parse_command(char *str);
 void			run_command(int cmd, t_stack **a, t_stack **b);
 void			send_command(char *cmd_str, t_stack **a, t_stack **b);
+void			send_command_chain(char *cmds, t_stack **a, t_stack **b);
 
 #endif

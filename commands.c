@@ -6,7 +6,7 @@
 /*   By: tmorris <tmorris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 14:23:11 by tmorris           #+#    #+#             */
-/*   Updated: 2021/06/12 16:50:35 by tmorris          ###   ########.fr       */
+/*   Updated: 2021/06/23 14:15:24 by tmorris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,26 @@ void	send_command(char *cmd_str, t_stack **a, t_stack **b)
 		ft_putstr(cmd_str);
 		ft_putchar('\n');
 		run_command(cmd, a, b);
+	}
+}
+
+void	send_command_chain(char *cmds, t_stack **a, t_stack **b)
+{
+	char	cmd[4];
+	int		i;
+
+	i = 0;
+	while (cmds && i < 4)
+	{
+		if (cmds[i] == ' ' || cmds[i] == '\0')
+		{
+			cmd[i] = '\0';
+			send_command(cmd, a, b);
+			if (cmds[i])
+				send_command_chain(&cmds[i + 1], a, b);
+		}
+		else
+			cmd[i] = cmds[i];
+		++i;
 	}
 }
