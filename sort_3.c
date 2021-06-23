@@ -170,53 +170,33 @@ void	put_top_3(t_stack **a, t_stack **b, int amount)
 
 void	sort_top_3_rev(t_stack **a, t_stack **b, int amount)
 {
-	int	count;
 	int	first;
 	int	second;
 	int	third;
 
-	count = 0;
 	if (amount > -3)
 	{
-		while (amount + count < 0)
-		{
-			send_command("rra", a, NULL);
-			++count;
-		}
-		sort_top_3(a, b, count);
+		while (amount > -3 && amount++ < 0)
+			send_command("rra", a, b);
+		sort_top_3(a, b, 3);
 	}
-	else if (amount == -3)
-	{
-		first = stack_last(*a)->prev->prev->value;
-		second = stack_last(*a)->prev->value;
-		third = stack_last(*a)->value;
-		send_command("rra", a, b);
-		if (third < first && third < second)
-		{
-			send_command("pb", a, b);
-			send_command("rra", a, b);
-			send_command("rra", a, b);
-			if (second < first)
-				send_command("sa", a, b);
-			send_command("pa", a, b);
-		}
-		else if (second < first && second < third)
-		{
-			send_command("rra", a, b);
-			send_command("pb", a, b);
-			send_command("rra", a, b);
-			if (first > third)
-				send_command("sa", a, b);
-			send_command("pa", a, b);
-		}
-		else
-		{
-			send_command("rra", a, b);
-			if (second > third)
-				send_command("sa", a, b);
-			send_command("rra", a, b);
-		}
-	}
+	if (amount != -3)
+		return ;
+	first = stack_last(*a)->prev->prev->value;
+	second = stack_last(*a)->prev->value;
+	third = stack_last(*a)->value;
+	if (third < first && third < second && second < first)
+		send_command_chain("rra pb rra rra sa pa", a, b);
+	else if (third < first && third < second && second > first)
+		send_command_chain("rra pb rra rra pa", a, b);
+	else if (second < first && second < third && first > third)
+		send_command_chain("rra rra pb rra sa pa", a, b);
+	else if (second < first && second < third)
+		send_command_chain("rra rra pb rra pa", a, b);
+	else if (second > third)
+		send_command_chain("rra rra sa rra", a, b);
+	else
+		send_command_chain("rra rra rra", a, b);
 }
 
 void	sort_top_3(t_stack **a, t_stack **b, int amount)
