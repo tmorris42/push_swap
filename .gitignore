@@ -4,3 +4,4 @@ push_swap
 logs/
 checker_Mac
 checker_Linux
+libft/libft.a
