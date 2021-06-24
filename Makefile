@@ -1,6 +1,7 @@
 CHECKER = checker
 PUSH_SWAP = push_swap
 
+GCC = gcc
 FLAGS = -Wall -Wextra -Werror
 LIBFT = ./libft/libft.a
 
@@ -27,19 +28,19 @@ $(LIBFT):
 	$(MAKE) -C libft
 
 $(STACK_OBJS): %.o : srcs/%.c
-	gcc $(FLAGS) $(INCLUDES) -c $< -o $@
+	$(GCC) $(FLAGS) $(INCLUDES) -c $< -o $@
 
 $(CHECKER_OBJS): %.o : srcs/%.c
-	gcc $(FLAGS) $(INCLUDES) -c $< -o $@
+	$(GCC) $(FLAGS) $(INCLUDES) -c $< -o $@
 
 $(CHECKER): $(LIBFT) $(STACK_OBJS) $(CHECKER_OBJS)
-	gcc $(FLAGS) $(INCLUDES) $(CHECKER_OBJS) $(STACK_OBJS) $(LIBFT) -o $(CHECKER)
+	$(GCC) $(FLAGS) $(INCLUDES) $(CHECKER_OBJS) $(STACK_OBJS) $(LIBFT) -o $(CHECKER)
 
 $(PUSH_SWAP_OBJS): %.o : srcs/%.c
-	gcc $(FLAGS) $(INCLUDES) -c $< -o $@
+	$(GCC) $(FLAGS) $(INCLUDES) -c $< -o $@
 
 $(PUSH_SWAP): $(LIBFT) $(STACK_OBJS) $(PUSH_SWAP_OBJS)
-	gcc $(FLAGS) $(INCLUDES) $(PUSH_SWAP_OBJS) $(STACK_OBJS) $(LIBFT) -o $(PUSH_SWAP)
+	$(GCC) $(FLAGS) $(INCLUDES) $(PUSH_SWAP_OBJS) $(STACK_OBJS) $(LIBFT) -o $(PUSH_SWAP)
 
 clean:
 	rm -f $(CHECKER_OBJS) $(PUSH_SWAP_OBJS) $(STACK_OBJS)
