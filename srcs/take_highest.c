@@ -1,4 +1,3 @@
-#include <stdio.h> //DEBUG ONLY
 #include "push_swap.h"
 
 int	take_highest_x_rev(t_stack **a, t_stack **b, int x)
