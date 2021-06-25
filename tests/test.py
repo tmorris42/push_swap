@@ -78,7 +78,7 @@ def check_OK(program_name, nums, expected=1):
     return res == expected
 
 if __name__ == '__main__':
-    subprocess.call("make")
+#    subprocess.call("make")
 
     test_cases = []
     test_cases = [str(x).replace(',', '').replace('(', '').replace(')', '') for x in itertools.permutations(range(0, 3), 3)]
