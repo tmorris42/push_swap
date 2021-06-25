@@ -21,12 +21,15 @@ int	main(int argc, char **argv)
 	if (!a)
 		return (0);
 	len = stack_len(a);
-	if (len < 4)
-		sort_3(&a, &b);
-	else if (len < 6)
-		sort_5(&a, &b);
-	else
-		quicksort(&a, &b);
+	if (!stack_is_sorted(a) && !stack_is_ordered(a))
+	{
+		if (len < 4)
+			sort_3(&a, &b);
+		else if (len < 6)
+			sort_5(&a, &b);
+		else
+			quicksort(&a, &b);
+	}
 	rotate_high_to_bottom(&a);
 	stack_clear(&a);
 	stack_clear(&b);
