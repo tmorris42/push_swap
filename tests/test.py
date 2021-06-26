@@ -38,6 +38,7 @@ def maximum_moves(numbers):
         if number_of_numbers <= cutoff[0]:
             maximum = cutoff[1][0]
             return maximum
+    return float("inf")
 
 def check_nums(program_name, nums):
     try:
@@ -158,5 +159,9 @@ if __name__ == '__main__':
         for case in error_cases:
             total += 1
             success += check_OK(program_name, case, ERROR)
+        for length in range(2, 1000):
+            case = " ".join(random.sample([str(x) for x in range(-length, length)], length))
+            total += 1
+            success += check_OK(program_name, case, OK)
 
         print(f"Tests Passed: {success}/{total}\n\n")
