@@ -8,7 +8,7 @@ int	ft_isdigits_or(char *str, char *extra)
 	i = 0;
 	while (str && str[i])
 	{
-		if (!(ft_isdigit(str[i])) && str[i] != '-' && str[i] != ' ')
+		if (!(ft_isdigit(str[i])) && str[i] != '-')
 		{
 			j = ft_strlen(extra) - 1;
 			while (j > -1 && extra)
@@ -91,6 +91,8 @@ t_stack	*read_args(int argc, char **argv)
 		len = get_array_len(strs);
 		stack = read_args_array(len, strs);
 		strs = free_array(strs);
+		if (len < 1)
+			return (error_and_clear(stack, NULL));
 		return (stack);
 	}
 	return (read_args_array(argc - 1, &argv[1]));
