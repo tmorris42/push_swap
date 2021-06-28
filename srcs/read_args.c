@@ -8,7 +8,7 @@ int	ft_isdigits_or(char *str, char *extra)
 	i = 0;
 	while (str && str[i])
 	{
-		if (!(ft_isdigit(str[i])) && str[i] != '-')
+		if (!(ft_isdigit(str[i])))
 		{
 			j = ft_strlen(extra) - 1;
 			while (j > -1 && extra)
