@@ -24,6 +24,8 @@ def error_log(nums):
 
 def maximum_moves(numbers):
     array = numbers.split(" ")
+    for i in range(len(array)):
+        array[i] = int(array[i])
     number_of_numbers = len(array)
     maximum = 0
     if (sorted(array) == array):
