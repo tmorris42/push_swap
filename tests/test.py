@@ -88,6 +88,7 @@ if __name__ == '__main__':
     test_cases = []
     test_cases = [str(x).replace(',', '').replace('(', '').replace(')', '') for x in itertools.permutations(range(0, 3), 3)]
     test_cases += [
+            "-1 -2",
             "4 2 3",
             "4 3 1",
             "2 -1 5",
@@ -159,7 +160,7 @@ if __name__ == '__main__':
         for case in error_cases:
             total += 1
             success += check_OK(program_name, case, ERROR)
-        for length in range(2, 1000):
+        for length in range(2, 99):
             case = " ".join(random.sample([str(x) for x in range(-length, length)], length))
             total += 1
             success += check_OK(program_name, case, OK)
