@@ -74,9 +74,9 @@ def check_nums(program_name, nums):
         return KO
     if "OK\n" in out_str:
         return OK
-    return 3
+    return UNKNOWN
 
-def check_OK(program_name, nums, expected=1):
+def check_OK(program_name, nums, expected=2):
     msg = ["ERROR", "KO", "OK", "TIMEOUT", "UNKNOWN"]
     res = check_nums(program_name, nums)
     if res == expected:
@@ -130,6 +130,8 @@ if __name__ == '__main__':
             "1 0 2 -0",
             "\"\"",
             "\"1 3\" \"2 4\"",
+            "245-52",
+            "-2423-4",
             ]
     test_cases += [
             " ".join(random.sample([str(x) for x in range(-300, 300)], 100)),
