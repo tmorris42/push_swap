@@ -37,7 +37,9 @@ t_stack	*read_args_array(int argc, char **argv)
 	while (i < argc)
 	{
 		value = ft_atoi(argv[i]);
-		if (!(ft_isdigits_or(argv[i], "-")) || (value != (int)ft_atol(argv[i])))
+		if (!(ft_isdigits_or(argv[i], "-")))
+			return (error_and_clear(a, NULL));
+		if (!(ft_isdigits_or(&argv[i][1], "")) || (value != (int)ft_atol(argv[i])))
 			return (error_and_clear(a, NULL));
 		index = a;
 		while (index)
